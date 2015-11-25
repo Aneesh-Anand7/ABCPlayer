@@ -15,17 +15,29 @@ public class SequencePlayerTest {
     @Test
     public void testPiece1() {
         try {
-            SequencePlayer player = new SequencePlayer(200, 4);
+            SequencePlayer player = new SequencePlayer(140, 4);
             
-            player.addNote(new Pitch('F').transpose(1).toMidiNote(), 0, 2);
-           
+            player.addNote(new Pitch('C').toMidiNote(), 0, 4);
+            player.addNote(new Pitch('C').toMidiNote(), 4, 4);
+            player.addNote(new Pitch('C').toMidiNote(), 8, 3);
+            player.addNote(new Pitch('D').toMidiNote(), 11, 1);
+            player.addNote(new Pitch('E').toMidiNote(), 12, 4);
+            
+            player.addNote(new Pitch('E').toMidiNote(), 16, 3);
+            player.addNote(new Pitch('D').toMidiNote(), 19, 1);
+            player.addNote(new Pitch('E').toMidiNote(), 20, 3);
+            player.addNote(new Pitch('F').toMidiNote(), 23, 1);
+            player.addNote(new Pitch('G').toMidiNote(), 24, 8);
+            
+            player.addNote(new Pitch('D').toMidiNote(), 32, 4);
+            
+          
+//            C C C3/4 D/4 E | E3/4 D/4 E3/4 F/4 G2 |(3DDD (3GGG (3EEE (3CCC | 
             
             
             
             
             System.out.println(player);
-
-            // play!
             player.play();
             try {
                 System.in.read();
