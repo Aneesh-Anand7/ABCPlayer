@@ -8,7 +8,7 @@ package abc.sound;
 // Music = Note(duration:double, pitch:Pitch, instrument:Instrument)
 // + Rest(duration:double)
 // + Concat(m1:Music, m2:Music)
-//
+// + Chord(m1:Music, m2:Music)
 public interface Music {
     
     /**
