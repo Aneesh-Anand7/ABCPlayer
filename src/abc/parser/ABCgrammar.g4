@@ -7,24 +7,28 @@ grammar ABCgrammar;
 import Configuration;
 
 root: header body EOF;
-header: index ('\r\n' | '\n') title ('\r\n' | '\n') (line ('\r\n' | '\n'))* key ('\r\n' | '\n');
-index: 'X' ':' NUMBER;
+header: index title (line)* key;
+index: 'X:' NUMBER endofline;
 /* 
  * IS THIS GOOD?
  * Put letters in quotes?
  */ 
-title: 'T' ':' STRING; 
-key: ('_' | '^')? NOTE;
-line: length | composer | meter | tempo | voice;
-length: 'L' ':' NUMBER '/' NUMBER; 
-composer: 'C' ':' STRING;
-meter: 'M' ':' (NUMBER '/' NUMBER) | 'C' | 'C' '|';
-tempo: 'Q' ':' NUMBER;
-voice: 'V' ':' STRING;
+title: 'T:' STRING endofline; 
+key: 'K:' NOTE endofline;
+line: length | composer | meter | tempo | voice | comment;
+length: 'L:' NUMBER '/' NUMBER endofline; 
+composer: 'C:' STRING endofline;
+meter: 'M:' (NUMBER '/' NUMBER) | 'C' | 'C|';
+tempo: 'Q:' NUMBER '/' NUMBER '=' NUMBER endofline;
+voice: 'V:' STRING endofline;
 
-NOTE: [A-G] ('M' | 'm')?;
+endofline: comment | NEWLINE;
+comment: '%' STRING NEWLINE;
+
+NOTE: ([A-G])|([a-g]) ('#'|'b')? ('M' | 'm')?;
 STRING: (.)+?;
 NUMBER: [0-9]+;
+NEWLINE: ('\r'('\n')? | '\n');
 
 /*Check with George*/
 body: STRING;
