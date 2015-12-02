@@ -78,4 +78,10 @@ public class Concat implements Music {
         return first + " " + second;
     }
 
+    @Override
+    public abc.sound.Music transpose(int semitonesUp) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
