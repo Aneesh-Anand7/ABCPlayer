@@ -6,7 +6,7 @@
 grammar ABCgrammar;
 import Configuration;
 
-root: header body EOF;
+root: header EOF;
 header: index title (line)* key;
 index: 'X:' NUMBER endofline;
 /* 
