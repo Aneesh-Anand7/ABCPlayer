@@ -2,13 +2,14 @@ package abc.sound;
 
 
 /**
- * Music represents a piece of music played by multiple instruments.
+ * Music represents a piece of music played by a piano.
  */
 // Datatype definition:
-// Music = Note(duration:double, pitch:Pitch, instrument:Instrument)
+// Music = Note(duration:double, pitch:Pitch)
 // + Rest(duration:double)
 // + Concat(m1:Music, m2:Music)
-// + Chord(m1:Music, m2:Music)
+// + Chord(n1:Note, c2: Chord)
+//
 public interface Music {
     
     /**

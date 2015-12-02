@@ -30,6 +30,7 @@ public class SequencePlayer {
     private final Sequencer sequencer;
     private final Track track;
     private final int beatsPerMinute;
+    private final int ticksPerBeat;
 
     /*
      * Rep invariant:
@@ -54,6 +55,7 @@ public class SequencePlayer {
     public SequencePlayer(int beatsPerMinute, int ticksPerBeat)
             throws MidiUnavailableException, InvalidMidiDataException {
         this.sequencer = MidiSystem.getSequencer();
+        this.ticksPerBeat = ticksPerBeat;
 
         // create a sequence object with with tempo-based timing, where
         // the resolution of the time step is based on ticks per beat
@@ -68,6 +70,14 @@ public class SequencePlayer {
         checkRep();
     }
 
+    /**
+     * Get the number of ticks per beat declared for this Sequence Player
+     * @return int number of ticks per beat
+     */
+    public int getTicks() {
+        return ticksPerBeat;
+    }
+    
     /**
      * Schedule a note to be played starting at startTick for the duration of numTicks.
      *
