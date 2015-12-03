@@ -8,9 +8,6 @@ import java.util.List;
  * Chord represents a chord (layered music) in a piece of music
  */
 public class Chord implements Music {
-    private final Note note1;
-    private final Note note2;
-    private final Chord chord;
     private final List<Note> notes;
     
     // Abstraction function
@@ -27,20 +24,6 @@ public class Chord implements Music {
     public Chord(List<Note> notes) {
         this.notes = notes;
     }
-    public Chord(Note note1, Chord chord) {
-        this.note1 = note1;
-        this.chord = chord;
-        this.note2 = note1;
-
-    }
-    
-    public Chord(Note note1, Note note2) {
-        this.note1 = note1;
-        this.note2 = note2; 
-       
-        this.chord = new Chord(notes);
-    }
-
     /**
      * Based on the definition on the duration of a chord given by the 6.005 Project guidelines, the parser
      * will designate the length of the chord as the length of the first note.
@@ -51,21 +34,12 @@ public class Chord implements Music {
     public double duration() {
         return notes.get(0).duration();
     }
-    public double recrusiveDuration() {
-        return this.note1.duration();
-    }
 
     /**
      * Transpose this chord
      * @param semitonesUp the number of semitones to increase the pitch of all of the notes in this chord by
      * @return a new chord with the original notes' pitches increased by semitonesUp semitones
      */
-    public Chord recursiveTranspose(int semitonesUp) {
-        Note transposedNote1 = this.note1.transpose(semitonesUp);
-        Chord transposedChord = this.chord.recursiveTranspose(semitonesUp);
-        return new Chord(transposedNote1, transposedChord);
-        
-    }
     public Chord transpose(int semitonesUp) {
         List<Note> notesCopy = new ArrayList<Note>(notes);
         for (Music note : notesCopy) {
@@ -74,13 +48,20 @@ public class Chord implements Music {
         return new Chord(notesCopy);
     }
 
+
+    
     /**
      * Play this chord
      * TODO double to int issue
      */
     public void play(SequencePlayer player, double atBeat) {
+        int ticksPerBeat = player.getTicks();
+        // get atBeat value in tick format
+        int atBeatRationalized = (int) (atBeat * ticksPerBeat);
+        // 
         for (Note note : notes) {
-            player.addNote(note.pitch().toMidiNote(), atBeat, note.duration());
+            int noteTicksDuration = (int) (note.duration() * ticksPerBeat);
+            player.addNote(note.pitch().toMidiNote(), atBeatRationalized, noteTicksDuration);
         }
 
     }
