@@ -28,8 +28,11 @@ public class Chord implements Music {
     /* Create a new Chord played for the duration of the first note's duration
      * @param notes the list of notes that are in the chord to be played
      */
-    public Chord(List<Note> notes) {
-        this.notes = notes;
+    public Chord(List<Note> notelist) {
+        notes = new ArrayList<>();
+        for(Note note: notelist){
+            notes.add(note);
+        }
     }
     /**
      * Based on the definition on the duration of a chord given by the 6.005 Project guidelines, the parser
