@@ -1,10 +1,15 @@
 package abc.sound;
 
 /**
- * Rest represents a pause in a piece of music.
+ * Abstraction Function: Rest represents a pause in a piece of music and implements the Music interface
+ * 
+ * Rep Invariant: Rest has a positive duration
+ * 
+ * Safety from rep exposure: Rest is an immutable type whose field is private and final and is accessed through
+ *  a getter method that returns an immutable object
  */
 public class Rest implements Music {
-    double duration;
+    private final double duration;
     
     private void checkRep() {
         assert duration >= 0;

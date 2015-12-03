@@ -3,9 +3,17 @@ package abc.sound;
 import music.Concat;
 import music.Music;
 import music.SequencePlayer;
-
 /**
- * Concat represents two pieces of music played one after the other.
+ * Abstraction function: Concat is a recursive data type that implements the Music interface
+ * and represents the concatenation of two Music 
+ * variant objects. These are two things that will be played one after the other
+ * 
+ * Rep Invariant: Concat has two private, final fields, "first" and "second" representing the first and second
+ *  notes/chords/rest to be played, respectively. Both first and second are Music variant types.
+ *  
+ * Safety from Rep Exposure: Concat is an immutable class whose fields are private and final and are accessed
+ *  through getter methods that return immutable objects
+ *
  */
 public class Concat implements Music {
     

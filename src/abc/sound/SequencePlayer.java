@@ -15,7 +15,9 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
 /**
- * Schedules and plays a sequence of notes at given time steps (or "ticks").
+ * Abstraction Function: Schedules and plays a sequence of notes at given time steps (or "ticks").
+ * 
+ * Rep Invariant: Sequence player has a sequencer, a track, and a beats per minute designation
  */
 public class SequencePlayer {
 

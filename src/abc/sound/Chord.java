@@ -14,12 +14,19 @@ public class Chord implements Music {
     private final List<Note> notes;
     
     // Abstraction function
-    //      Takes a note and another chord to make a chord out of the two added together
+    //      Chord is a recursive data type that takes in a Note object and a Chord object and represents a musical
+    //      chord (multiple notes played at the same time)
     //
-    // Representation Invariant     
+    // Representation Invariant
+    //      Chord can have
+    //          1. Two Note objects, note1 and note2, representing two notes to be played at once
+    //          2. A List of Note objects that contains all the notes to be played at once
+    //          3. A Chord object and a Note object that should be played at the same time as the chord
+    //      Chord must have a duration > 0 and must represent more than one Note
     //
     // Safety from Rep Exposure
-    //
+    //      Chord is an immutable type and in the case of Lists, defensive copies will be made to prevent
+    //      rep exposure
 
     /* Create a new Chord played for the duration of the first note's duration
      * @param notes the list of notes that are in the chord to be played

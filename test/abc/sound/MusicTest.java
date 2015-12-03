@@ -16,7 +16,6 @@ public class MusicTest {
     /**
      * Testing Strategy
      * Pitch
-     *  Constructor - test ints and chars (valid and invalid)
      *  Transpose = x < -12
      *              -12 < x < 0
      *              0 < x < 12
@@ -48,20 +47,12 @@ public class MusicTest {
      *  Transpose
      *  Play
      *  
-     * Music
-     *  Constructor
-     *  duration - 
-     *  transpose -
-     *  play
-     *  
      * Note
-     *  Constructor
      *  duration
      *  transpose
      *  play
      *  
      * Rest
-     *  Constructor
      *  durations
      *  transpose
      *  play

@@ -2,7 +2,14 @@ package abc.sound;
 
 
 /**
- * Note represents a note played by a piano? 
+ * Abstraction function: Note is a class that implements the Music interface and represents a single 
+ *  musical note
+ *  
+ * Rep Invariant: Note has a non-negative duration, a pitch, and a designated instrument
+ * 
+ * Safety from rep exposure: Note is an immutable type and its fields are private and final
+ *  and are accessed through getter
+ *  functions that return immutable types
  */
 public class Note implements Music {
     
@@ -13,6 +20,7 @@ public class Note implements Music {
     private void checkRep() {
         assert duration >= 0;
         assert pitch != null;
+        assert instrument != null;
     }
     
     /**
