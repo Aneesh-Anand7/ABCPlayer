@@ -33,6 +33,7 @@ public class SequencePlayer {
     private final Track track;
     private final int beatsPerMinute;
     private final int ticksPerBeat;
+    private final int defaultTicksPerBeat = 128;
 
     /*
      * Rep invariant:
@@ -71,7 +72,29 @@ public class SequencePlayer {
 
         checkRep();
     }
+    
+    /**
+     * Make a new MIDI sequence player.
+     * 
+     * @param beatsPerMinute the number of beats per minute
+     * @param ticksPerBeat the number of ticks per beat; every note plays for an integer number of ticks
+     * @throws MidiUnavailableException
+     * @throws InvalidMidiDataException
+     */
+    public SequencePlayer(int beatsPerMinute)
+            throws MidiUnavailableException, InvalidMidiDataException {
+        this.sequencer = MidiSystem.getSequencer();
+        this.ticksPerBeat = defaultTicksPerBeat;
+        // create a sequence object with with tempo-based timing, where
+        // the resolution of the time step is based on ticks per beat
+        Sequence sequence = new Sequence(Sequence.PPQ, ticksPerBeat);
+        this.beatsPerMinute = beatsPerMinute;
 
+        // create an empty track; notes will be added to this track
+        this.track = sequence.createTrack();
+        sequencer.setSequence(sequence);
+        checkRep();
+    }
     /**
      * Get the number of ticks per beat declared for this Sequence Player
      * @return int number of ticks per beat

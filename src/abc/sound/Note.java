@@ -75,7 +75,6 @@ public class Note implements Music {
     public int hashCode() {
         long durationBits = Double.doubleToLongBits(duration);
         return (int) (durationBits ^ (durationBits >>> 32))
-                + instrument.hashCode()
                 + pitch.hashCode();
     }
 
@@ -87,7 +86,6 @@ public class Note implements Music {
         
         final Note other = (Note) obj;
         return duration == other.duration
-                && instrument.equals(other.instrument)
                 && pitch.equals(other.pitch);
     }
 
