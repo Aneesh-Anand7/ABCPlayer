@@ -11,15 +11,13 @@ public class Chord implements Music {
     private final List<Note> notes;
     
     // Abstraction function
-    //      Chord is a recursive data type that takes in a Note object and a Chord object and represents a musical
-    //      chord (multiple notes played at the same time)
+    //      Chord is a recursive data type that takes in a list of Note objects that represent a musical chord
+    //           consisting of the notes represented by these Note objects (multiple notes played at the same time)
+    //      The duration of the chord is the same as the duration of the first note in the notes list.
     //
     // Representation Invariant
-    //      Chord can have
-    //          1. Two Note objects, note1 and note2, representing two notes to be played at once
-    //          2. A List of Note objects that contains all the notes to be played at once
-    //          3. A Chord object and a Note object that should be played at the same time as the chord
-    //      Chord must have a duration > 0 and must represent more than one Note
+    //      Chord must have a duration > 0
+    //      Notes list must not be empty
     //
     // Safety from Rep Exposure
     //      Chord is an immutable type and in the case of Lists, defensive copies will be made to prevent
@@ -62,7 +60,13 @@ public class Chord implements Music {
     
     /**
      * Play this chord
-     * TODO double to int issue
+     * @param player the Sequence Player that will play this chord. The Sequence Player's number of ticks per beat 
+     *      must be a common multiple of the denominator of every note's fractional duration in the chord. For example,
+     *      if the chord contains notes with durations 1/4, 3/8, 1/64, the sequence player's number of ticks per beat
+     *      must at least be 64.
+     * @param atBeat the starting beat number for the chord
+     * Plays this chord.
+     *
      */
     public void play(SequencePlayer player, double atBeat) {
         int ticksPerBeat = player.getTicks();
