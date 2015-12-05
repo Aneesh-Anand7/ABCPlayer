@@ -1,5 +1,22 @@
 package abc.sound;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import org.antlr.v4.gui.Trees;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
+
+import abc.parser.ABCgrammarLexer;
+import abc.parser.ABCgrammarParser;
+import abc.parser.AbcLexer;
+import abc.parser.AbcParser;
+import abc.parser.SplitHeader;
 
 // Datatype definition:
 // Music = Note(duration:double, pitch:Pitch)
@@ -16,6 +33,27 @@ package abc.sound;
  *
  */
 public interface Music {
+    
+    public static void parse(String head, String body) {
+            CharStream headstream = new ANTLRInputStream(head);
+            ABCgrammarLexer lexer = new ABCgrammarLexer(headstream);
+            lexer.reportErrorsAsExceptions();
+            TokenStream tokens = new CommonTokenStream(lexer);
+            ABCgrammarParser parser = new ABCgrammarParser(tokens);
+            parser.reportErrorsAsExceptions();
+            ParseTree tree = parser.root();
+            
+//            CharStream bodystream = new ANTLRInputStream(body);
+//            AbcLexer bodylexer = new AbcLexer(bodystream);
+//            bodylexer.reportErrorsAsExceptions();
+//            TokenStream bodyTokens = new CommonTokenStream(bodylexer);
+//            AbcParser bodyParser = new AbcParser(bodyTokens);
+//            parser.reportErrorsAsExceptions();
+//            tree = parser.root();
+            System.err.println(tree.toStringTree(parser));
+            Trees.inspect(tree, parser);
+    }
+    
     
     /**
      * @return total duration of this piece in beats
@@ -39,4 +77,10 @@ public interface Music {
      */
     void play(SequencePlayer player, double atBeat);
     
+    public static void main(String[] args) throws IOException {
+        File file = new File("sample_abc/sample1.abc");
+        List<String> headbody = SplitHeader.splitHeader(file);
+        System.out.println(headbody.get(0));
+        parse(headbody.get(0),headbody.get(1));
+    }
 }

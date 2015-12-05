@@ -170,18 +170,6 @@ public class ABCgrammarBaseListener implements ABCgrammarListener {
    * <p>The default implementation does nothing.</p>
    */
   @Override public void exitComment(ABCgrammarParser.CommentContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void enterBody(ABCgrammarParser.BodyContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void exitBody(ABCgrammarParser.BodyContext ctx) { }
 
   /**
    * {@inheritDoc}
