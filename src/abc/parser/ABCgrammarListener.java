@@ -21,16 +21,6 @@ public interface ABCgrammarListener extends ParseTreeListener {
    */
   void exitRoot(ABCgrammarParser.RootContext ctx);
   /**
-   * Enter a parse tree produced by {@link ABCgrammarParser#header}.
-   * @param ctx the parse tree
-   */
-  void enterHeader(ABCgrammarParser.HeaderContext ctx);
-  /**
-   * Exit a parse tree produced by {@link ABCgrammarParser#header}.
-   * @param ctx the parse tree
-   */
-  void exitHeader(ABCgrammarParser.HeaderContext ctx);
-  /**
    * Enter a parse tree produced by {@link ABCgrammarParser#index}.
    * @param ctx the parse tree
    */
@@ -50,16 +40,6 @@ public interface ABCgrammarListener extends ParseTreeListener {
    * @param ctx the parse tree
    */
   void exitTitle(ABCgrammarParser.TitleContext ctx);
-  /**
-   * Enter a parse tree produced by {@link ABCgrammarParser#key}.
-   * @param ctx the parse tree
-   */
-  void enterKey(ABCgrammarParser.KeyContext ctx);
-  /**
-   * Exit a parse tree produced by {@link ABCgrammarParser#key}.
-   * @param ctx the parse tree
-   */
-  void exitKey(ABCgrammarParser.KeyContext ctx);
   /**
    * Enter a parse tree produced by {@link ABCgrammarParser#line}.
    * @param ctx the parse tree

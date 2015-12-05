@@ -31,18 +31,6 @@ public class ABCgrammarBaseListener implements ABCgrammarListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  @Override public void enterHeader(ABCgrammarParser.HeaderContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void exitHeader(ABCgrammarParser.HeaderContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
   @Override public void enterIndex(ABCgrammarParser.IndexContext ctx) { }
   /**
    * {@inheritDoc}
@@ -62,18 +50,6 @@ public class ABCgrammarBaseListener implements ABCgrammarListener {
    * <p>The default implementation does nothing.</p>
    */
   @Override public void exitTitle(ABCgrammarParser.TitleContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void enterKey(ABCgrammarParser.KeyContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void exitKey(ABCgrammarParser.KeyContext ctx) { }
   /**
    * {@inheritDoc}
    *

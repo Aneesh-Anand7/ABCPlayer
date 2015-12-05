@@ -6,15 +6,10 @@
 grammar ABCgrammar;
 import Configuration;
 
-root: header EOF;
-header: index title (line)* key;
+root: index title (line)* KEY EOF;
 index: 'X:' NUMBER endofline;
-/* 
- * IS THIS GOOD?
- * Put letters in quotes?
- */ 
-title: 'T:' STRING endofline; 
-key: 'K:' NOTE endofline;
+title: 'T:' (STRING | NUMBER)+ endofline;
+
 line: length | composer | meter | tempo | voice | comment;
 length: 'L:' NUMBER '/' NUMBER endofline; 
 composer: 'C:' STRING endofline;
@@ -25,8 +20,9 @@ voice: 'V:' STRING endofline;
 endofline: comment | NEWLINE;
 comment: '%' STRING NEWLINE;
 
-NOTE: ([A-G]|[a-g]) ('#'|'b')? ('M' | 'm')?;
-STRING: [A-Z]+; /* no new lines */
+
+KEY: 'K:' ([A-G]|[a-g]) ('#'|'b')? ('M' | 'm')?;
+STRING: ([A-Z]|[a-z])+ ; /* no new lines */
 NUMBER: [0-9]+;
 NEWLINE: ('\r'('\n')? | '\n');
 
