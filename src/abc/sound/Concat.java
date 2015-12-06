@@ -1,18 +1,14 @@
 package abc.sound;
 
-import music.Concat;
-import music.Music;
-import music.SequencePlayer;
 /**
  * Abstraction function: Concat is a recursive data type that implements the Music interface
- * and represents the concatenation of two Music 
- * variant objects. These are two things that will be played one after the other
+ * and represents the concatenation of two Music variant objects (Note, Rest, Chord, Concat).
+ * These two objects will be played one right after the other.
  * 
- * Rep Invariant: Concat has two private, final fields, "first" and "second" representing the first and second
- *  notes/chords/rest to be played, respectively. Both first and second are Music variant types.
+ * Rep Invariant: The first and second music objects are not null;
  *  
- * Safety from Rep Exposure: Concat is an immutable class whose fields are private and final and are accessed
- *  through getter methods that return immutable objects
+ * Safety from Rep Exposure: Concat is an immutable class with private and final fields with immutable object values
+ *  that are accessed through getter methods, which thus return immutable objects.
  *
  */
 public class Concat implements Music {
@@ -37,6 +33,7 @@ public class Concat implements Music {
     }
 
     /**
+     * Get the first Music object to be played
      * @return first piece in this concatenation
      */
     public Music first() {
@@ -44,6 +41,7 @@ public class Concat implements Music {
     }
     
     /**
+     * Get the second Music object to be played
      * @return second piece in this concatenation
      */
     public Music second() {
@@ -51,6 +49,7 @@ public class Concat implements Music {
     }
     
     /**
+     * Get the duration of the entire concatenation
      * @return duration of this concatenation
      */
     public double duration() {
@@ -59,12 +58,21 @@ public class Concat implements Music {
     
     /**
      * Play this concatenation.
+     * @
      */
     public void play(SequencePlayer player, double atBeat) {
+        int ticksPerBeat = player.getTicks();
+        // get atBeat value in tick format
+        int atBeatRationalized = (int) (atBeat * ticksPerBeat);
+        this.playWithTicks(player, atBeatRationalized);
+        
+    }
+
+    public void playWithTicks(SequencePlayer player, int atBeat) {
         first.play(player, atBeat);
         second.play(player, atBeat + first.duration());
     }
-
+    
     @Override
     public int hashCode() {
         final int prime = 31;
