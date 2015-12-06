@@ -1,5 +1,6 @@
 package abc.sound;
 
+import java.util.List;
 import java.util.Stack;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -37,13 +38,13 @@ public class MakeMusic implements AbcListener {
     
     @Override
     public void enterEveryRule(ParserRuleContext arg0) {
-        // TODO Auto-generated method stub
+        System.err.println("entering " + arg0.getText() + ", stack is " + stack);
 
     }
 
     @Override
     public void exitEveryRule(ParserRuleContext arg0) {
-        // TODO Auto-generated method stub
+        System.err.println("exiting " + arg0.getText() + ", stack is " + stack);
 
     }
 
@@ -67,7 +68,8 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitRoot(RootContext ctx) {
-        // TODO Auto-generated method stub
+        // do nothing, root has only one child so its value is
+        // already on top of the stack
 
     }
 
@@ -121,14 +123,55 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void enterNote(NoteContext ctx) {
-        // TODO Auto-generated method stub
-
+        
+    }
+    
+    /**
+     * Counts occurrences of a desired char in a String
+     * @param string - String to be searched
+     * @param desired - desired char
+     * @return number of occurrences of char in String
+     */
+    private int countOccurrences(String string, char desired){
+        int count = 0;
+        for (int i = 0; i < string.length(); i++){
+            if (string.charAt(i) == desired){
+                count ++;
+            }
+        }
+        return count;
     }
 
     @Override
     public void exitNote(NoteContext ctx) {
-        // TODO Auto-generated method stub
-
+        double duration = Double.valueOf(ctx.notelength().getText());
+        if (ctx.noteorrest().rest() != null){
+            Rest rest = new Rest(duration);
+            stack.push(rest);
+        }
+        else{
+            char basenote = ctx.noteorrest().pitch().basenote().getText().charAt(0);
+            Pitch pitch = new Pitch(basenote);
+            String octave = null;
+            if(ctx.noteorrest().pitch().octave() != null){
+                octave = ctx.noteorrest().pitch().octave().getText();
+                int downoctaves = countOccurrences(octave, ',');
+                int upoctaves = countOccurrences(octave, "'".charAt(0));
+                int change = upoctaves - downoctaves;   //+ means net change up, - mean net change down
+                pitch.transpose(change * 12);
+            }
+            String accidental = null;
+            if (ctx.noteorrest().pitch().accidental() != null){
+                accidental = ctx.noteorrest().pitch().accidental().getText();
+                int numflats = countOccurrences(accidental, '_');
+                int numsharps = countOccurrences(accidental, '^');
+                //TODO natural accidental implementation
+                int netaccidental = numsharps - numflats;
+                pitch.transpose(netaccidental);
+            }
+           Note note = new Note(duration, pitch);
+           stack.push(note);
+        }
     }
 
     @Override
@@ -223,8 +266,12 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitTupletelem(TupletelemContext ctx) {
-        // TODO Auto-generated method stub
-
+        double nplet = Double.valueOf(ctx.tupletspec().DIGIT().getText());
+        List<NoteelemContext> noteelems = ctx.noteelem();
+        for(NoteelemContext noteelem: noteelems){
+            Note note = (Note) stack.pop();
+            stack.push(new Note(note.duration()/nplet, note.pitch()));
+        }
     }
 
     @Override
