@@ -140,14 +140,4 @@ public interface ABCgrammarListener extends ParseTreeListener {
    * @param ctx the parse tree
    */
   void exitComment(ABCgrammarParser.CommentContext ctx);
-  /**
-   * Enter a parse tree produced by {@link ABCgrammarParser#body}.
-   * @param ctx the parse tree
-   */
-  void enterBody(ABCgrammarParser.BodyContext ctx);
-  /**
-   * Exit a parse tree produced by {@link ABCgrammarParser#body}.
-   * @param ctx the parse tree
-   */
-  void exitBody(ABCgrammarParser.BodyContext ctx);
 }

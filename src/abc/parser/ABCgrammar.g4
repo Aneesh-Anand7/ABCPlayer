@@ -25,13 +25,11 @@ voice: 'V:' STRING endofline;
 endofline: comment | NEWLINE;
 comment: '%' STRING NEWLINE;
 
-NOTE: ([A-G])|([a-g]) ('#'|'b')? ('M' | 'm')?;
-STRING: (.)+?;
+NOTE: ([A-G]|[a-g]) ('#'|'b')? ('M' | 'm')?;
+STRING: [A-Z]+; /* no new lines */
 NUMBER: [0-9]+;
 NEWLINE: ('\r'('\n')? | '\n');
 
-/*Check with George*/
-body: STRING;
 
 
 SPACES : [ ]+ -> skip;
