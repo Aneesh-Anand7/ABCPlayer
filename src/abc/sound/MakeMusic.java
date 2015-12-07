@@ -1,7 +1,10 @@
 package abc.sound;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -36,14 +39,20 @@ public class MakeMusic implements AbcListener {
     private Stack<Music> repeat = new Stack<>();
     private boolean inrepeat = false;
     private Music fullPiece;
+    private Map<String, String> headerInfo;
     
-    public Music getMusic() {
-        return stack.get(0);
-    }
+//    public Music getMusic() {
+//        return stack.get(0);
+//    }
     
     public Music getFullPiece(){
         return fullPiece;
     }
+    
+    public void setHeaderInfo(Map<String, String> info){
+        headerInfo = info;
+    }
+    
     
     @Override
     public void enterEveryRule(ParserRuleContext arg0) {
@@ -168,6 +177,7 @@ public class MakeMusic implements AbcListener {
                 int change = upoctaves - downoctaves;   //+ means net change up, - mean net change down
                 pitch.transpose(change * 12);
             }
+            pitch.transpose(keyChange(basenote));
             String accidental = null;
             if (ctx.noteorrest().pitch().accidental() != null){
                 accidental = ctx.noteorrest().pitch().accidental().getText();
@@ -185,6 +195,54 @@ public class MakeMusic implements AbcListener {
                stack.push(note);
            }
         }
+    }
+    
+    public int keyChange(char basenote){
+        Map<String, Integer> accidentalMap = createAccidentalMap();
+        String[] flatorder = { "B", "E", "A", "D", "G", "C", "F"};
+        String[] sharporder = { "F", "C", "G", "D", "A", "E", "B"};
+        String uppercasebasenote = basenote.toUpperCase();
+        String key = headerInfo.get("key").toUpperCase();
+        Integer numAccidentals = accidentalMap.get(key);
+        if(numAccidentals == 0){
+            return 0;
+        }
+        else if (numAccidentals > 0){
+            for (int i = 0; i < numAccidentals; i++){
+                if (sharporder[i].equals(uppercasebasenote)){
+                    return 1;
+                }
+            }
+        }
+        else if (numAccidentals < 0){
+            numAccidentals = -1 * numAccidentals;
+            for (int i = 0; i < numAccidentals; i++){
+                if (flatorder[i].equals(uppercasebasenote)){
+                    return -1;
+                }
+            }
+        }
+        return 0;
+    }
+    
+    public Map<String, Integer> createAccidentalMap(){
+        Map<String, Integer> accidentalMap = new HashMap<>();
+        accidentalMap.put("C", 0);
+        accidentalMap.put("G", 1);
+        accidentalMap.put("D", 2);
+        accidentalMap.put("A", 3);
+        accidentalMap.put("E", 4);
+        accidentalMap.put("B", 5);
+        accidentalMap.put("F#", 6);
+        accidentalMap.put("C#", 7);
+        accidentalMap.put("F", -1);
+        accidentalMap.put("Bb", -2);
+        accidentalMap.put("Eb", -3);
+        accidentalMap.put("Ab", -4);
+        accidentalMap.put("Db", -5);
+        accidentalMap.put("Gb", -6);
+        accidentalMap.put("Cb", -7);
+        return accidentalMap;
     }
 
     @Override
