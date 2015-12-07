@@ -1,5 +1,7 @@
 package abc.sound;
 
+import java.util.Stack;
+
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -21,16 +23,21 @@ import abc.parser.ABCgrammarParser.TitleContext;
 import abc.parser.ABCgrammarParser.VoiceContext;
 
 public class MakeHeader implements ABCgrammarListener {
-
+    //what object type should this stack hold?
+    private Stack<Music> stack = new Stack<>();
+    public Music getHeader() {
+        return stack.get(0);
+    }
+    
     @Override
     public void enterEveryRule(ParserRuleContext arg0) {
-        // TODO Auto-generated method stub
+        System.err.println("entering " + arg0.getText() + ", stack is " + stack);
 
     }
 
     @Override
     public void exitEveryRule(ParserRuleContext arg0) {
-        // TODO Auto-generated method stub
+        System.err.println("exiting " + arg0.getText() + ", stack is " + stack);
 
     }
 
