@@ -177,13 +177,12 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void enterNoteorrest(NoteorrestContext ctx) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void exitNoteorrest(NoteorrestContext ctx) {
-        // TODO Auto-generated method stub
+     // Handled in exitNote
 
     }
 
@@ -200,25 +199,23 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void enterOctave(OctaveContext ctx) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void exitOctave(OctaveContext ctx) {
-        // TODO Auto-generated method stub
+     // Handled in exitNote
 
     }
 
     @Override
     public void enterNotelength(NotelengthContext ctx) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void exitNotelength(NotelengthContext ctx) {
-        // TODO Auto-generated method stub
+     // Handled in exitNote
 
     }
 
