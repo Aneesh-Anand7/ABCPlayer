@@ -6,9 +6,10 @@
 grammar ABCgrammar;
 import Configuration;
 
-root: index title line* KEY EOF;
+root: index title line* key EOF;
 index: 'X:' NUMBER endofline;
 title: 'T:' (STRING | NUMBER)+ endofline;
+key: KEY;
 
 line: (length | composer | meter | tempo | voice | comment) endofline;
 

@@ -2,18 +2,15 @@ package abc.sound;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import abc.parser.ABCgrammarListener;
-import abc.parser.ABCgrammarParser.BodyContext;
 import abc.parser.ABCgrammarParser.CommentContext;
 import abc.parser.ABCgrammarParser.ComposerContext;
 import abc.parser.ABCgrammarParser.EndoflineContext;
-import abc.parser.ABCgrammarParser.HeaderContext;
 import abc.parser.ABCgrammarParser.IndexContext;
 import abc.parser.ABCgrammarParser.KeyContext;
 import abc.parser.ABCgrammarParser.LengthContext;
@@ -23,6 +20,7 @@ import abc.parser.ABCgrammarParser.RootContext;
 import abc.parser.ABCgrammarParser.TempoContext;
 import abc.parser.ABCgrammarParser.TitleContext;
 import abc.parser.ABCgrammarParser.VoiceContext;
+import abc.parser.AbcParser.BodyContext;
 
 public class MakeHeader implements ABCgrammarListener {
     //what object type should this stack hold?
@@ -38,13 +36,13 @@ public class MakeHeader implements ABCgrammarListener {
     
     @Override
     public void enterEveryRule(ParserRuleContext arg0) {
-        System.err.println("entering " + arg0.getText() + ", stack is " + stack);
+        System.err.println("entering " + arg0.getText() + ", map is " + map);
 
     }
 
     @Override
     public void exitEveryRule(ParserRuleContext arg0) {
-        System.err.println("exiting " + arg0.getText() + ", stack is " + stack);
+        System.err.println("exiting " + arg0.getText() + ", map is " + map);
 
     }
 
@@ -73,7 +71,7 @@ public class MakeHeader implements ABCgrammarListener {
     }
 
     @Override
-    public void enterHeader(HeaderContext ctx) {
+    public void enterHeader(ABCgrammarParser.HeaderContext ctx) {
         // TODO Auto-generated method stub
 
     }
@@ -113,7 +111,7 @@ public class MakeHeader implements ABCgrammarListener {
     }
 
     @Override
-    public void exitKey(KeyContext ctx) {
+    public void exitKey(ABCgrammarParser.KeyContext ctx) {
         map.put("key", ctx.NOTE().getText());
 
     }
@@ -231,6 +229,18 @@ public class MakeHeader implements ABCgrammarListener {
     public void exitBody(BodyContext ctx) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void enterKey(KeyContext ctx) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void exitKey(KeyContext ctx) {
+        // TODO Auto-generated method stub
+        
     }
 
 } class PrintEverything implements ABCgrammarListener {

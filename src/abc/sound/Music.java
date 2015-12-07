@@ -3,6 +3,7 @@ package abc.sound;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.antlr.v4.gui.Trees;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -17,6 +18,7 @@ import abc.parser.ABCgrammarParser;
 import abc.parser.AbcLexer;
 import abc.parser.AbcParser;
 import abc.parser.AbcParser.RootContext;
+import expressivo.MakeExpression;
 import abc.parser.SplitHeader;
 
 // Datatype definition:
@@ -35,26 +37,43 @@ import abc.parser.SplitHeader;
  */
 public interface Music {
     
-    public static void parse(String head, String body) {
-            CharStream headstream = new ANTLRInputStream(head);
-            ABCgrammarLexer lexer = new ABCgrammarLexer(headstream);
-            lexer.reportErrorsAsExceptions();
-            TokenStream tokens = new CommonTokenStream(lexer);
-            ABCgrammarParser parser = new ABCgrammarParser(tokens);
-            parser.reportErrorsAsExceptions();
-            ParseTree tree = parser.root();
-//            
-//            CharStream bodystream = new ANTLRInputStream(body);
-//            AbcLexer bodylexer = new AbcLexer(bodystream);
-//            bodylexer.reportErrorsAsExceptions();
-//            TokenStream bodyTokens = new CommonTokenStream(bodylexer);
-//            AbcParser parser = new AbcParser(bodyTokens);
-//            parser.reportErrorsAsExceptions();
-//            ParseTree tree = parser.root();
-            System.err.println(tree.toStringTree(parser));
-            Trees.inspect(tree, parser);
+    public static Map<String, String> parseHeader(String head) {
+        // take in string of abc language and convert to stream, then to tokens, then parse
+        CharStream headstream = new ANTLRInputStream(head);
+        ABCgrammarLexer lexer = new ABCgrammarLexer(headstream);
+        // handle errors found by lexer
+        lexer.reportErrorsAsExceptions();
+        
+        TokenStream tokens = new CommonTokenStream(lexer);
+        ABCgrammarParser parser = new ABCgrammarParser(tokens);
+        // handle errors found by parser
+        parser.reportErrorsAsExceptions();
+        
+        ParseTree tree = parser.root();
+        // see what's happening
+        System.err.println(tree.toStringTree(parser));
+        Trees.inspect(tree, parser);
+        // 
+        MakeHeaderV2 headerMaker = new MakeHeaderV2();
+        new ParseTreeWalker().walk(headerMaker, tree);
+        return headerMaker.getHeader();
     }
     
+    public static Music parseBody(String body, Map<String, String> headerInfo) {
+        CharStream bodystream = new ANTLRInputStream(body);
+        AbcLexer bodylexer = new AbcLexer(bodystream);
+        bodylexer.reportErrorsAsExceptions();
+        TokenStream bodyTokens = new CommonTokenStream(bodylexer);
+        AbcParser parser = new AbcParser(bodyTokens);
+        parser.reportErrorsAsExceptions();
+        ParseTree tree = parser.root();
+        System.err.println(tree.toStringTree(parser));
+        Trees.inspect(tree, parser);
+        
+        MakeMusic musicMaker = new MakeMusic();
+        new ParseTreeWalker().walk(musicMaker, tree);
+        return musicMaker.getFullPiece();
+    }
     
     /**
      * @return total duration of this piece in beats

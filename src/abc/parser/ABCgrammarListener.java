@@ -41,6 +41,16 @@ public interface ABCgrammarListener extends ParseTreeListener {
    */
   void exitTitle(ABCgrammarParser.TitleContext ctx);
   /**
+   * Enter a parse tree produced by {@link ABCgrammarParser#key}.
+   * @param ctx the parse tree
+   */
+  void enterKey(ABCgrammarParser.KeyContext ctx);
+  /**
+   * Exit a parse tree produced by {@link ABCgrammarParser#key}.
+   * @param ctx the parse tree
+   */
+  void exitKey(ABCgrammarParser.KeyContext ctx);
+  /**
    * Enter a parse tree produced by {@link ABCgrammarParser#line}.
    * @param ctx the parse tree
    */

@@ -55,6 +55,18 @@ public class ABCgrammarBaseListener implements ABCgrammarListener {
    *
    * <p>The default implementation does nothing.</p>
    */
+  @Override public void enterKey(ABCgrammarParser.KeyContext ctx) { }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
+  @Override public void exitKey(ABCgrammarParser.KeyContext ctx) { }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
   @Override public void enterLine(ABCgrammarParser.LineContext ctx) { }
   /**
    * {@inheritDoc}
