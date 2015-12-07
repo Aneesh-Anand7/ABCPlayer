@@ -8,7 +8,7 @@ import Configuration;
 
 root: body EOF;
 body: (line)+;
-line: ((element)+ NEWLINE) | bodyvoice | comment;
+line: (element)+ NEWLINE | bodyvoice | comment;
 element: noteelem | tupletelem | barline | nthrepeat | WHITESPACE;
 
 noteelem: note | multinote;

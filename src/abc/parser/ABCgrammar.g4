@@ -10,10 +10,10 @@ root: index title (line)* KEY EOF;
 index: 'X:' NUMBER endofline;
 title: 'T:' (STRING | NUMBER)+ endofline;
 
-line: length | composer | meter | tempo | voice | comment;
+line: (length | composer | meter | tempo | voice | comment) endofline;
 length: 'L:' NUMBER '/' NUMBER endofline; 
-composer: 'C:' STRING endofline;
-meter: 'M:' (NUMBER '/' NUMBER) | 'C' | 'C|';
+composer: 'C:' (STRING)+ endofline;
+meter: 'M:' (NUMBER '/' NUMBER);
 tempo: 'Q:' NUMBER '/' NUMBER '=' NUMBER endofline;
 voice: 'V:' STRING endofline;
 
