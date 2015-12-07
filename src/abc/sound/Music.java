@@ -2,6 +2,7 @@ package abc.sound;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import abc.parser.ABCgrammarLexer;
 import abc.parser.ABCgrammarParser;
 import abc.parser.AbcLexer;
 import abc.parser.AbcParser;
+
 import abc.parser.SplitHeader;
 
 // Datatype definition:
@@ -72,6 +74,7 @@ public interface Music {
         new ParseTreeWalker().walk(musicMaker, tree);
         return musicMaker.getFullPiece();
     }
+
     
     /**
      * @return total duration of this piece in beats
@@ -96,10 +99,10 @@ public interface Music {
     void play(SequencePlayer player, double atBeat);
     
     public static void main(String[] args) throws IOException {
-        File file = new File("sample_abc/fur_elise.abc");
+        File file = new File("sample_abc/abc_song.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
-        System.out.println(headbody.get(0));
-        Map<String, String> headerInfo = parseHeader(headbody.get(0));
-        parseBody(headbody.get(1), headerInfo);
+
+        System.out.println(headbody.get(1));
+        parseBody(headbody.get(1),new HashMap<String, String>());
     }
 }

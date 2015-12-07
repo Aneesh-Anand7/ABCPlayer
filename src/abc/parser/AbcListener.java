@@ -21,16 +21,6 @@ public interface AbcListener extends ParseTreeListener {
    */
   void exitRoot(AbcParser.RootContext ctx);
   /**
-   * Enter a parse tree produced by {@link AbcParser#body}.
-   * @param ctx the parse tree
-   */
-  void enterBody(AbcParser.BodyContext ctx);
-  /**
-   * Exit a parse tree produced by {@link AbcParser#body}.
-   * @param ctx the parse tree
-   */
-  void exitBody(AbcParser.BodyContext ctx);
-  /**
    * Enter a parse tree produced by {@link AbcParser#line}.
    * @param ctx the parse tree
    */
@@ -200,16 +190,6 @@ public interface AbcListener extends ParseTreeListener {
    * @param ctx the parse tree
    */
   void exitBodyvoice(AbcParser.BodyvoiceContext ctx);
-  /**
-   * Enter a parse tree produced by {@link AbcParser#comment}.
-   * @param ctx the parse tree
-   */
-  void enterComment(AbcParser.CommentContext ctx);
-  /**
-   * Exit a parse tree produced by {@link AbcParser#comment}.
-   * @param ctx the parse tree
-   */
-  void exitComment(AbcParser.CommentContext ctx);
   /**
    * Enter a parse tree produced by {@link AbcParser#endofline}.
    * @param ctx the parse tree

@@ -31,18 +31,6 @@ public class AbcBaseListener implements AbcListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  @Override public void enterBody(AbcParser.BodyContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void exitBody(AbcParser.BodyContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
   @Override public void enterLine(AbcParser.LineContext ctx) { }
   /**
    * {@inheritDoc}
@@ -242,18 +230,6 @@ public class AbcBaseListener implements AbcListener {
    * <p>The default implementation does nothing.</p>
    */
   @Override public void exitBodyvoice(AbcParser.BodyvoiceContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void enterComment(AbcParser.CommentContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void exitComment(AbcParser.CommentContext ctx) { }
   /**
    * {@inheritDoc}
    *
