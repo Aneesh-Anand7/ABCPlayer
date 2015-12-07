@@ -17,8 +17,6 @@ import abc.parser.ABCgrammarLexer;
 import abc.parser.ABCgrammarParser;
 import abc.parser.AbcLexer;
 import abc.parser.AbcParser;
-import abc.parser.AbcParser.RootContext;
-import expressivo.MakeExpression;
 import abc.parser.SplitHeader;
 
 // Datatype definition:
@@ -101,6 +99,7 @@ public interface Music {
         File file = new File("sample_abc/fur_elise.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
         System.out.println(headbody.get(0));
-        parse(headbody.get(0),headbody.get(1));
+        Map<String, String> headerInfo = parseHeader(headbody.get(0));
+        parseBody(headbody.get(1), headerInfo);
     }
 }

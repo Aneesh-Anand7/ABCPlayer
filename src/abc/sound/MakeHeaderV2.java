@@ -89,8 +89,6 @@ public class MakeHeaderV2 implements ABCgrammarListener {
 
     @Override
     public void exitTitle(TitleContext ctx) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -113,7 +111,9 @@ public class MakeHeaderV2 implements ABCgrammarListener {
 
     @Override
     public void exitLength(LengthContext ctx) {
-        // TODO Auto-generated method stub
+        StringBuilder lengthString = new StringBuilder();
+        lengthString.append(ctx.NUMBER());
+        map.put("length", lengthString.substring(2));     
 
     }
 
@@ -137,8 +137,21 @@ public class MakeHeaderV2 implements ABCgrammarListener {
 
     @Override
     public void exitMeter(MeterContext ctx) {
-        // TODO Auto-generated method stub
-
+        if(ctx.getText().equals("C") || ctx.getText() == null){
+            map.put("meter", "4/4");
+        }
+        else if(ctx.getText().equals("C|")){
+            map.put("meter", "2/2");
+        }
+        else{
+            StringBuilder meterValueString = new StringBuilder();
+            String meterTotalString = ctx.getText();
+            for (int i = 2; i < meterTotalString.length(); i++){
+                char c = meterTotalString.charAt(i); 
+                meterValueString.append(c);
+            }
+            map.put("meter", meterValueString.toString());    
+        }
     }
 
     @Override
@@ -149,8 +162,14 @@ public class MakeHeaderV2 implements ABCgrammarListener {
 
     @Override
     public void exitTempo(TempoContext ctx) {
-        // TODO Auto-generated method stub
-
+        if(ctx.getText() == null){
+            map.put("tempo", "100");
+        }
+        else{
+            StringBuilder tempoString = new StringBuilder();
+            tempoString.append(ctx.getText());
+            map.put("tempo", tempoString.substring(2));
+        }
     }
 
     @Override
@@ -197,8 +216,8 @@ public class MakeHeaderV2 implements ABCgrammarListener {
 
     @Override
     public void exitKey(KeyContext ctx) {
-        // TODO Auto-generated method stub
-        
+        StringBuilder keyString = new StringBuilder();
+        keyString.append(ctx.KEY());
+        map.put("key", keyString.substring(2));     
     }
-
 }
