@@ -81,6 +81,16 @@ public interface AbcListener extends ParseTreeListener {
    */
   void exitPitch(AbcParser.PitchContext ctx);
   /**
+   * Enter a parse tree produced by {@link AbcParser#octave}.
+   * @param ctx the parse tree
+   */
+  void enterOctave(AbcParser.OctaveContext ctx);
+  /**
+   * Exit a parse tree produced by {@link AbcParser#octave}.
+   * @param ctx the parse tree
+   */
+  void exitOctave(AbcParser.OctaveContext ctx);
+  /**
    * Enter a parse tree produced by {@link AbcParser#notelength}.
    * @param ctx the parse tree
    */
@@ -90,6 +100,36 @@ public interface AbcListener extends ParseTreeListener {
    * @param ctx the parse tree
    */
   void exitNotelength(AbcParser.NotelengthContext ctx);
+  /**
+   * Enter a parse tree produced by {@link AbcParser#accidental}.
+   * @param ctx the parse tree
+   */
+  void enterAccidental(AbcParser.AccidentalContext ctx);
+  /**
+   * Exit a parse tree produced by {@link AbcParser#accidental}.
+   * @param ctx the parse tree
+   */
+  void exitAccidental(AbcParser.AccidentalContext ctx);
+  /**
+   * Enter a parse tree produced by {@link AbcParser#basenote}.
+   * @param ctx the parse tree
+   */
+  void enterBasenote(AbcParser.BasenoteContext ctx);
+  /**
+   * Exit a parse tree produced by {@link AbcParser#basenote}.
+   * @param ctx the parse tree
+   */
+  void exitBasenote(AbcParser.BasenoteContext ctx);
+  /**
+   * Enter a parse tree produced by {@link AbcParser#rest}.
+   * @param ctx the parse tree
+   */
+  void enterRest(AbcParser.RestContext ctx);
+  /**
+   * Exit a parse tree produced by {@link AbcParser#rest}.
+   * @param ctx the parse tree
+   */
+  void exitRest(AbcParser.RestContext ctx);
   /**
    * Enter a parse tree produced by {@link AbcParser#tupletelem}.
    * @param ctx the parse tree

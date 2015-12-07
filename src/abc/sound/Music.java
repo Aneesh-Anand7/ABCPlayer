@@ -54,7 +54,7 @@ public interface Music {
             System.err.println(tree.toStringTree(parser));
             Trees.inspect(tree, parser);
     }
-    
+   
     
     /**
      * @return total duration of this piece in beats
@@ -79,7 +79,7 @@ public interface Music {
     void play(SequencePlayer player, double atBeat);
     
     public static void main(String[] args) throws IOException {
-        File file = new File("sample_abc/fur_elise.abc");
+        File file = new File("sample_abc/sample1.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
         System.out.println(headbody.get(1));
         parse(headbody.get(0),headbody.get(1));
