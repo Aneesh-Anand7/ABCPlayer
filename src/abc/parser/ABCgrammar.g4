@@ -22,7 +22,7 @@ comment: '%' STRING NEWLINE;
 
 
 KEY: 'K:' ([A-G]|[a-g]) ('#'|'b')? ('M' | 'm')?;
-STRING: ([A-Z]|[a-z])+ ; /* no new lines */
+STRING: ([A-Za-z'\'''\.'','])+ ; /* no new lines */
 NUMBER: [0-9]+;
 NEWLINE: ('\r'('\n')? | '\n');
 
