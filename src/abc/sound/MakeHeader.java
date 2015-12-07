@@ -1,5 +1,9 @@
 package abc.sound;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -21,16 +25,21 @@ import abc.parser.ABCgrammarParser.TitleContext;
 import abc.parser.ABCgrammarParser.VoiceContext;
 
 public class MakeHeader implements ABCgrammarListener {
-
+    //what object type should this stack hold?
+    private Map<String, String> map = new HashMap<>();
+    public Map<String, String> getHeader() {
+        return map;
+    }
+    
     @Override
     public void enterEveryRule(ParserRuleContext arg0) {
-        // TODO Auto-generated method stub
+        System.err.println("entering " + arg0.getText() + ", stack is " + stack);
 
     }
 
     @Override
     public void exitEveryRule(ParserRuleContext arg0) {
-        // TODO Auto-generated method stub
+        System.err.println("exiting " + arg0.getText() + ", stack is " + stack);
 
     }
 
@@ -84,25 +93,23 @@ public class MakeHeader implements ABCgrammarListener {
 
     @Override
     public void enterTitle(TitleContext ctx) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void exitTitle(TitleContext ctx) {
-        // TODO Auto-generated method stub
+        map.put("title", ctx.STRING().getText());
 
     }
 
     @Override
     public void enterKey(KeyContext ctx) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void exitKey(KeyContext ctx) {
-        // TODO Auto-generated method stub
+        map.put("key", ctx.NOTE().getText());
 
     }
 
@@ -120,49 +127,56 @@ public class MakeHeader implements ABCgrammarListener {
 
     @Override
     public void enterLength(LengthContext ctx) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void exitLength(LengthContext ctx) {
-        // TODO Auto-generated method stub
-
+        map.put("length", ctx.getText());
     }
 
     @Override
     public void enterComposer(ComposerContext ctx) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void exitComposer(ComposerContext ctx) {
-        // TODO Auto-generated method stub
+        map.put("composer", ctx.getText());
 
     }
 
     @Override
     public void enterMeter(MeterContext ctx) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void exitMeter(MeterContext ctx) {
-        // TODO Auto-generated method stub
-
+        if(ctx.getText().equals("C") || ctx.getText() == null){
+            map.put("meter", "4/4");
+        }
+        else if(ctx.getText().equals("C|")){
+            map.put("meter", "2/2");
+        }
+        else{
+            map.put("meter", ctx.getText());
+        }
     }
 
     @Override
     public void enterTempo(TempoContext ctx) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void exitTempo(TempoContext ctx) {
-        // TODO Auto-generated method stub
+        if(ctx.getText() == null){
+            map.put("tempo", "100");
+        }
+        else{
+            map.put("tempo", ctx.getText());
+        }
 
     }
 
