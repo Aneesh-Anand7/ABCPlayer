@@ -6,16 +6,16 @@
 grammar ABCgrammar;
 import Configuration;
 
-root: index title (line)* KEY EOF;
+root: index title line* KEY EOF;
 index: 'X:' NUMBER endofline;
 title: 'T:' (STRING | NUMBER)+ endofline;
 
-line: length | composer | meter | tempo | voice | comment;
+line: (length | composer | meter | tempo | voice | comment) endofline;
 length: 'L:' NUMBER '/' NUMBER endofline; 
-composer: 'C:' STRING endofline;
+composer: 'C:' STRING+ endofline;
 meter: 'M:' (NUMBER '/' NUMBER) | 'C' | 'C|';
 tempo: 'Q:' NUMBER '/' NUMBER '=' NUMBER endofline;
-voice: 'V:' STRING endofline;
+voice: 'V:' (STRING | NUMBER)+ endofline;
 
 endofline: comment | NEWLINE;
 comment: '%' STRING NEWLINE;
