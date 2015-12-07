@@ -151,11 +151,7 @@ public class ABCgrammarParser extends Parser {
       setState(29);
       _errHandler.sync(this);
       _la = _input.LA(1);
-<<<<<<< HEAD
-      while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__10) | (1L << T__11))) != 0)) {
-=======
       while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__4) | (1L << T__5) | (1L << T__8) | (1L << T__10) | (1L << T__11))) != 0)) {
->>>>>>> refs/remotes/origin/master
         {
         {
         setState(26);
@@ -390,11 +386,6 @@ public class ABCgrammarParser extends Parser {
         }
         break;
       case T__5:
-<<<<<<< HEAD
-      case T__6:
-      case T__7:
-=======
->>>>>>> refs/remotes/origin/master
         {
         setState(51);
         meter();
@@ -560,15 +551,11 @@ public class ABCgrammarParser extends Parser {
     MeterContext _localctx = new MeterContext(_ctx, getState());
     enterRule(_localctx, 14, RULE_meter);
     try {
-<<<<<<< HEAD
-      setState(75);
-=======
       enterOuterAlt(_localctx, 1);
       {
       setState(70);
       match(T__5);
       setState(76);
->>>>>>> refs/remotes/origin/master
       switch (_input.LA(1)) {
       case NUMBER:
         {
@@ -596,10 +583,7 @@ public class ABCgrammarParser extends Parser {
         break;
       default:
         throw new NoViableAltException(this);
-<<<<<<< HEAD
-=======
       }
->>>>>>> refs/remotes/origin/master
       }
     }
     catch (RecognitionException re) {
@@ -638,11 +622,6 @@ public class ABCgrammarParser extends Parser {
     try {
       enterOuterAlt(_localctx, 1);
       {
-<<<<<<< HEAD
-      setState(77);
-      match(T__8);
-=======
->>>>>>> refs/remotes/origin/master
       setState(78);
       match(T__8);
       setState(79);
@@ -654,11 +633,7 @@ public class ABCgrammarParser extends Parser {
       setState(82);
       match(T__9);
       setState(83);
-<<<<<<< HEAD
-      endofline();
-=======
       match(NUMBER);
->>>>>>> refs/remotes/origin/master
       }
     }
     catch (RecognitionException re) {
@@ -723,11 +698,6 @@ public class ABCgrammarParser extends Parser {
         _errHandler.sync(this);
         _la = _input.LA(1);
       } while ( _la==STRING || _la==NUMBER );
-<<<<<<< HEAD
-      setState(91);
-      endofline();
-=======
->>>>>>> refs/remotes/origin/master
       }
     }
     catch (RecognitionException re) {
@@ -764,31 +734,19 @@ public class ABCgrammarParser extends Parser {
     EndoflineContext _localctx = new EndoflineContext(_ctx, getState());
     enterRule(_localctx, 20, RULE_endofline);
     try {
-<<<<<<< HEAD
-      setState(95);
-=======
       setState(93);
->>>>>>> refs/remotes/origin/master
       switch (_input.LA(1)) {
       case T__11:
         enterOuterAlt(_localctx, 1);
         {
-<<<<<<< HEAD
-        setState(93);
-=======
         setState(91);
->>>>>>> refs/remotes/origin/master
         comment();
         }
         break;
       case NEWLINE:
         enterOuterAlt(_localctx, 2);
         {
-<<<<<<< HEAD
-        setState(94);
-=======
         setState(92);
->>>>>>> refs/remotes/origin/master
         match(NEWLINE);
         }
         break;
@@ -830,19 +788,11 @@ public class ABCgrammarParser extends Parser {
     try {
       enterOuterAlt(_localctx, 1);
       {
-<<<<<<< HEAD
-      setState(97);
-=======
       setState(95);
->>>>>>> refs/remotes/origin/master
       match(T__11);
       setState(96);
       match(STRING);
-<<<<<<< HEAD
-      setState(99);
-=======
       setState(97);
->>>>>>> refs/remotes/origin/master
       match(NEWLINE);
       }
     }
@@ -858,35 +808,6 @@ public class ABCgrammarParser extends Parser {
   }
 
   public static final String _serializedATN =
-<<<<<<< HEAD
-    "\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\23h\4\2\t\2\4\3"+
-      "\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
-      "\t\13\4\f\t\f\3\2\3\2\3\2\7\2\34\n\2\f\2\16\2\37\13\2\3\2\3\2\3\2"+
-      "\3\3\3\3\3\3\3\3\3\4\3\4\6\4*\n\4\r\4\16\4+\3\4\3\4\3\5\3\5\3\5\3"+
-      "\5\3\5\3\5\5\5\66\n\5\3\5\3\5\3\6\3\6\3\6\3\6\3\6\3\6\3\7\3\7\6\7"+
-      "B\n\7\r\7\16\7C\3\7\3\7\3\b\3\b\3\b\3\b\3\b\3\b\5\bN\n\b\3\t\3\t\3"+
-      "\t\3\t\3\t\3\t\3\t\3\t\3\n\3\n\6\nZ\n\n\r\n\16\n[\3\n\3\n\3\13\3\13"+
-      "\5\13b\n\13\3\f\3\f\3\f\3\f\3\f\2\2\r\2\4\6\b\n\f\16\20\22\24\26\2"+
-      "\3\3\2\20\21h\2\30\3\2\2\2\4#\3\2\2\2\6\'\3\2\2\2\b\65\3\2\2\2\n9"+
-      "\3\2\2\2\f?\3\2\2\2\16M\3\2\2\2\20O\3\2\2\2\22W\3\2\2\2\24a\3\2\2"+
-      "\2\26c\3\2\2\2\30\31\5\4\3\2\31\35\5\6\4\2\32\34\5\b\5\2\33\32\3\2"+
-      "\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36\3\2\2\2\36 \3\2\2\2\37\35\3"+
-      "\2\2\2 !\7\17\2\2!\"\7\2\2\3\"\3\3\2\2\2#$\7\3\2\2$%\7\21\2\2%&\5"+
-      "\24\13\2&\5\3\2\2\2\')\7\4\2\2(*\t\2\2\2)(\3\2\2\2*+\3\2\2\2+)\3\2"+
-      "\2\2+,\3\2\2\2,-\3\2\2\2-.\5\24\13\2.\7\3\2\2\2/\66\5\n\6\2\60\66"+
-      "\5\f\7\2\61\66\5\16\b\2\62\66\5\20\t\2\63\66\5\22\n\2\64\66\5\26\f"+
-      "\2\65/\3\2\2\2\65\60\3\2\2\2\65\61\3\2\2\2\65\62\3\2\2\2\65\63\3\2"+
-      "\2\2\65\64\3\2\2\2\66\67\3\2\2\2\678\5\24\13\28\t\3\2\2\29:\7\5\2"+
-      "\2:;\7\21\2\2;<\7\6\2\2<=\7\21\2\2=>\5\24\13\2>\13\3\2\2\2?A\7\7\2"+
-      "\2@B\7\20\2\2A@\3\2\2\2BC\3\2\2\2CA\3\2\2\2CD\3\2\2\2DE\3\2\2\2EF"+
-      "\5\24\13\2F\r\3\2\2\2GH\7\b\2\2HI\7\21\2\2IJ\7\6\2\2JN\7\21\2\2KN"+
-      "\7\t\2\2LN\7\n\2\2MG\3\2\2\2MK\3\2\2\2ML\3\2\2\2N\17\3\2\2\2OP\7\13"+
-      "\2\2PQ\7\21\2\2QR\7\6\2\2RS\7\21\2\2ST\7\f\2\2TU\7\21\2\2UV\5\24\13"+
-      "\2V\21\3\2\2\2WY\7\r\2\2XZ\t\2\2\2YX\3\2\2\2Z[\3\2\2\2[Y\3\2\2\2["+
-      "\\\3\2\2\2\\]\3\2\2\2]^\5\24\13\2^\23\3\2\2\2_b\5\26\f\2`b\7\22\2"+
-      "\2a_\3\2\2\2a`\3\2\2\2b\25\3\2\2\2cd\7\16\2\2de\7\20\2\2ef\7\22\2"+
-      "\2f\27\3\2\2\2\t\35+\65CM[a";
-=======
     "\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\23f\4\2\t\2\4\3"+
       "\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
       "\t\13\4\f\t\f\4\r\t\r\3\2\3\2\3\2\7\2\36\n\2\f\2\16\2!\13\2\3\2\3"+
@@ -913,7 +834,6 @@ public class ABCgrammarParser extends Parser {
       "\2Z[\3\2\2\2[Y\3\2\2\2[\\\3\2\2\2\\\25\3\2\2\2]`\5\30\r\2^`\7\22\2"+
       "\2_]\3\2\2\2_^\3\2\2\2`\27\3\2\2\2ab\7\16\2\2bc\7\20\2\2cd\7\22\2"+
       "\2d\31\3\2\2\2\t\37-9FN[_";
->>>>>>> refs/remotes/origin/master
   public static final ATN _ATN =
     new ATNDeserializer().deserialize(_serializedATN.toCharArray());
   static {

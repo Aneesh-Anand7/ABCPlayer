@@ -7,7 +7,7 @@ grammar Abc;
 import Configuration;
 
 root: (line)+ EOF;
-line: (element)+ NEWLINE | bodyvoice | comment;
+line: (element)+ NEWLINE | bodyvoice | COMMENT;
 element: noteelem | tupletelem | barline | nthrepeat | WHITESPACE;
 
 noteelem: note | multinote;
@@ -30,17 +30,17 @@ multinote: '[' note+ ']';
 barline: '|'|'||'|'[|'|'|]'|':|'|'|:';
 nthrepeat: '[1'|'[2';
 
-/*voice field reappears- direct to other voice */
-bodyvoice: 'V' ':' STRING;
 
-comment: '%' STRING NEWLINE;
-endofline: comment | NEWLINE;
+bodyvoice: BODYVOICE;
+BODYVOICE: 'V: ' ([A-Za-z.0-9])+ ('\n' | '\r'('\n')?);
+
+COMMENT: '%' ([A-Za-z.])+ ('\n' | '\r'('\n')?);
+endofline: COMMENT | NEWLINE;
 
 ACCIDENTAL:  '^'|'^^'|'_'|'__'|'=';
-BASENOTE: 'C'|'D'|'E'|'F'|'G'|'A'|'B'|'c'|'d'|'e'|'f'|'g'|'a'|'b';
-OCTAVE: ('\'')+ | (',')+;
+BASENOTE: ('C'|'D'|'E'|'F'|'G'|'A'|'B'|'c'|'d'|'e'|'f'|'g'|'a'|'b');
+OCTAVE: '\''+ | ','+;
 DIGIT: [0-9];
-STRING: ([A-Za-z'\.'])+;
 NEWLINE: '\n' | '\r'('\n')?;
 WHITESPACE: ' ' | '\t';
 
