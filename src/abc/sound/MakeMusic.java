@@ -1,5 +1,6 @@
 package abc.sound;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -188,13 +189,12 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void enterPitch(PitchContext ctx) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void exitPitch(PitchContext ctx) {
-        // TODO Auto-generated method stub
+        // Handled in exitNote
 
     }
 
@@ -224,37 +224,33 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void enterAccidental(AccidentalContext ctx) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void exitAccidental(AccidentalContext ctx) {
-        // TODO Auto-generated method stub
+        //Handled in exitNote
 
     }
 
     @Override
     public void enterBasenote(BasenoteContext ctx) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void exitBasenote(BasenoteContext ctx) {
-        // TODO Auto-generated method stub
+        // Handled in exitNote
 
     }
 
     @Override
     public void enterRest(RestContext ctx) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void exitRest(RestContext ctx) {
-        // TODO Auto-generated method stub
+        //Handled in exitNote
 
     }
 
@@ -294,8 +290,13 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitMultinote(MultinoteContext ctx) {
-        // TODO Auto-generated method stub
-
+        List<NoteContext> chordNotes = ctx.note();
+        List<Note> chord = new ArrayList<>();
+        for(NoteContext notectx: chordNotes){
+            Note note = (Note) stack.pop();
+            chord.add(note);
+        }
+        stack.push(new Chord(chord));
     }
 
     @Override
