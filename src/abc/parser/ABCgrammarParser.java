@@ -24,12 +24,12 @@ public class ABCgrammarParser extends Parser {
     T__9=10, T__10=11, T__11=12, KEY=13, STRING=14, NUMBER=15, NEWLINE=16, 
     SPACES=17;
   public static final int
-    RULE_root = 0, RULE_index = 1, RULE_title = 2, RULE_line = 3, RULE_length = 4, 
-    RULE_composer = 5, RULE_meter = 6, RULE_tempo = 7, RULE_voice = 8, RULE_endofline = 9, 
-    RULE_comment = 10;
+    RULE_root = 0, RULE_index = 1, RULE_title = 2, RULE_key = 3, RULE_line = 4, 
+    RULE_length = 5, RULE_composer = 6, RULE_meter = 7, RULE_tempo = 8, 
+    RULE_voice = 9, RULE_endofline = 10, RULE_comment = 11;
   public static final String[] ruleNames = {
-    "root", "index", "title", "line", "length", "composer", "meter", "tempo", 
-    "voice", "endofline", "comment"
+    "root", "index", "title", "key", "line", "length", "composer", "meter", 
+    "tempo", "voice", "endofline", "comment"
   };
 
   private static final String[] _LITERAL_NAMES = {
@@ -113,7 +113,9 @@ public class ABCgrammarParser extends Parser {
     public TitleContext title() {
       return getRuleContext(TitleContext.class,0);
     }
-    public TerminalNode KEY() { return getToken(ABCgrammarParser.KEY, 0); }
+    public KeyContext key() {
+      return getRuleContext(KeyContext.class,0);
+    }
     public TerminalNode EOF() { return getToken(ABCgrammarParser.EOF, 0); }
     public List<LineContext> line() {
       return getRuleContexts(LineContext.class);
@@ -142,27 +144,31 @@ public class ABCgrammarParser extends Parser {
     try {
       enterOuterAlt(_localctx, 1);
       {
-      setState(22);
+      setState(24);
       index();
-      setState(23);
+      setState(25);
       title();
-      setState(27);
+      setState(29);
       _errHandler.sync(this);
       _la = _input.LA(1);
+<<<<<<< HEAD
       while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__10) | (1L << T__11))) != 0)) {
+=======
+      while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__4) | (1L << T__5) | (1L << T__8) | (1L << T__10) | (1L << T__11))) != 0)) {
+>>>>>>> refs/remotes/origin/master
         {
         {
-        setState(24);
+        setState(26);
         line();
         }
         }
-        setState(29);
+        setState(31);
         _errHandler.sync(this);
         _la = _input.LA(1);
       }
-      setState(30);
-      match(KEY);
-      setState(31);
+      setState(32);
+      key();
+      setState(33);
       match(EOF);
       }
     }
@@ -202,11 +208,11 @@ public class ABCgrammarParser extends Parser {
     try {
       enterOuterAlt(_localctx, 1);
       {
-      setState(33);
-      match(T__0);
-      setState(34);
-      match(NUMBER);
       setState(35);
+      match(T__0);
+      setState(36);
+      match(NUMBER);
+      setState(37);
       endofline();
       }
     }
@@ -254,15 +260,15 @@ public class ABCgrammarParser extends Parser {
     try {
       enterOuterAlt(_localctx, 1);
       {
-      setState(37);
+      setState(39);
       match(T__1);
-      setState(39); 
+      setState(41); 
       _errHandler.sync(this);
       _la = _input.LA(1);
       do {
         {
         {
-        setState(38);
+        setState(40);
         _la = _input.LA(1);
         if ( !(_la==STRING || _la==NUMBER) ) {
         _errHandler.recoverInline(this);
@@ -271,12 +277,49 @@ public class ABCgrammarParser extends Parser {
         }
         }
         }
-        setState(41); 
+        setState(43); 
         _errHandler.sync(this);
         _la = _input.LA(1);
       } while ( _la==STRING || _la==NUMBER );
-      setState(43);
+      setState(45);
       endofline();
+      }
+    }
+    catch (RecognitionException re) {
+      _localctx.exception = re;
+      _errHandler.reportError(this, re);
+      _errHandler.recover(this, re);
+    }
+    finally {
+      exitRule();
+    }
+    return _localctx;
+  }
+
+  public static class KeyContext extends ParserRuleContext {
+    public TerminalNode KEY() { return getToken(ABCgrammarParser.KEY, 0); }
+    public KeyContext(ParserRuleContext parent, int invokingState) {
+      super(parent, invokingState);
+    }
+    @Override public int getRuleIndex() { return RULE_key; }
+    @Override
+    public void enterRule(ParseTreeListener listener) {
+      if ( listener instanceof ABCgrammarListener ) ((ABCgrammarListener)listener).enterKey(this);
+    }
+    @Override
+    public void exitRule(ParseTreeListener listener) {
+      if ( listener instanceof ABCgrammarListener ) ((ABCgrammarListener)listener).exitKey(this);
+    }
+  }
+
+  public final KeyContext key() throws RecognitionException {
+    KeyContext _localctx = new KeyContext(_ctx, getState());
+    enterRule(_localctx, 6, RULE_key);
+    try {
+      enterOuterAlt(_localctx, 1);
+      {
+      setState(47);
+      match(KEY);
       }
     }
     catch (RecognitionException re) {
@@ -328,54 +371,57 @@ public class ABCgrammarParser extends Parser {
 
   public final LineContext line() throws RecognitionException {
     LineContext _localctx = new LineContext(_ctx, getState());
-    enterRule(_localctx, 6, RULE_line);
+    enterRule(_localctx, 8, RULE_line);
     try {
       enterOuterAlt(_localctx, 1);
       {
-      setState(51);
+      setState(55);
       switch (_input.LA(1)) {
       case T__2:
         {
-        setState(45);
+        setState(49);
         length();
         }
         break;
       case T__4:
         {
-        setState(46);
+        setState(50);
         composer();
         }
         break;
       case T__5:
+<<<<<<< HEAD
       case T__6:
       case T__7:
+=======
+>>>>>>> refs/remotes/origin/master
         {
-        setState(47);
+        setState(51);
         meter();
         }
         break;
       case T__8:
         {
-        setState(48);
+        setState(52);
         tempo();
         }
         break;
       case T__10:
         {
-        setState(49);
+        setState(53);
         voice();
         }
         break;
       case T__11:
         {
-        setState(50);
+        setState(54);
         comment();
         }
         break;
       default:
         throw new NoViableAltException(this);
       }
-      setState(53);
+      setState(57);
       endofline();
       }
     }
@@ -395,9 +441,6 @@ public class ABCgrammarParser extends Parser {
     public TerminalNode NUMBER(int i) {
       return getToken(ABCgrammarParser.NUMBER, i);
     }
-    public EndoflineContext endofline() {
-      return getRuleContext(EndoflineContext.class,0);
-    }
     public LengthContext(ParserRuleContext parent, int invokingState) {
       super(parent, invokingState);
     }
@@ -414,20 +457,18 @@ public class ABCgrammarParser extends Parser {
 
   public final LengthContext length() throws RecognitionException {
     LengthContext _localctx = new LengthContext(_ctx, getState());
-    enterRule(_localctx, 8, RULE_length);
+    enterRule(_localctx, 10, RULE_length);
     try {
       enterOuterAlt(_localctx, 1);
       {
-      setState(55);
-      match(T__2);
-      setState(56);
-      match(NUMBER);
-      setState(57);
-      match(T__3);
-      setState(58);
-      match(NUMBER);
       setState(59);
-      endofline();
+      match(T__2);
+      setState(60);
+      match(NUMBER);
+      setState(61);
+      match(T__3);
+      setState(62);
+      match(NUMBER);
       }
     }
     catch (RecognitionException re) {
@@ -442,9 +483,6 @@ public class ABCgrammarParser extends Parser {
   }
 
   public static class ComposerContext extends ParserRuleContext {
-    public EndoflineContext endofline() {
-      return getRuleContext(EndoflineContext.class,0);
-    }
     public List<TerminalNode> STRING() { return getTokens(ABCgrammarParser.STRING); }
     public TerminalNode STRING(int i) {
       return getToken(ABCgrammarParser.STRING, i);
@@ -465,29 +503,27 @@ public class ABCgrammarParser extends Parser {
 
   public final ComposerContext composer() throws RecognitionException {
     ComposerContext _localctx = new ComposerContext(_ctx, getState());
-    enterRule(_localctx, 10, RULE_composer);
+    enterRule(_localctx, 12, RULE_composer);
     int _la;
     try {
       enterOuterAlt(_localctx, 1);
       {
-      setState(61);
+      setState(64);
       match(T__4);
-      setState(63); 
+      setState(66); 
       _errHandler.sync(this);
       _la = _input.LA(1);
       do {
         {
         {
-        setState(62);
+        setState(65);
         match(STRING);
         }
         }
-        setState(65); 
+        setState(68); 
         _errHandler.sync(this);
         _la = _input.LA(1);
       } while ( _la==STRING );
-      setState(67);
-      endofline();
       }
     }
     catch (RecognitionException re) {
@@ -522,41 +558,48 @@ public class ABCgrammarParser extends Parser {
 
   public final MeterContext meter() throws RecognitionException {
     MeterContext _localctx = new MeterContext(_ctx, getState());
-    enterRule(_localctx, 12, RULE_meter);
+    enterRule(_localctx, 14, RULE_meter);
     try {
+<<<<<<< HEAD
       setState(75);
+=======
+      enterOuterAlt(_localctx, 1);
+      {
+      setState(70);
+      match(T__5);
+      setState(76);
+>>>>>>> refs/remotes/origin/master
       switch (_input.LA(1)) {
-      case T__5:
-        enterOuterAlt(_localctx, 1);
+      case NUMBER:
         {
-        setState(69);
-        match(T__5);
         {
-        setState(70);
-        match(NUMBER);
         setState(71);
-        match(T__3);
+        match(NUMBER);
         setState(72);
+        match(T__3);
+        setState(73);
         match(NUMBER);
         }
         }
         break;
       case T__6:
-        enterOuterAlt(_localctx, 2);
         {
-        setState(73);
+        setState(74);
         match(T__6);
         }
         break;
       case T__7:
-        enterOuterAlt(_localctx, 3);
         {
-        setState(74);
+        setState(75);
         match(T__7);
         }
         break;
       default:
         throw new NoViableAltException(this);
+<<<<<<< HEAD
+=======
+      }
+>>>>>>> refs/remotes/origin/master
       }
     }
     catch (RecognitionException re) {
@@ -575,9 +618,6 @@ public class ABCgrammarParser extends Parser {
     public TerminalNode NUMBER(int i) {
       return getToken(ABCgrammarParser.NUMBER, i);
     }
-    public EndoflineContext endofline() {
-      return getRuleContext(EndoflineContext.class,0);
-    }
     public TempoContext(ParserRuleContext parent, int invokingState) {
       super(parent, invokingState);
     }
@@ -594,24 +634,31 @@ public class ABCgrammarParser extends Parser {
 
   public final TempoContext tempo() throws RecognitionException {
     TempoContext _localctx = new TempoContext(_ctx, getState());
-    enterRule(_localctx, 14, RULE_tempo);
+    enterRule(_localctx, 16, RULE_tempo);
     try {
       enterOuterAlt(_localctx, 1);
       {
+<<<<<<< HEAD
       setState(77);
       match(T__8);
+=======
+>>>>>>> refs/remotes/origin/master
       setState(78);
-      match(NUMBER);
+      match(T__8);
       setState(79);
-      match(T__3);
+      match(NUMBER);
       setState(80);
-      match(NUMBER);
+      match(T__3);
       setState(81);
-      match(T__9);
-      setState(82);
       match(NUMBER);
+      setState(82);
+      match(T__9);
       setState(83);
+<<<<<<< HEAD
       endofline();
+=======
+      match(NUMBER);
+>>>>>>> refs/remotes/origin/master
       }
     }
     catch (RecognitionException re) {
@@ -626,9 +673,6 @@ public class ABCgrammarParser extends Parser {
   }
 
   public static class VoiceContext extends ParserRuleContext {
-    public EndoflineContext endofline() {
-      return getRuleContext(EndoflineContext.class,0);
-    }
     public List<TerminalNode> STRING() { return getTokens(ABCgrammarParser.STRING); }
     public TerminalNode STRING(int i) {
       return getToken(ABCgrammarParser.STRING, i);
@@ -653,7 +697,7 @@ public class ABCgrammarParser extends Parser {
 
   public final VoiceContext voice() throws RecognitionException {
     VoiceContext _localctx = new VoiceContext(_ctx, getState());
-    enterRule(_localctx, 16, RULE_voice);
+    enterRule(_localctx, 18, RULE_voice);
     int _la;
     try {
       enterOuterAlt(_localctx, 1);
@@ -679,8 +723,11 @@ public class ABCgrammarParser extends Parser {
         _errHandler.sync(this);
         _la = _input.LA(1);
       } while ( _la==STRING || _la==NUMBER );
+<<<<<<< HEAD
       setState(91);
       endofline();
+=======
+>>>>>>> refs/remotes/origin/master
       }
     }
     catch (RecognitionException re) {
@@ -715,21 +762,33 @@ public class ABCgrammarParser extends Parser {
 
   public final EndoflineContext endofline() throws RecognitionException {
     EndoflineContext _localctx = new EndoflineContext(_ctx, getState());
-    enterRule(_localctx, 18, RULE_endofline);
+    enterRule(_localctx, 20, RULE_endofline);
     try {
+<<<<<<< HEAD
       setState(95);
+=======
+      setState(93);
+>>>>>>> refs/remotes/origin/master
       switch (_input.LA(1)) {
       case T__11:
         enterOuterAlt(_localctx, 1);
         {
+<<<<<<< HEAD
         setState(93);
+=======
+        setState(91);
+>>>>>>> refs/remotes/origin/master
         comment();
         }
         break;
       case NEWLINE:
         enterOuterAlt(_localctx, 2);
         {
+<<<<<<< HEAD
         setState(94);
+=======
+        setState(92);
+>>>>>>> refs/remotes/origin/master
         match(NEWLINE);
         }
         break;
@@ -767,15 +826,23 @@ public class ABCgrammarParser extends Parser {
 
   public final CommentContext comment() throws RecognitionException {
     CommentContext _localctx = new CommentContext(_ctx, getState());
-    enterRule(_localctx, 20, RULE_comment);
+    enterRule(_localctx, 22, RULE_comment);
     try {
       enterOuterAlt(_localctx, 1);
       {
+<<<<<<< HEAD
       setState(97);
+=======
+      setState(95);
+>>>>>>> refs/remotes/origin/master
       match(T__11);
-      setState(98);
+      setState(96);
       match(STRING);
+<<<<<<< HEAD
       setState(99);
+=======
+      setState(97);
+>>>>>>> refs/remotes/origin/master
       match(NEWLINE);
       }
     }
@@ -791,6 +858,7 @@ public class ABCgrammarParser extends Parser {
   }
 
   public static final String _serializedATN =
+<<<<<<< HEAD
     "\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\23h\4\2\t\2\4\3"+
       "\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
       "\t\13\4\f\t\f\3\2\3\2\3\2\7\2\34\n\2\f\2\16\2\37\13\2\3\2\3\2\3\2"+
@@ -818,6 +886,34 @@ public class ABCgrammarParser extends Parser {
       "\\\3\2\2\2\\]\3\2\2\2]^\5\24\13\2^\23\3\2\2\2_b\5\26\f\2`b\7\22\2"+
       "\2a_\3\2\2\2a`\3\2\2\2b\25\3\2\2\2cd\7\16\2\2de\7\20\2\2ef\7\22\2"+
       "\2f\27\3\2\2\2\t\35+\65CM[a";
+=======
+    "\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\23f\4\2\t\2\4\3"+
+      "\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
+      "\t\13\4\f\t\f\4\r\t\r\3\2\3\2\3\2\7\2\36\n\2\f\2\16\2!\13\2\3\2\3"+
+      "\2\3\2\3\3\3\3\3\3\3\3\3\4\3\4\6\4,\n\4\r\4\16\4-\3\4\3\4\3\5\3\5"+
+      "\3\6\3\6\3\6\3\6\3\6\3\6\5\6:\n\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\b"+
+      "\3\b\6\bE\n\b\r\b\16\bF\3\t\3\t\3\t\3\t\3\t\3\t\5\tO\n\t\3\n\3\n\3"+
+      "\n\3\n\3\n\3\n\3\n\3\13\3\13\6\13Z\n\13\r\13\16\13[\3\f\3\f\5\f`\n"+
+      "\f\3\r\3\r\3\r\3\r\3\r\2\2\16\2\4\6\b\n\f\16\20\22\24\26\30\2\3\3"+
+      "\2\20\21e\2\32\3\2\2\2\4%\3\2\2\2\6)\3\2\2\2\b\61\3\2\2\2\n9\3\2\2"+
+      "\2\f=\3\2\2\2\16B\3\2\2\2\20H\3\2\2\2\22P\3\2\2\2\24W\3\2\2\2\26_"+
+      "\3\2\2\2\30a\3\2\2\2\32\33\5\4\3\2\33\37\5\6\4\2\34\36\5\n\6\2\35"+
+      "\34\3\2\2\2\36!\3\2\2\2\37\35\3\2\2\2\37 \3\2\2\2 \"\3\2\2\2!\37\3"+
+      "\2\2\2\"#\5\b\5\2#$\7\2\2\3$\3\3\2\2\2%&\7\3\2\2&\'\7\21\2\2\'(\5"+
+      "\26\f\2(\5\3\2\2\2)+\7\4\2\2*,\t\2\2\2+*\3\2\2\2,-\3\2\2\2-+\3\2\2"+
+      "\2-.\3\2\2\2./\3\2\2\2/\60\5\26\f\2\60\7\3\2\2\2\61\62\7\17\2\2\62"+
+      "\t\3\2\2\2\63:\5\f\7\2\64:\5\16\b\2\65:\5\20\t\2\66:\5\22\n\2\67:"+
+      "\5\24\13\28:\5\30\r\29\63\3\2\2\29\64\3\2\2\29\65\3\2\2\29\66\3\2"+
+      "\2\29\67\3\2\2\298\3\2\2\2:;\3\2\2\2;<\5\26\f\2<\13\3\2\2\2=>\7\5"+
+      "\2\2>?\7\21\2\2?@\7\6\2\2@A\7\21\2\2A\r\3\2\2\2BD\7\7\2\2CE\7\20\2"+
+      "\2DC\3\2\2\2EF\3\2\2\2FD\3\2\2\2FG\3\2\2\2G\17\3\2\2\2HN\7\b\2\2I"+
+      "J\7\21\2\2JK\7\6\2\2KO\7\21\2\2LO\7\t\2\2MO\7\n\2\2NI\3\2\2\2NL\3"+
+      "\2\2\2NM\3\2\2\2O\21\3\2\2\2PQ\7\13\2\2QR\7\21\2\2RS\7\6\2\2ST\7\21"+
+      "\2\2TU\7\f\2\2UV\7\21\2\2V\23\3\2\2\2WY\7\r\2\2XZ\t\2\2\2YX\3\2\2"+
+      "\2Z[\3\2\2\2[Y\3\2\2\2[\\\3\2\2\2\\\25\3\2\2\2]`\5\30\r\2^`\7\22\2"+
+      "\2_]\3\2\2\2_^\3\2\2\2`\27\3\2\2\2ab\7\16\2\2bc\7\20\2\2cd\7\22\2"+
+      "\2d\31\3\2\2\2\t\37-9FN[_";
+>>>>>>> refs/remotes/origin/master
   public static final ATN _ATN =
     new ATNDeserializer().deserialize(_serializedATN.toCharArray());
   static {
