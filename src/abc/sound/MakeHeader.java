@@ -27,6 +27,11 @@ import abc.parser.ABCgrammarParser.VoiceContext;
 public class MakeHeader implements ABCgrammarListener {
     //what object type should this stack hold?
     private Map<String, String> map = new HashMap<>();
+    
+    /**
+     * Get the values parsed from the header
+     * @return
+     */
     public Map<String, String> getHeader() {
         return map;
     }

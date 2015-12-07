@@ -16,6 +16,7 @@ import abc.parser.ABCgrammarLexer;
 import abc.parser.ABCgrammarParser;
 import abc.parser.AbcLexer;
 import abc.parser.AbcParser;
+import abc.parser.AbcParser.RootContext;
 import abc.parser.SplitHeader;
 
 // Datatype definition:
@@ -35,21 +36,21 @@ import abc.parser.SplitHeader;
 public interface Music {
     
     public static void parse(String head, String body) {
-            CharStream headstream = new ANTLRInputStream(head);
-            ABCgrammarLexer lexer = new ABCgrammarLexer(headstream);
-            lexer.reportErrorsAsExceptions();
-            TokenStream tokens = new CommonTokenStream(lexer);
-            ABCgrammarParser parser = new ABCgrammarParser(tokens);
+//            CharStream headstream = new ANTLRInputStream(head);
+//            ABCgrammarLexer lexer = new ABCgrammarLexer(headstream);
+//            lexer.reportErrorsAsExceptions();
+//            TokenStream tokens = new CommonTokenStream(lexer);
+//            ABCgrammarParser parser = new ABCgrammarParser(tokens);
+//            parser.reportErrorsAsExceptions();
+//            ParseTree tree = parser.root();
+//            
+            CharStream bodystream = new ANTLRInputStream(body);
+            AbcLexer bodylexer = new AbcLexer(bodystream);
+            bodylexer.reportErrorsAsExceptions();
+            TokenStream bodyTokens = new CommonTokenStream(bodylexer);
+            AbcParser parser = new AbcParser(bodyTokens);
             parser.reportErrorsAsExceptions();
             ParseTree tree = parser.root();
-            
-//            CharStream bodystream = new ANTLRInputStream(body);
-//            AbcLexer bodylexer = new AbcLexer(bodystream);
-//            bodylexer.reportErrorsAsExceptions();
-//            TokenStream bodyTokens = new CommonTokenStream(bodylexer);
-//            AbcParser bodyParser = new AbcParser(bodyTokens);
-//            parser.reportErrorsAsExceptions();
-//            tree = parser.root();
             System.err.println(tree.toStringTree(parser));
             Trees.inspect(tree, parser);
     }
@@ -78,9 +79,9 @@ public interface Music {
     void play(SequencePlayer player, double atBeat);
     
     public static void main(String[] args) throws IOException {
-        File file = new File("sample_abc/sample2.abc");
+        File file = new File("sample_abc/fur_elise.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
-        System.out.println(headbody.get(0));
+        System.out.println(headbody.get(1));
         parse(headbody.get(0),headbody.get(1));
     }
 }

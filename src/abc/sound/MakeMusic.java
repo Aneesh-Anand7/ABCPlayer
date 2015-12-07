@@ -115,7 +115,6 @@ public class MakeMusic implements AbcListener {
     @Override
     public void exitElement(ElementContext ctx) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
