@@ -6,8 +6,7 @@
 grammar Abc;
 import Configuration;
 
-root: body EOF;
-body: (line)+;
+root: (line)+ EOF;
 line: (element)+ NEWLINE | bodyvoice | comment;
 element: noteelem | tupletelem | barline | nthrepeat | WHITESPACE;
 
@@ -16,11 +15,11 @@ noteelem: note | multinote;
 note: noteorrest notelength?;
 noteorrest: pitch | rest;
 pitch: accidental? basenote octave?;
-octave: ('\'')+ | (',')+;
-notelength: (DIGIT+)? ('/' (DIGIT+)?)?;
+octave: OCTAVE;
+notelength: (DIGIT+) ('/' (DIGIT+)?)?;
 /* ^ is sharp, _ is flat, = is neutral */
-accidental: '^'|'^^'|'_'|'__'|'=';
-basenote: 'C'|'D'|'E'|'F'|'G'|'A'|'B'|'c'|'d'|'e'|'f'|'g'|'a'|'b';
+accidental: ACCIDENTAL;
+basenote: BASENOTE;
 rest: 'z';
 /* tuplets */
 tupletelem: tupletspec noteelem+;
@@ -37,8 +36,11 @@ bodyvoice: 'V' ':' STRING;
 comment: '%' STRING NEWLINE;
 endofline: comment | NEWLINE;
 
+ACCIDENTAL:  '^'|'^^'|'_'|'__'|'=';
+BASENOTE: 'C'|'D'|'E'|'F'|'G'|'A'|'B'|'c'|'d'|'e'|'f'|'g'|'a'|'b';
+OCTAVE: ('\'')+ | (',')+;
 DIGIT: [0-9];
-STRING: (.)+?;
+STRING: ([A-Za-z'\.'])+;
 NEWLINE: '\n' | '\r'('\n')?;
 WHITESPACE: ' ' | '\t';
 

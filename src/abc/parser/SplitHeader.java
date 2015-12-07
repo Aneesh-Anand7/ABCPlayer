@@ -23,8 +23,6 @@ public class SplitHeader {
             }
             else if (isHead) {
                 header += line +"\n";
-            } else if (i==lines.size()-1) {
-                body += line;
             } else {
                 body += line + "\n";
             }
