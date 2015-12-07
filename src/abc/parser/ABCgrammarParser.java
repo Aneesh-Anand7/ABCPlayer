@@ -21,8 +21,7 @@ public class ABCgrammarParser extends Parser {
     new PredictionContextCache();
   public static final int
     T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-    T__9=10, T__10=11, T__11=12, KEY=13, STRING=14, NUMBER=15, NEWLINE=16, 
-    SPACES=17;
+    T__9=10, KEY=11, STRING=12, NUMBER=13, NEWLINE=14, SPACES=15;
   public static final int
     RULE_root = 0, RULE_index = 1, RULE_title = 2, RULE_line = 3, RULE_length = 4, 
     RULE_composer = 5, RULE_meter = 6, RULE_tempo = 7, RULE_voice = 8, RULE_endofline = 9, 
@@ -33,12 +32,12 @@ public class ABCgrammarParser extends Parser {
   };
 
   private static final String[] _LITERAL_NAMES = {
-    null, "'X:'", "'T:'", "'L:'", "'/'", "'C:'", "'M:'", "'C'", "'C|'", 
-    "'Q:'", "'='", "'V:'", "'%'"
+    null, "'X:'", "'T:'", "'L:'", "'/'", "'C:'", "'M:'", "'Q:'", "'='", 
+    "'V:'", "'%'"
   };
   private static final String[] _SYMBOLIC_NAMES = {
-    null, null, null, null, null, null, null, null, null, null, null, null, 
-    null, "KEY", "STRING", "NUMBER", "NEWLINE", "SPACES"
+    null, null, null, null, null, null, null, null, null, null, null, "KEY", 
+    "STRING", "NUMBER", "NEWLINE", "SPACES"
   };
   public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -149,7 +148,7 @@ public class ABCgrammarParser extends Parser {
       setState(27);
       _errHandler.sync(this);
       _la = _input.LA(1);
-      while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__10) | (1L << T__11))) != 0)) {
+      while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__8) | (1L << T__9))) != 0)) {
         {
         {
         setState(24);
@@ -347,26 +346,41 @@ public class ABCgrammarParser extends Parser {
         }
         break;
       case T__5:
+<<<<<<< HEAD
       case T__6:
       case T__7:
+=======
+>>>>>>> 52d3563774c0d873b88b8329b6d678b9cff24e14
         {
         setState(47);
         meter();
         }
         break;
+<<<<<<< HEAD
       case T__8:
+=======
+      case T__6:
+>>>>>>> 52d3563774c0d873b88b8329b6d678b9cff24e14
         {
         setState(48);
         tempo();
         }
         break;
+<<<<<<< HEAD
       case T__10:
+=======
+      case T__8:
+>>>>>>> 52d3563774c0d873b88b8329b6d678b9cff24e14
         {
         setState(49);
         voice();
         }
         break;
+<<<<<<< HEAD
       case T__11:
+=======
+      case T__9:
+>>>>>>> 52d3563774c0d873b88b8329b6d678b9cff24e14
         {
         setState(50);
         comment();
@@ -524,6 +538,7 @@ public class ABCgrammarParser extends Parser {
     MeterContext _localctx = new MeterContext(_ctx, getState());
     enterRule(_localctx, 12, RULE_meter);
     try {
+<<<<<<< HEAD
       setState(75);
       switch (_input.LA(1)) {
       case T__5:
@@ -557,6 +572,20 @@ public class ABCgrammarParser extends Parser {
         break;
       default:
         throw new NoViableAltException(this);
+=======
+      enterOuterAlt(_localctx, 1);
+      {
+      setState(69);
+      match(T__5);
+      {
+      setState(70);
+      match(NUMBER);
+      setState(71);
+      match(T__3);
+      setState(72);
+      match(NUMBER);
+      }
+>>>>>>> 52d3563774c0d873b88b8329b6d678b9cff24e14
       }
     }
     catch (RecognitionException re) {
@@ -598,6 +627,7 @@ public class ABCgrammarParser extends Parser {
     try {
       enterOuterAlt(_localctx, 1);
       {
+<<<<<<< HEAD
       setState(77);
       match(T__8);
       setState(78);
@@ -611,6 +641,21 @@ public class ABCgrammarParser extends Parser {
       setState(82);
       match(NUMBER);
       setState(83);
+=======
+      setState(74);
+      match(T__6);
+      setState(75);
+      match(NUMBER);
+      setState(76);
+      match(T__3);
+      setState(77);
+      match(NUMBER);
+      setState(78);
+      match(T__7);
+      setState(79);
+      match(NUMBER);
+      setState(80);
+>>>>>>> 52d3563774c0d873b88b8329b6d678b9cff24e14
       endofline();
       }
     }
@@ -658,6 +703,7 @@ public class ABCgrammarParser extends Parser {
     try {
       enterOuterAlt(_localctx, 1);
       {
+<<<<<<< HEAD
       setState(85);
       match(T__10);
       setState(87); 
@@ -680,6 +726,13 @@ public class ABCgrammarParser extends Parser {
         _la = _input.LA(1);
       } while ( _la==STRING || _la==NUMBER );
       setState(91);
+=======
+      setState(82);
+      match(T__8);
+      setState(83);
+      match(STRING);
+      setState(84);
+>>>>>>> 52d3563774c0d873b88b8329b6d678b9cff24e14
       endofline();
       }
     }
@@ -717,19 +770,31 @@ public class ABCgrammarParser extends Parser {
     EndoflineContext _localctx = new EndoflineContext(_ctx, getState());
     enterRule(_localctx, 18, RULE_endofline);
     try {
+<<<<<<< HEAD
       setState(95);
+=======
+      setState(88);
+>>>>>>> 52d3563774c0d873b88b8329b6d678b9cff24e14
       switch (_input.LA(1)) {
-      case T__11:
+      case T__9:
         enterOuterAlt(_localctx, 1);
         {
+<<<<<<< HEAD
         setState(93);
+=======
+        setState(86);
+>>>>>>> 52d3563774c0d873b88b8329b6d678b9cff24e14
         comment();
         }
         break;
       case NEWLINE:
         enterOuterAlt(_localctx, 2);
         {
+<<<<<<< HEAD
         setState(94);
+=======
+        setState(87);
+>>>>>>> 52d3563774c0d873b88b8329b6d678b9cff24e14
         match(NEWLINE);
         }
         break;
@@ -771,11 +836,19 @@ public class ABCgrammarParser extends Parser {
     try {
       enterOuterAlt(_localctx, 1);
       {
+<<<<<<< HEAD
       setState(97);
       match(T__11);
       setState(98);
       match(STRING);
       setState(99);
+=======
+      setState(90);
+      match(T__9);
+      setState(91);
+      match(STRING);
+      setState(92);
+>>>>>>> 52d3563774c0d873b88b8329b6d678b9cff24e14
       match(NEWLINE);
       }
     }
@@ -791,11 +864,16 @@ public class ABCgrammarParser extends Parser {
   }
 
   public static final String _serializedATN =
+<<<<<<< HEAD
     "\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\23h\4\2\t\2\4\3"+
+=======
+    "\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\21a\4\2\t\2\4\3"+
+>>>>>>> 52d3563774c0d873b88b8329b6d678b9cff24e14
       "\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
       "\t\13\4\f\t\f\3\2\3\2\3\2\7\2\34\n\2\f\2\16\2\37\13\2\3\2\3\2\3\2"+
       "\3\3\3\3\3\3\3\3\3\4\3\4\6\4*\n\4\r\4\16\4+\3\4\3\4\3\5\3\5\3\5\3"+
       "\5\3\5\3\5\5\5\66\n\5\3\5\3\5\3\6\3\6\3\6\3\6\3\6\3\6\3\7\3\7\6\7"+
+<<<<<<< HEAD
       "B\n\7\r\7\16\7C\3\7\3\7\3\b\3\b\3\b\3\b\3\b\3\b\5\bN\n\b\3\t\3\t\3"+
       "\t\3\t\3\t\3\t\3\t\3\t\3\n\3\n\6\nZ\n\n\r\n\16\n[\3\n\3\n\3\13\3\13"+
       "\5\13b\n\13\3\f\3\f\3\f\3\f\3\f\2\2\r\2\4\6\b\n\f\16\20\22\24\26\2"+
@@ -818,6 +896,28 @@ public class ABCgrammarParser extends Parser {
       "\\\3\2\2\2\\]\3\2\2\2]^\5\24\13\2^\23\3\2\2\2_b\5\26\f\2`b\7\22\2"+
       "\2a_\3\2\2\2a`\3\2\2\2b\25\3\2\2\2cd\7\16\2\2de\7\20\2\2ef\7\22\2"+
       "\2f\27\3\2\2\2\t\35+\65CM[a";
+=======
+      "B\n\7\r\7\16\7C\3\7\3\7\3\b\3\b\3\b\3\b\3\b\3\t\3\t\3\t\3\t\3\t\3"+
+      "\t\3\t\3\t\3\n\3\n\3\n\3\n\3\13\3\13\5\13[\n\13\3\f\3\f\3\f\3\f\3"+
+      "\f\2\2\r\2\4\6\b\n\f\16\20\22\24\26\2\3\3\2\16\17^\2\30\3\2\2\2\4"+
+      "#\3\2\2\2\6\'\3\2\2\2\b\65\3\2\2\2\n9\3\2\2\2\f?\3\2\2\2\16G\3\2\2"+
+      "\2\20L\3\2\2\2\22T\3\2\2\2\24Z\3\2\2\2\26\\\3\2\2\2\30\31\5\4\3\2"+
+      "\31\35\5\6\4\2\32\34\5\b\5\2\33\32\3\2\2\2\34\37\3\2\2\2\35\33\3\2"+
+      "\2\2\35\36\3\2\2\2\36 \3\2\2\2\37\35\3\2\2\2 !\7\r\2\2!\"\7\2\2\3"+
+      "\"\3\3\2\2\2#$\7\3\2\2$%\7\17\2\2%&\5\24\13\2&\5\3\2\2\2\')\7\4\2"+
+      "\2(*\t\2\2\2)(\3\2\2\2*+\3\2\2\2+)\3\2\2\2+,\3\2\2\2,-\3\2\2\2-.\5"+
+      "\24\13\2.\7\3\2\2\2/\66\5\n\6\2\60\66\5\f\7\2\61\66\5\16\b\2\62\66"+
+      "\5\20\t\2\63\66\5\22\n\2\64\66\5\26\f\2\65/\3\2\2\2\65\60\3\2\2\2"+
+      "\65\61\3\2\2\2\65\62\3\2\2\2\65\63\3\2\2\2\65\64\3\2\2\2\66\67\3\2"+
+      "\2\2\678\5\24\13\28\t\3\2\2\29:\7\5\2\2:;\7\17\2\2;<\7\6\2\2<=\7\17"+
+      "\2\2=>\5\24\13\2>\13\3\2\2\2?A\7\7\2\2@B\7\16\2\2A@\3\2\2\2BC\3\2"+
+      "\2\2CA\3\2\2\2CD\3\2\2\2DE\3\2\2\2EF\5\24\13\2F\r\3\2\2\2GH\7\b\2"+
+      "\2HI\7\17\2\2IJ\7\6\2\2JK\7\17\2\2K\17\3\2\2\2LM\7\t\2\2MN\7\17\2"+
+      "\2NO\7\6\2\2OP\7\17\2\2PQ\7\n\2\2QR\7\17\2\2RS\5\24\13\2S\21\3\2\2"+
+      "\2TU\7\13\2\2UV\7\16\2\2VW\5\24\13\2W\23\3\2\2\2X[\5\26\f\2Y[\7\20"+
+      "\2\2ZX\3\2\2\2ZY\3\2\2\2[\25\3\2\2\2\\]\7\f\2\2]^\7\16\2\2^_\7\20"+
+      "\2\2_\27\3\2\2\2\7\35+\65CZ";
+>>>>>>> 52d3563774c0d873b88b8329b6d678b9cff24e14
   public static final ATN _ATN =
     new ATNDeserializer().deserialize(_serializedATN.toCharArray());
   static {

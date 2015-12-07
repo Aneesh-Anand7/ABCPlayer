@@ -14,6 +14,7 @@ line: (length | composer | meter | tempo | voice | comment) endofline;
 length: 'L:' NUMBER '/' NUMBER endofline; 
 composer: 'C:' STRING+ endofline;
 meter: 'M:' (NUMBER '/' NUMBER) | 'C' | 'C|';
+
 tempo: 'Q:' NUMBER '/' NUMBER '=' NUMBER endofline;
 voice: 'V:' (STRING | NUMBER)+ endofline;
 
