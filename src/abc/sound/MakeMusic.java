@@ -33,6 +33,8 @@ import abc.parser.AbcParser.TupletspecContext;
 
 public class MakeMusic implements AbcListener {
     private Stack<Music> stack = new Stack<>();
+    private Stack<Music> repeat = new Stack<>();
+    private boolean inrepeat = false;
     public Music getMusic() {
         return stack.get(0);
     }
@@ -171,7 +173,12 @@ public class MakeMusic implements AbcListener {
                 pitch.transpose(netaccidental);
             }
            Note note = new Note(duration, pitch);
-           stack.push(note);
+           if(inrepeat){
+               repeat.push(note);
+           }
+           else{
+               stack.push(note);
+           }
         }
     }
 
@@ -263,7 +270,12 @@ public class MakeMusic implements AbcListener {
         List<NoteelemContext> noteelems = ctx.noteelem();
         for(NoteelemContext noteelem: noteelems){
             Note note = (Note) stack.pop();
-            stack.push(new Note(note.duration()/nplet, note.pitch()));
+            if (inrepeat){
+                repeat.push(new Note(note.duration()/nplet, note.pitch()));
+            }
+            else{
+                stack.push(new Note(note.duration()/nplet, note.pitch()));
+            }
         }
     }
 
@@ -293,18 +305,31 @@ public class MakeMusic implements AbcListener {
             Note note = (Note) stack.pop();
             chord.add(note);
         }
-        stack.push(new Chord(chord));
+        if(inrepeat){
+            repeat.push(new Chord(chord));
+        }
+        else{
+            stack.push(new Chord(chord));
+        }
     }
 
     @Override
     public void enterBarline(BarlineContext ctx) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void exitBarline(BarlineContext ctx) {
-        // TODO Auto-generated method stub
+        if (ctx.getText().equals("|:")){
+            inrepeat = true;
+        }
+        else if (ctx.getText().equals(":|")){
+            for (int i = 0; i < 2; i ++){
+                for (int j = repeat.size() - 1; i >= 0; i--){
+                    stack.push(repeat.get(j));
+                }
+            }
+        }
 
     }
 
