@@ -35,8 +35,14 @@ public class MakeMusic implements AbcListener {
     private Stack<Music> stack = new Stack<>();
     private Stack<Music> repeat = new Stack<>();
     private boolean inrepeat = false;
+    private Music fullPiece;
+    
     public Music getMusic() {
         return stack.get(0);
+    }
+    
+    public Music getFullPiece(){
+        return fullPiece;
     }
     
     @Override
@@ -269,11 +275,12 @@ public class MakeMusic implements AbcListener {
         List<NoteelemContext> noteelems = ctx.noteelem();
         for(NoteelemContext noteelem: noteelems){
             Note note = (Note) stack.pop();
+            Note tupletnote = new Note(note.duration()/nplet, note.pitch());
             if (inrepeat){
-                repeat.push(new Note(note.duration()/nplet, note.pitch()));
+                repeat.push(tupletnote);
             }
             else{
-                stack.push(new Note(note.duration()/nplet, note.pitch()));
+                stack.push(tupletnote);
             }
         }
     }
@@ -304,11 +311,12 @@ public class MakeMusic implements AbcListener {
             Note note = (Note) stack.pop();
             chord.add(note);
         }
+        Chord newchord = new Chord(chord);
         if(inrepeat){
-            repeat.push(new Chord(chord));
+            repeat.push(newchord);
         }
         else{
-            stack.push(new Chord(chord));
+            stack.push(newchord);
         }
     }
 
@@ -329,7 +337,15 @@ public class MakeMusic implements AbcListener {
                 }
             }
         }
-
+        else if (ctx.getText().equals("||")){
+            //we want to reverse order of stack
+            List<Music> reversestack = new ArrayList<>();
+            Concat concat = new Concat(reversestack.get(0), reversestack.get(1));
+            for (int i = 2; i < reversestack.size(); i ++){
+                concat = new Concat(concat, reversestack.get(i));
+            }
+            fullPiece = concat;
+        }
     }
 
     @Override
