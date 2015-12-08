@@ -74,8 +74,7 @@ public interface Music {
         
         ParseTree tree = parser.root();
         // see what's happening
-        System.err.println(tree.toStringTree(parser));
-        Trees.inspect(tree, parser);
+        
         // 
         MakeHeaderV2 headerMaker = new MakeHeaderV2();
         new ParseTreeWalker().walk(headerMaker, tree);
@@ -96,9 +95,7 @@ public interface Music {
         AbcParser parser = new AbcParser(bodyTokens);
         parser.reportErrorsAsExceptions();
         ParseTree tree = parser.root();
-        System.err.println(tree.toStringTree(parser));
         Trees.inspect(tree, parser);
-        
         MakeMusic musicMaker = new MakeMusic();
         new ParseTreeWalker().walk(musicMaker, tree);
         return musicMaker.getFullPiece();
@@ -129,10 +126,11 @@ public interface Music {
     void play(SequencePlayer player, double atBeat);
     
     public static void main(String[] args) throws IOException {
-        File file = new File("sample_abc/waxies_dargle.abc");
+        File file = new File("sample_abc/piece1.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
-
         System.out.println(headbody.get(1));
-        parseBody(headbody.get(1),new HashMap<String, String>());
+        Map<String, String> header = parseHeader(headbody.get(0));
+        Music music = parseBody(headbody.get(1),header);
+        
     }
 }

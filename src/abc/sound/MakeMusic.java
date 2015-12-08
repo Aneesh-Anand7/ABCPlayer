@@ -15,9 +15,8 @@ import abc.parser.AbcListener;
 import abc.parser.AbcParser.AccidentalContext;
 import abc.parser.AbcParser.BarlineContext;
 import abc.parser.AbcParser.BasenoteContext;
-import abc.parser.AbcParser.BodyContext;
+
 import abc.parser.AbcParser.BodyvoiceContext;
-import abc.parser.AbcParser.CommentContext;
 import abc.parser.AbcParser.ElementContext;
 import abc.parser.AbcParser.EndoflineContext;
 import abc.parser.AbcParser.LineContext;
@@ -56,13 +55,13 @@ public class MakeMusic implements AbcListener {
     
     @Override
     public void enterEveryRule(ParserRuleContext arg0) {
-        System.err.println("entering " + arg0.getText() + ", stack is " + stack);
+        //System.err.println("entering " + arg0.getText() + ", stack is " + stack);
 
     }
 
     @Override
     public void exitEveryRule(ParserRuleContext arg0) {
-        System.err.println("exiting " + arg0.getText() + ", stack is " + stack);
+        //System.err.println("exiting " + arg0.getText() + ", stack is " + stack);
 
     }
 
@@ -81,6 +80,7 @@ public class MakeMusic implements AbcListener {
     @Override
     public void enterRoot(RootContext ctx) {
         // TODO Auto-generated method stub
+        System.err.println("entering root" + ", stack is " + stack);
 
     }
 
@@ -88,31 +88,19 @@ public class MakeMusic implements AbcListener {
     public void exitRoot(RootContext ctx) {
         // do nothing, root has only one child so its value is
         // already on top of the stack
-
-    }
-
-    @Override
-    public void enterBody(BodyContext ctx) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void exitBody(BodyContext ctx) {
-        // TODO Auto-generated method stub
-
+        System.err.println("exiting note" + ", stack is " + stack);
     }
 
     @Override
     public void enterLine(LineContext ctx) {
         // TODO Auto-generated method stub
-
+        System.err.println("entering line" + ", stack is " + stack);
     }
 
     @Override
     public void exitLine(LineContext ctx) {
         // TODO Auto-generated method stub
-
+        System.err.println("exiting line" + ", stack is " + stack);
     }
 
     @Override
@@ -140,7 +128,7 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void enterNote(NoteContext ctx) {
-        
+        System.err.println("entering note" + ", stack is " + stack);
     }
     
     /**
@@ -161,14 +149,14 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitNote(NoteContext ctx) {
-        double duration = Double.valueOf(ctx.notelength().getText());
+        double duration = Double.valueOf(ctx.notelength().NOTELENGTH().getText());
         if (ctx.noteorrest().rest() != null){
             Rest rest = new Rest(duration);
             stack.push(rest);
         }
         else{
-            char basenote = ctx.noteorrest().pitch().basenote().getText().charAt(0);
-            Pitch pitch = new Pitch(basenote);
+            String basenote = ctx.noteorrest().pitch().basenote().BASENOTE().getText();
+            Pitch pitch = new Pitch(basenote.charAt(0));
             String octave = null;
             if(ctx.noteorrest().pitch().octave() != null){
                 octave = ctx.noteorrest().pitch().octave().getText();
@@ -195,9 +183,10 @@ public class MakeMusic implements AbcListener {
                stack.push(note);
            }
         }
+        System.err.println("exiting note" + ", stack is " + stack);
     }
     
-    public int keyChange(char basenote){
+    public int keyChange(String basenote){
         Map<String, Integer> accidentalMap = createAccidentalMap();
         String[] flatorder = { "B", "E", "A", "D", "G", "C", "F"};
         String[] sharporder = { "F", "C", "G", "D", "A", "E", "B"};
@@ -324,12 +313,12 @@ public class MakeMusic implements AbcListener {
     @Override
     public void enterTupletelem(TupletelemContext ctx) {
         // TODO Auto-generated method stub
-
+        System.err.println("entering tupletelem" + ", stack is " + stack);
     }
 
     @Override
     public void exitTupletelem(TupletelemContext ctx) {
-        double nplet = Double.valueOf(ctx.tupletspec().DIGIT().getText());
+        double nplet = Double.valueOf(ctx.tupletspec().TUPLETSPEC().getText().substring(1));
         List<NoteelemContext> noteelems = ctx.noteelem();
         for(NoteelemContext noteelem: noteelems){
             Note note = (Note) stack.pop();
@@ -341,6 +330,7 @@ public class MakeMusic implements AbcListener {
                 stack.push(tupletnote);
             }
         }
+        System.err.println("exiting tupletelem" + ", stack is " + stack);
     }
 
     @Override
@@ -376,6 +366,7 @@ public class MakeMusic implements AbcListener {
         else{
             stack.push(newchord);
         }
+        System.err.println("exiting " + ctx.getText() + "stack is" + stack);
     }
 
     @Override
@@ -404,6 +395,7 @@ public class MakeMusic implements AbcListener {
             }
             fullPiece = concat;
         }
+        System.err.println("exiting barline" + ", stack is " + stack);
     }
 
     @Override
@@ -426,18 +418,6 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitBodyvoice(BodyvoiceContext ctx) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void enterComment(CommentContext ctx) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void exitComment(CommentContext ctx) {
         // TODO Auto-generated method stub
 
     }
