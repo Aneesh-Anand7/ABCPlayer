@@ -181,7 +181,17 @@ public class MakeMusic implements AbcListener {
         }
         else{
             String basenote = ctx.noteorrest().pitch().basenote().BASENOTE().getText();
-            Pitch pitch = new Pitch(basenote.charAt(0));
+            char basenotechar = basenote.charAt(0);
+            Pitch pitch;
+            if(Character.isLowerCase(basenotechar)){
+                basenotechar = basenote.toUpperCase().charAt(0);
+                pitch =  new Pitch(basenotechar);
+                //(uppercase) C' (C apostrophe) should have the same meaning as (lowercase) c
+                pitch.transpose(12);
+            }
+            else{
+                pitch =  new Pitch(basenotechar);
+            }
             String octave = null;
             if(ctx.noteorrest().pitch().octave() != null){
                 octave = ctx.noteorrest().pitch().octave().getText();
@@ -211,6 +221,12 @@ public class MakeMusic implements AbcListener {
         System.err.println("exiting note" + ", stack is " + stack);
     }
     
+    /**
+     * keyChange takes in a basenote and returns an int representing the number of semitones that the 
+     * note should be transposed according to the keysignature.
+     * @param basenote - the note we are looking to transpose
+     * @return - the number of semitones the note should be transposed
+     */
     public int keyChange(String basenote){
         Map<String, Integer> accidentalMap = createAccidentalMap();
         String[] flatorder = { "B", "E", "A", "D", "G", "C", "F"};

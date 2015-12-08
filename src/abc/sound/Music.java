@@ -114,6 +114,7 @@ public interface Music {
      */
     public double duration();
     
+    
     /**
      * Transpose all notes upward or downward in pitch.
      * @param semitonesUp semitones by which to transpose
@@ -134,6 +135,7 @@ public interface Music {
     
     public static void main(String[] args) throws IOException {
         File file = new File("sample_abc/sample3.abc");
+
         List<String> headbody = SplitHeader.splitHeader(file);
         System.out.println(headbody.get(1));
         Map<String, String> header = parseHeader(headbody.get(0));
