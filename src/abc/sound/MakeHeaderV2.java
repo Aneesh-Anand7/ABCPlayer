@@ -41,7 +41,7 @@ public class MakeHeaderV2 implements ABCgrammarListener {
 
     @Override
     public void exitEveryRule(ParserRuleContext arg0) {
-        System.err.println("entering " + arg0.getText() + ", map is " + map);
+        System.err.println("exiting " + arg0.getText() + ", map is " + map);
 
     }
 
@@ -65,8 +65,32 @@ public class MakeHeaderV2 implements ABCgrammarListener {
 
     @Override
     public void exitRoot(RootContext ctx) {
-        // TODO Auto-generated method stub
-
+        if (!(map.containsKey("meter"))) {
+            map.put("meter", "4/4");
+            if (!(map.containsKey("length"))) {
+                map.put("length", "1/8");
+            }
+        }
+        //
+        if (!(map.containsKey("length"))) {
+            String noteLength;
+            double SIXTEEN_TO_EIGHTH = 0.75;
+            String[] fractionValues = map.get("meter").split("/");
+            double meterValue = Double.parseDouble(fractionValues[0]) / Double.parseDouble(fractionValues[1]);
+            if (meterValue < SIXTEEN_TO_EIGHTH) {
+                noteLength = "1/16";
+            } else {
+                noteLength = "1/8";
+            }
+            map.put("length", noteLength);
+        }
+        //
+        if (!(map.containsKey("tempo"))) {
+            String tempo = "";
+            tempo+=map.get("length") + "=100";
+            System.out.println("tempo: " + tempo);
+            map.put("tempo", tempo);
+        }
     }
 
     @Override
@@ -112,9 +136,8 @@ public class MakeHeaderV2 implements ABCgrammarListener {
     @Override
     public void exitLength(LengthContext ctx) {
         StringBuilder lengthString = new StringBuilder();
-        lengthString.append(ctx.NUMBER());
-        map.put("length", lengthString.substring(2));     
-
+        lengthString.append(ctx.getText());
+        map.put("length", lengthString.substring(2));
     }
 
     @Override
@@ -137,20 +160,18 @@ public class MakeHeaderV2 implements ABCgrammarListener {
 
     @Override
     public void exitMeter(MeterContext ctx) {
-        if(ctx.getText().equals("C") || ctx.getText() == null){
+//        StringBuilder meterValueString = new StringBuilder();
+        String meterTotalString = ctx.getText();
+        meterTotalString = meterTotalString.substring(2);
+        
+        if (meterTotalString.equals("C")){
             map.put("meter", "4/4");
         }
-        else if(ctx.getText().equals("C|")){
+        else if (meterTotalString.equals("C|")){
             map.put("meter", "2/2");
         }
         else{
-            StringBuilder meterValueString = new StringBuilder();
-            String meterTotalString = ctx.getText();
-            for (int i = 2; i < meterTotalString.length(); i++){
-                char c = meterTotalString.charAt(i); 
-                meterValueString.append(c);
-            }
-            map.put("meter", meterValueString.toString());    
+            map.put("meter", meterTotalString);   
         }
     }
 
@@ -162,14 +183,10 @@ public class MakeHeaderV2 implements ABCgrammarListener {
 
     @Override
     public void exitTempo(TempoContext ctx) {
-        if(ctx.getText() == null){
-            map.put("tempo", "100");
-        }
-        else{
-            StringBuilder tempoString = new StringBuilder();
-            tempoString.append(ctx.getText());
-            map.put("tempo", tempoString.substring(2));
-        }
+        StringBuilder tempoString = new StringBuilder();
+        tempoString.append(ctx.getText());
+        map.put("tempo", tempoString.substring(2));
+
     }
 
     @Override

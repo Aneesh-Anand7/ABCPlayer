@@ -37,6 +37,29 @@ import abc.parser.SplitHeader;
  */
 public interface Music {
     
+    /**
+     * 
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public static Map<String, String> parseHeaderFromFile(File file) throws IOException {
+        List<String> headAndBody = SplitHeader.splitHeader(file);
+        String header = headAndBody.get(0);
+        return parseHeader(new String(header));
+    }
+    
+    public static Music parseBodyFromFile(File file) throws IOException {
+        List<String> headAndBody = SplitHeader.splitHeader(file);
+        String body = headAndBody.get(1);
+        return parseBody(new String(body), new HashMap<String, String>());
+    }
+    
+    /**
+     * 
+     * @param head
+     * @return
+     */
     public static Map<String, String> parseHeader(String head) {
         // take in string of abc language and convert to stream, then to tokens, then parse
         CharStream headstream = new ANTLRInputStream(head);
@@ -59,6 +82,12 @@ public interface Music {
         return headerMaker.getHeader();
     }
     
+    /**
+     * 
+     * @param body
+     * @param headerInfo
+     * @return
+     */
     public static Music parseBody(String body, Map<String, String> headerInfo) {
         CharStream bodystream = new ANTLRInputStream(body);
         AbcLexer bodylexer = new AbcLexer(bodystream);
