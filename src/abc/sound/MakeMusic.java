@@ -243,8 +243,9 @@ public class MakeMusic implements AbcListener {
         String[] flatorder = { "B", "E", "A", "D", "G", "C", "F"};
         String[] sharporder = { "F", "C", "G", "D", "A", "E", "B"};
         String uppercasebasenote = basenote.toUpperCase();
-        String key = headerInfo.get("key").toUpperCase();
+        String key = headerInfo.get("key");
         Integer numAccidentals = accidentalMap.get(key);
+        System.err.println(accidentalMap.get(key));
         if(numAccidentals == 0){
             return 0;
         }
@@ -283,6 +284,19 @@ public class MakeMusic implements AbcListener {
         accidentalMap.put("Db", -5);
         accidentalMap.put("Gb", -6);
         accidentalMap.put("Cb", -7);
+        accidentalMap.put("D", 2);
+        accidentalMap.put("Dmaj", 2);
+        accidentalMap.put("Dmajor", 2);
+        accidentalMap.put("Dm", -1);
+        accidentalMap.put("Dmin", -1);
+        accidentalMap.put("Dminor", -1);
+        accidentalMap.put("Am", 0);
+        accidentalMap.put("DDor", 0);
+        accidentalMap.put("DDorian", 0);
+        accidentalMap.put("ELyd", 0);
+        accidentalMap.put("DMix", 1);
+        accidentalMap.put("DPhr", -2);
+        accidentalMap.put("DLyd", 3);
         return accidentalMap;
     }
 
@@ -434,6 +448,7 @@ public class MakeMusic implements AbcListener {
         else if (ctx.getText().equals(":|")){
             for (int i = 0; i < 2; i ++){
                 for (int j = repeat.size() - 1; i >= 0; i--){
+                    System.err.println(j);
                     stack.push(repeat.get(j));
                 }
             }
