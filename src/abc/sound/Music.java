@@ -18,7 +18,7 @@ import abc.parser.ABCgrammarLexer;
 import abc.parser.ABCgrammarParser;
 import abc.parser.AbcLexer;
 import abc.parser.AbcParser;
-import abc.parser.AbcParser.RootContext;
+
 import abc.parser.SplitHeader;
 
 // Datatype definition:
@@ -101,6 +101,7 @@ public interface Music {
     public static void main(String[] args) throws IOException {
         File file = new File("sample_abc/waxies_dargle.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
+
         System.out.println(headbody.get(1));
         parseBody(headbody.get(1),new HashMap<String, String>());
     }
