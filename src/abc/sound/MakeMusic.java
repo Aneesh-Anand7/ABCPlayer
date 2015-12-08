@@ -443,10 +443,11 @@ public class MakeMusic implements AbcListener {
             inrepeat = true;
         }
         else if (ctx.getText().equals(":|")){
-            for (int i = 0; i < 2; i ++){
-                for (int j = repeat.size() - 1; i >= 0; i--){
-                    System.err.println(j);
-                    stack.push(repeat.get(j));
+            if(repeat.size() > 0){
+                for (int i = 0; i < 2; i ++){
+                    for (int j = repeat.size() - 1; i >= 0; i--){
+                        stack.push(repeat.get(j));
+                    }
                 }
             }
         }
