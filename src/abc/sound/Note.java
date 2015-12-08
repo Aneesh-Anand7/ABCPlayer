@@ -67,6 +67,7 @@ public class Note implements Music {
      */
     public void play(SequencePlayer player, double atBeat) {
         int ticksPerBeat = player.getTicks();
+        int newAtBeat = (int) atBeat;
         int newDuration = (int) (this.duration * ticksPerBeat);
         player.addNote(this.pitch.toMidiNote(), (int) atBeat, newDuration);
     }
