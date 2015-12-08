@@ -86,15 +86,18 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitRoot(RootContext ctx) {
-        // do nothing, root has only one child so its value is
-        // already on top of the stack
         //we want to reverse order of stack
         List<Music> reversestack = new ArrayList<>(stack);
-        Concat concat = new Concat(reversestack.get(0), reversestack.get(1));
-        for (int i = 2; i < reversestack.size(); i ++){
-            concat = new Concat(concat, reversestack.get(i));
+        if (reversestack.size()>=2) {
+            Concat concat = new Concat(reversestack.get(0), reversestack.get(1));
+            for (int i = 2; i < reversestack.size(); i ++){
+                concat = new Concat(concat, reversestack.get(i));
+            }
+            fullPiece = concat;
+        // only one thing in the stack, just return it
+        } else {
+            fullPiece = reversestack.get(0);
         }
-        fullPiece = concat;
         System.err.println(fullPiece);
         System.err.println("exiting root" + ", stack is " + stack);
     }
@@ -195,7 +198,7 @@ public class MakeMusic implements AbcListener {
                 basenotechar = basenote.toUpperCase().charAt(0);
                 pitch =  new Pitch(basenotechar);
                 //(uppercase) C' (C apostrophe) should have the same meaning as (lowercase) c
-                pitch.transpose(12);
+                pitch = pitch.transpose(12);
             }
             else{
                 pitch =  new Pitch(basenotechar);
@@ -206,9 +209,9 @@ public class MakeMusic implements AbcListener {
                 int downoctaves = countOccurrences(octave, ',');
                 int upoctaves = countOccurrences(octave, "'".charAt(0));
                 int change = upoctaves - downoctaves;   //+ means net change up, - mean net change down
-                pitch.transpose(change * 12);
+                pitch = pitch.transpose(change * 12);
             }
-            pitch.transpose(keyChange(basenote));
+            pitch = pitch.transpose(keyChange(basenote));
             String accidental = null;
             if (ctx.noteorrest().pitch().accidental() != null){
                 accidental = ctx.noteorrest().pitch().accidental().getText();
@@ -216,7 +219,7 @@ public class MakeMusic implements AbcListener {
                 int numsharps = countOccurrences(accidental, '^');
                 //TODO natural accidental implementation
                 int netaccidental = numsharps - numflats;
-                pitch.transpose(netaccidental);
+                pitch = pitch.transpose(netaccidental);
             }
            Note note = new Note(duration, pitch);
            if(inrepeat){
