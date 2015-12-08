@@ -151,8 +151,27 @@ public class MakeMusic implements AbcListener {
     public void exitNote(NoteContext ctx) {
         double duration;
         if (ctx.notelength() != null) {
-            String text = ctx.notelength().NOTELENGTH().getText();
-            duration = Double.valueOf(text);
+            String text = ctx.notelength().getText();
+            // fraction
+            if (text.contains("/")) {
+                String[] numbers = text.split("/");
+                System.err.println(numbers[0]);
+                // no numerator or denominator
+                if ((numbers[0].length() == 0)&&(numbers[1].length() == 0)) {
+                  duration = 1.0;
+                  // denominator only
+                } else if (numbers[0].length() == 0){
+                    duration = 1.0/Double.valueOf(numbers[1]);
+                  // numerator only
+                } else if (numbers[1].length() == 0){
+                    duration = Double.valueOf(numbers[0]);
+                } else {
+                    duration = Double.valueOf(numbers[0])/Double.valueOf(numbers[1]);
+                }
+              // no fraction
+            } else {
+                duration = Double.valueOf(text);
+            }
         } else {
             duration = 1.0;
         }
