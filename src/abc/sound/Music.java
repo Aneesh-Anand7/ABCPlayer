@@ -117,6 +117,7 @@ public interface Music {
      */
     public double duration();
     
+    
     /**
      * Transpose all notes upward or downward in pitch.
      * @param semitonesUp semitones by which to transpose
@@ -135,6 +136,7 @@ public interface Music {
      */
     void play(SequencePlayer player, double atBeat);
     
+
     public static void main(String[] args) throws IOException, MidiUnavailableException, InvalidMidiDataException {
         File file = new File("sample_abc/sample1.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
@@ -144,5 +146,6 @@ public interface Music {
         Music music = parseBody(headbody.get(1),header);
         SequencePlayer player = new SequencePlayer(50);
         music.play(player, 0);
+
     }
 }
