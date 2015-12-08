@@ -3,6 +3,9 @@ package abc.sound;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
@@ -134,8 +137,10 @@ public class MusicTest {
         Note d = new Note(2, D);
         Note g = new Note(3, G);
         Note f = new Note(4, F);
-        Chord cd = new Chord(c,d);
-        Chord gf = new Chord(g,f);
+        List<Note> cdList = Arrays.asList(c,d);
+        Chord cd = new Chord(cdList);
+        List<Note> gfList = Arrays.asList(g,f);
+        Chord gf = new Chord(gfList);
         Concat both = new Concat(cd, gf);
         assertEquals(both.first(), cd);
         assertEquals(both.second(), gf);
@@ -149,7 +154,8 @@ public class MusicTest {
         Note c = new Note(1, C);
         Note d = new Note(2, D);
         Note f = new Note(4, F);
-        Chord cd = new Chord(c,d);
+        List<Note> cDList = Arrays.asList(c,d);
+        Chord cd = new Chord(cDList);
         Concat both = new Concat(cd, f);
         assertEquals(both.first(), cd);
         assertEquals(both.second(), f);
@@ -163,8 +169,10 @@ public class MusicTest {
         Note c = new Note(1, C);
         Note d = new Note(2, D);
         Note f = new Note(4, F);
-        Chord cd = new Chord(c,d);
-        Chord df = new Chord(d,f);
+        List<Note> cdList = Arrays.asList(c,d);
+        Chord cd = new Chord(cdList);
+        List<Note> dfList = Arrays.asList(d,f);
+        Chord df = new Chord(dfList);
         Concat both = new Concat(cd, f);
         Concat last = new Concat(both, df);
         assertEquals(last.first(), both);
@@ -178,7 +186,8 @@ public class MusicTest {
         Rest rest = new Rest(1);
         Note c = new Note(1, C);
         Note d = new Note(2, D);
-        Chord cd = new Chord(c,d);
+        List<Note> cdList = Arrays.asList(c,d);
+        Chord cd = new Chord(cdList);
         Concat both = new Concat(cd, rest);
         assertEquals(both.first(), cd);
         assertEquals(both.second(), rest);

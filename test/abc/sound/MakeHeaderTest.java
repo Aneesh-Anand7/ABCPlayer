@@ -12,7 +12,7 @@ import org.junit.Test;
 public class MakeHeaderTest {
 
     @Test
-    public void testMakeHeaderFurElise() {
+    public void testMakeHeaderFromStringFurElise() {
         Map<String, String> title = Music.parseHeader("X: 1 \n "
                 + "T:Bagatelle No.25 in A, WoO.59 \n"
                 + "C:Ludwig van Beethoven \n"
