@@ -89,6 +89,7 @@ public interface Music {
      *         n'.pitch() == n.pitch().transpose(semitonesUp), and m' is
      *         otherwise identical to m
      */
+
     Music transpose(int semitonesUp);
     
     /**
