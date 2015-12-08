@@ -12,7 +12,7 @@ import org.junit.Test;
 public class MakeHeaderTest {
 
     @Test
-    public void testMakeHeaderFurElise() {
+    public void testMakeHeaderFromStringFurElise() {
         Map<String, String> title = Music.parseHeader("X: 1 \n "
                 + "T:Bagatelle No.25 in A, WoO.59 \n"
                 + "C:Ludwig van Beethoven \n"
@@ -124,8 +124,8 @@ public class MakeHeaderTest {
         Map<String, String> title = Music.parseHeaderFromFile(file);
         assertEquals(4, title.size());
         assertEquals("4/4", title.get("meter"));
-        assertEquals("1/4" , title.get("length"));
-        assertEquals("1/4=200", title.get("tempo"));
+        assertEquals("1/8" , title.get("length"));
+        assertEquals("1/8=100", title.get("tempo"));
         assertEquals("C", title.get("key"));
     }
     
@@ -135,9 +135,9 @@ public class MakeHeaderTest {
         Map<String, String> title = Music.parseHeaderFromFile(file);
         assertEquals(4, title.size());
         assertEquals("4/4", title.get("meter"));
-        assertEquals("1/4" , title.get("length"));
-        assertEquals("1/4=200", title.get("tempo"));
-        assertEquals("C", title.get("key"));
+        assertEquals("1/8" , title.get("length"));
+        assertEquals("1/8=100", title.get("tempo"));
+        assertEquals("Cm", title.get("key"));
     }
     
     @Test
@@ -146,8 +146,8 @@ public class MakeHeaderTest {
         Map<String, String> title = Music.parseHeaderFromFile(file);
         assertEquals(4, title.size());
         assertEquals("4/4", title.get("meter"));
-        assertEquals("1/4" , title.get("length"));
-        assertEquals("1/4=200", title.get("tempo"));
+        assertEquals("1/8" , title.get("length"));
+        assertEquals("1/8=100", title.get("tempo"));
         assertEquals("C", title.get("key"));
     }
     
@@ -158,7 +158,7 @@ public class MakeHeaderTest {
         assertEquals(4, title.size());
         assertEquals("4/4", title.get("meter"));
         assertEquals("1/4" , title.get("length"));
-        assertEquals("1/4=200", title.get("tempo"));
+        assertEquals("1/4=120", title.get("tempo"));
         assertEquals("C", title.get("key"));
     }
     
@@ -168,8 +168,8 @@ public class MakeHeaderTest {
         Map<String, String> title = Music.parseHeaderFromFile(file);
         assertEquals(4, title.size());
         assertEquals("4/4", title.get("meter"));
-        assertEquals("1/4" , title.get("length"));
-        assertEquals("1/4=200", title.get("tempo"));
-        assertEquals("C", title.get("key"));
+        assertEquals("1/8" , title.get("length"));
+        assertEquals("1/4=180", title.get("tempo"));
+        assertEquals("G", title.get("key"));
     }
 }

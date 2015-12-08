@@ -1,6 +1,9 @@
 package abc.sound;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Map;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaEventListener;
@@ -90,6 +93,29 @@ public class SequencePlayer {
         Sequence sequence = new Sequence(Sequence.PPQ, ticksPerBeat);
         this.beatsPerMinute = beatsPerMinute;
 
+        // create an empty track; notes will be added to this track
+        this.track = sequence.createTrack();
+        sequencer.setSequence(sequence);
+        checkRep();
+    }
+    
+    /**
+     * Creates sequence player with beats per minute corresponding to input abc music file
+     * @param file the abc music file from which the tempo information is extracted
+     * @throws MidiUnavailableException
+     * @throws InvalidMidiDataException
+     * @throws IOException
+     */
+    public SequencePlayer(File file) throws MidiUnavailableException, InvalidMidiDataException, IOException {
+        this.sequencer = MidiSystem.getSequencer();
+        this.ticksPerBeat = defaultTicksPerBeat;
+        // create a sequence object with with tempo-based timing, where
+        // the resolution of the time step is based on ticks per beat
+        Sequence sequence = new Sequence(Sequence.PPQ, ticksPerBeat);
+        // the beats per minute is taken from the declared tempo in the header of the abc music file
+        Map<String, String> title = Music.parseHeaderFromFile(file);
+        String[] tempoParts= title.get("tempo").split("=");
+        this.beatsPerMinute = Integer.parseInt(tempoParts[1]);
         // create an empty track; notes will be added to this track
         this.track = sequence.createTrack();
         sequencer.setSequence(sequence);

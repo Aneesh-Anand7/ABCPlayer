@@ -49,6 +49,12 @@ public interface Music {
         return parseHeader(new String(header));
     }
     
+    /**
+     * 
+     * @param file
+     * @return
+     * @throws IOException
+     */
     public static Music parseBodyFromFile(File file) throws IOException {
         List<String> headAndBody = SplitHeader.splitHeader(file);
         String body = headAndBody.get(1);
@@ -105,7 +111,7 @@ public interface Music {
     /**
      * @return total duration of this piece in beats
      */
-    double duration();
+    public double duration();
     
     /**
      * Transpose all notes upward or downward in pitch.
@@ -116,7 +122,7 @@ public interface Music {
      *         otherwise identical to m
      */
 
-    Music transpose(int semitonesUp);
+    public Music transpose(int semitonesUp);
     
     /**
      * Play this piece.
