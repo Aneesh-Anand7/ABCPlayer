@@ -149,7 +149,13 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitNote(NoteContext ctx) {
-        double duration = Double.valueOf(ctx.notelength().NOTELENGTH().getText());
+        double duration;
+        if (ctx.notelength() != null) {
+            String text = ctx.notelength().NOTELENGTH().getText();
+            duration = Double.valueOf(text);
+        } else {
+            duration = 1.0;
+        }
         if (ctx.noteorrest().rest() != null){
             Rest rest = new Rest(duration);
             stack.push(rest);

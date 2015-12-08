@@ -101,8 +101,8 @@ public interface Music {
         AbcParser parser = new AbcParser(bodyTokens);
         parser.reportErrorsAsExceptions();
         ParseTree tree = parser.root();
-        Trees.inspect(tree, parser);
         MakeMusic musicMaker = new MakeMusic();
+        musicMaker.setHeaderInfo(headerInfo);
         new ParseTreeWalker().walk(musicMaker, tree);
         return musicMaker.getFullPiece();
     }
@@ -136,6 +136,7 @@ public interface Music {
         List<String> headbody = SplitHeader.splitHeader(file);
         System.out.println(headbody.get(1));
         Map<String, String> header = parseHeader(headbody.get(0));
+        System.out.println(header);
         Music music = parseBody(headbody.get(1),header);
         
     }
