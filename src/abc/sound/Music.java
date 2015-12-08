@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiUnavailableException;
+
 import org.antlr.v4.gui.Trees;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
@@ -132,14 +135,14 @@ public interface Music {
      */
     void play(SequencePlayer player, double atBeat);
     
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, MidiUnavailableException, InvalidMidiDataException {
         File file = new File("sample_abc/sample1.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
         System.out.println(headbody.get(1));
         Map<String, String> header = parseHeader(headbody.get(0));
         System.out.println(header);
         Music music = parseBody(headbody.get(1),header);
-        
-        
+        SequencePlayer player = new SequencePlayer(50);
+        music.play(player, 0);
     }
 }

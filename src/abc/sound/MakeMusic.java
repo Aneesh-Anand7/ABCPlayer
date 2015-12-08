@@ -88,6 +88,14 @@ public class MakeMusic implements AbcListener {
     public void exitRoot(RootContext ctx) {
         // do nothing, root has only one child so its value is
         // already on top of the stack
+        //we want to reverse order of stack
+        List<Music> reversestack = new ArrayList<>(stack);
+        Concat concat = new Concat(reversestack.get(0), reversestack.get(1));
+        for (int i = 2; i < reversestack.size(); i ++){
+            concat = new Concat(concat, reversestack.get(i));
+        }
+        fullPiece = concat;
+        System.err.println(fullPiece);
         System.err.println("exiting root" + ", stack is " + stack);
     }
 
@@ -429,7 +437,7 @@ public class MakeMusic implements AbcListener {
         }
         else if (ctx.getText().equals("||")){
             //we want to reverse order of stack
-            List<Music> reversestack = new ArrayList<>();
+            List<Music> reversestack = new ArrayList<>(stack);
             Concat concat = new Concat(reversestack.get(0), reversestack.get(1));
             for (int i = 2; i < reversestack.size(); i ++){
                 concat = new Concat(concat, reversestack.get(i));
