@@ -101,6 +101,7 @@ public interface Music {
         AbcParser parser = new AbcParser(bodyTokens);
         parser.reportErrorsAsExceptions();
         ParseTree tree = parser.root();
+        //Trees.inspect(tree, parser);
         MakeMusic musicMaker = new MakeMusic();
         musicMaker.setHeaderInfo(headerInfo);
         new ParseTreeWalker().walk(musicMaker, tree);
@@ -132,12 +133,13 @@ public interface Music {
     void play(SequencePlayer player, double atBeat);
     
     public static void main(String[] args) throws IOException {
-        File file = new File("sample_abc/piece1.abc");
+        File file = new File("sample_abc/sample2.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
         System.out.println(headbody.get(1));
         Map<String, String> header = parseHeader(headbody.get(0));
         System.out.println(header);
         Music music = parseBody(headbody.get(1),header);
+        
         
     }
 }

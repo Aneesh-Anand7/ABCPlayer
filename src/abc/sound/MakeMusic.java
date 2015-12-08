@@ -88,7 +88,7 @@ public class MakeMusic implements AbcListener {
     public void exitRoot(RootContext ctx) {
         // do nothing, root has only one child so its value is
         // already on top of the stack
-        System.err.println("exiting note" + ", stack is " + stack);
+        System.err.println("exiting root" + ", stack is " + stack);
     }
 
     @Override
@@ -164,7 +164,7 @@ public class MakeMusic implements AbcListener {
                     duration = 1.0/Double.valueOf(numbers[1]);
                   // numerator only
                 } else if (numbers[1].length() == 0){
-                    duration = Double.valueOf(numbers[0]);
+                    duration = Double.valueOf(numbers[0])/2.0;
                 } else {
                     duration = Double.valueOf(numbers[0])/Double.valueOf(numbers[1]);
                 }
@@ -372,7 +372,7 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void enterMultinote(MultinoteContext ctx) {
-        // TODO Auto-generated method stub
+        System.err.println("entering multinote" + ", stack is " + stack);
 
     }
 
@@ -391,7 +391,7 @@ public class MakeMusic implements AbcListener {
         else{
             stack.push(newchord);
         }
-        System.err.println("exiting " + ctx.getText() + "stack is" + stack);
+        System.err.println("exiting multinote" + ", stack is" + stack);
     }
 
     @Override
