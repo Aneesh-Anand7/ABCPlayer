@@ -128,7 +128,7 @@ public interface Music {
     void play(SequencePlayer player, double atBeat);
     
     public static void main(String[] args) throws IOException {
-        File file = new File("sample_abc/abc_song.abc");
+        File file = new File("sample_abc/waxies_dargle.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
 
         System.out.println(headbody.get(1));

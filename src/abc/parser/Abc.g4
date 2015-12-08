@@ -16,25 +16,26 @@ note: noteorrest notelength?;
 noteorrest: pitch | rest;
 pitch: accidental? basenote octave?;
 octave: OCTAVE;
-notelength: (DIGIT+) ('/' (DIGIT+)?)?;
+notelength: NOTELENGTH;
 /* ^ is sharp, _ is flat, = is neutral */
 accidental: ACCIDENTAL;
 basenote: BASENOTE;
 rest: 'z';
 /* tuplets */
 tupletelem: tupletspec noteelem+;
-tupletspec: '(' DIGIT;
+tupletspec: TUPLETSPEC;
 /* chords */
 multinote: '[' note+ ']';
 /* barlines */
 barline: '|'|'||'|'[|'|'|]'|':|'|'|:';
 nthrepeat: '[1'|'[2';
-
-
 bodyvoice: BODYVOICE;
-BODYVOICE: 'V: ' ([A-Za-z.0-9])+ ('\n' | '\r'('\n')?);
 
-COMMENT: '%' ([A-Za-z.])+ ('\n' | '\r'('\n')?);
+TUPLETSPEC: '(' [0-9];
+NOTELENGTH: ([0-9]+)? ('/' ([0-9]+)?)?;
+BODYVOICE: ('V: '|'V:') ([A-Za-z.0-9])+ ('\n' | '\r'('\n')?);
+COMMENT: '%' ([A-Za-z.])* ('\n' | '\r'('\n')?);
+
 endofline: COMMENT | NEWLINE;
 
 ACCIDENTAL:  '^'|'^^'|'_'|'__'|'=';
