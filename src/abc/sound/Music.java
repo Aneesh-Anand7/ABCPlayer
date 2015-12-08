@@ -146,6 +146,6 @@ public interface Music {
         Music music = parseBody(headbody.get(1),header);
         SequencePlayer player = new SequencePlayer(50);
         music.play(player, 0);
-
+        player.play();
     }
 }

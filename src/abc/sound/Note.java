@@ -1,5 +1,6 @@
 package abc.sound;
 
+import javax.sound.midi.MidiUnavailableException;
 
 /**
  * Abstraction function: Note is a class that implements the Music interface and represents a single 
@@ -62,12 +63,12 @@ public class Note implements Music {
     /**
      * Play this note
      *TODO find out solution to double to int issue
+     * @throws MidiUnavailableException 
      */
     public void play(SequencePlayer player, double atBeat) {
         int ticksPerBeat = player.getTicks();
         int newDuration = (int) (this.duration * ticksPerBeat);
-//        player.addNote(this.pitch.toMidiNote(), atBeat, newDuration);
-        
+        player.addNote(this.pitch.toMidiNote(), (int) atBeat, newDuration);
     }
     
 
