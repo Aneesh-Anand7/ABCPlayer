@@ -70,65 +70,53 @@ public class MakeMusic implements AbcListener {
     private String currentVoice = "defaultvoice";
     
     private Map<String, Integer> measureAccidentals = new HashMap<>();
-
+    /*
+     * @return a Map<String,Music> that contains one key "music" that maps to the full Music piece
+     */
     public Map<String, Music> getFullPiece() {
         Map<String, Music> returnMap = new HashMap<>();
         returnMap.put("music", fullPiece);
         return returnMap;
     }
-
+    /*
+     * Sets the header info from the @param info given
+     */
     public void setHeaderInfo(Map<String, String> info) {
         headerInfo = info;
     }
+    /*
+     * @return a Map<String,Music> that maps voices to the music that they play
+     */
     public Map<String, Music> getPieceMap() {
         return finalVoiceMusic;
     }
 
     @Override
     public void enterEveryRule(ParserRuleContext arg0) {
-        // System.err.println("entering " + arg0.getText() + ", stack is " +
-        // stack);
     }
 
     @Override
 
     public void exitEveryRule(ParserRuleContext arg0) {
-
-        // System.err.println("exiting " + arg0.getText() + ", stack is " +
-        // stack);
-
     }
 
     @Override
 
     public void visitErrorNode(ErrorNode arg0) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void visitTerminal(TerminalNode arg0) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void enterRoot(RootContext ctx) {
-
-        // TODO Auto-generated method stub
-
-        // System.err.println("entering root" + ", stack is " + stack);
-
     }
-
+    
     @Override
-
     public void exitRoot(RootContext ctx) {
-
         if (headerInfo.containsKey("voices")) {
             if (inrepeat) {
                 voiceMusic.put(currentVoice, repeat);
@@ -181,10 +169,6 @@ public class MakeMusic implements AbcListener {
 
             }
 
-            // System.err.println(fullPiece);
-
-            // System.err.println("exiting root" + ", stack is " + stack);
-
         }
 
     }
@@ -193,70 +177,43 @@ public class MakeMusic implements AbcListener {
 
     public void enterLine(LineContext ctx) {
 
-        // TODO Auto-generated method stub
-        // System.err.println("entering line" + ", stack is " + stack);
-
     }
 
     @Override
 
     public void exitLine(LineContext ctx) {
-
-        // TODO Auto-generated method stub
-
-        // System.err.println("exiting line" + ", stack is " + stack);
-
     }
 
     @Override
 
     public void enterElement(ElementContext ctx) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void exitElement(ElementContext ctx) {
 
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void enterNoteelem(NoteelemContext ctx) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void exitNoteelem(NoteelemContext ctx) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void enterNote(NoteContext ctx) {
-
-        // System.err.println("entering note" + ", stack is " + stack);
-
     }
 
-    
-    /**
-     * TODO put in spec - user can have double sharp or double flat, but not any combination including 
-     * a natural, (eg. #= or =b)
-     */
+
     /**
      * 
      * Counts occurrences of a desired char in a String
-     * 
      * @param string
      *            - String to be searched
      * 
@@ -284,11 +241,11 @@ public class MakeMusic implements AbcListener {
         return count;
 
     }
-
+    /*
+     * 
+     */
     @Override
-
     public void exitNote(NoteContext ctx) {
-        System.out.println("leaving the note " + ctx.getText());
         double duration;
         if (ctx.notelength() != null) {
             String text = ctx.notelength().getText();
@@ -368,9 +325,6 @@ public class MakeMusic implements AbcListener {
                 if(measureAccidentals.containsKey(basenote)){
                     naturalchange = -1 * measureAccidentals.get(basenote);
                 }
-
-                // TODO natural accidental implementation
-
                 int netaccidental = numsharps - numflats + numnaturals * naturalchange;
                 
                 
@@ -391,8 +345,6 @@ public class MakeMusic implements AbcListener {
                 stack.push(note);
             }
         }
-        // System.err.println("exiting note" + ", stack is " + stack);
-
     }
 
     /**
@@ -553,9 +505,7 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void exitNoteorrest(NoteorrestContext ctx) {
-
         // Handled in exitNote
-
     }
 
     @Override
@@ -567,9 +517,7 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void exitPitch(PitchContext ctx) {
-
         // Handled in exitNote
-
     }
 
     @Override
@@ -581,9 +529,7 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void exitOctave(OctaveContext ctx) {
-
         // Handled in exitNote
-
     }
 
     @Override
@@ -645,11 +591,6 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void enterTupletelem(TupletelemContext ctx) {
-
-        // TODO Auto-generated method stub
-
-        // System.err.println("entering tupletelem" + ", stack is " + stack);
-
     }
     /**
      * Exits the tuplet element and handles duplets: 2 notes in the time of 3 notes
@@ -699,30 +640,21 @@ public class MakeMusic implements AbcListener {
             }
             
         }
-
-        // System.err.println("exiting tupletelem" + ", stack is " + stack);
     }
 
     @Override
 
     public void enterTupletspec(TupletspecContext ctx) {
-
-        // TODO Auto-generated method stub
     }
 
     @Override
 
     public void exitTupletspec(TupletspecContext ctx) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void enterMultinote(MultinoteContext ctx) {
-
-        // System.err.println("entering multinote" + ", stack is " + stack);
 
     }
 
@@ -731,10 +663,6 @@ public class MakeMusic implements AbcListener {
     public void exitMultinote(MultinoteContext ctx) {
 
         List<NoteContext> chordNotes = ctx.note();
-
-        //System.err.println(chordNotes);
-
-        //System.err.println(stack);
 
         List<Note> chord = new ArrayList<>();
 
@@ -757,8 +685,6 @@ public class MakeMusic implements AbcListener {
         } else {
             stack.push(newchord);
         }
-
-        // System.err.println("exiting multinote" + ", stack is" + stack);
 
     }
 
@@ -871,9 +797,6 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void enterNthrepeat(NthrepeatContext ctx) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -900,18 +823,12 @@ public class MakeMusic implements AbcListener {
         }
 
         else if (ctx.getText().equals("[2")) {
-
             System.out.println("Beginning of second alt ending");
-
             altEnding = false;
             inrepeat = false;
-
             System.out.println("repeat: " + repeat);
-
             System.out.println("before1st: " + before1st);
-
             System.out.println("stack: " + stack);
-
         }
 
     }
@@ -919,13 +836,8 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void enterBodyvoice(BodyvoiceContext ctx) {
-
-        // TODO Auto-generated method stub
-
     }
-
     @Override
-
     public void exitBodyvoice(BodyvoiceContext ctx) {
         if (inrepeat) {
             if (currentVoice != null && repeat.size() > 0) {
@@ -961,16 +873,11 @@ public class MakeMusic implements AbcListener {
 
     public void enterEndofline(EndoflineContext ctx) {
 
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void exitEndofline(EndoflineContext ctx) {
-
-        // TODO Auto-generated method stub
-
     }
 
 }
