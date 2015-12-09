@@ -53,6 +53,6 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException, MidiUnavailableException, InvalidMidiDataException {
-        play(args[0]);
+        play("sample_abc/piece1.abc");
     }
 }
