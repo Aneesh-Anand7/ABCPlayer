@@ -92,7 +92,7 @@ public class Concat implements Music {
 
     @Override
     public String toString() {
-        return "Concat(" + first.toString() + " " + second.toString() + ")";
+        return first.toString() + second.toString();
     }
 
     @Override
