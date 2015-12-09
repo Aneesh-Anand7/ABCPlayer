@@ -112,7 +112,7 @@ public interface Music {
         parser.reportErrorsAsExceptions();
         ParseTree tree = parser.root();
         //Trees.inspect(tree, parser);
-        MakeMusic musicMaker = new MakeMusic();
+        MakeMusicV2 musicMaker = new MakeMusicV2();
         musicMaker.setHeaderInfo(headerInfo);
         new ParseTreeWalker().walk(musicMaker, tree);
         if(headerInfo.containsKey("voices")){

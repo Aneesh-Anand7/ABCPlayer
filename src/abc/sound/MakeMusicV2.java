@@ -56,7 +56,7 @@ import abc.parser.AbcParser.TupletelemContext;
 
 import abc.parser.AbcParser.TupletspecContext;
 
-public class MakeMusic implements AbcListener {
+public class MakeMusicV2 implements AbcListener {
     private Stack<Music> stack = new Stack<>();
     private Stack<Music> repeat = new Stack<>();
     private Stack<Music> before1st = new Stack<>();
@@ -130,19 +130,15 @@ public class MakeMusic implements AbcListener {
     public void exitRoot(RootContext ctx) {
 
         if (headerInfo.containsKey("voices")) {
-            if (inrepeat) {
-                voiceMusic.put(currentVoice, repeat);
-            }else {
-                voiceMusic.put(currentVoice, stack);
-            }
-            System.out.println(voiceMusic);
+
+//            voiceMusic.put(currentVoice, repeat);
+            System.out.println("this piece has voices: " + voiceMusic);
             for (String key : voiceMusic.keySet()) {
-                Stack<Music> thisstack = voiceMusic.get(key);
-                List<Music> reversestack = new ArrayList<>(thisstack);
-                if (reversestack.size() >= 2) {
-                    Concat concat = new Concat(reversestack.get(0), reversestack.get(1));
-                    for (int i = 2; i < reversestack.size(); i++) {
-                        concat = new Concat(concat, reversestack.get(i));
+                Stack<Music> currentVoiceStack = voiceMusic.get(key);
+                if (currentVoiceStack.size() >= 2) {
+                    Concat concat = new Concat(currentVoiceStack.get(0), currentVoiceStack.get(1));
+                    for (int i = 2; i < currentVoiceStack.size(); i++) {
+                        concat = new Concat(concat, currentVoiceStack.get(i));
                     }
                     finalVoiceMusic.put(key, concat);
                     // only one thing in the stack, just put it in the final map
@@ -156,44 +152,26 @@ public class MakeMusic implements AbcListener {
             for (int j = 0; j <= repeat.size() - 1; j++) {
                 stack.push(repeat.get(j));
             }
-
-            // we want to reverse order of stack
-
-            List<Music> reversestack = new ArrayList<>(stack);
-
-            if (reversestack.size() >= 2) {
-
-                Concat concat = new Concat(reversestack.get(0), reversestack.get(1));
-
-                for (int i = 2; i < reversestack.size(); i++) {
-
-                    concat = new Concat(concat, reversestack.get(i));
-
+            if (stack.size() >= 2) {
+                Concat concat = new Concat(stack.get(0), stack.get(1));
+                for (int i = 2; i < stack.size(); i++) {
+                    concat = new Concat(concat, stack.get(i));
                 }
-
                 fullPiece = concat;
-
                 // only one thing in the stack, just return it
-
             } else {
-
-                fullPiece = reversestack.get(0);
-
+                fullPiece = stack.get(0);
             }
-
             // System.err.println(fullPiece);
-
             // System.err.println("exiting root" + ", stack is " + stack);
-
         }
-
     }
-
     @Override
 
     public void enterLine(LineContext ctx) {
 
         // TODO Auto-generated method stub
+
         // System.err.println("entering line" + ", stack is " + stack);
 
     }
@@ -288,7 +266,8 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void exitNote(NoteContext ctx) {
-        System.out.println("leaving the note " + ctx.getText());
+        System.out.println("leaving the note" + ctx.getText());
+
         double duration;
         if (ctx.notelength() != null) {
             String text = ctx.notelength().getText();
@@ -316,12 +295,7 @@ public class MakeMusic implements AbcListener {
         }
         if (ctx.noteorrest().rest() != null) {
             Rest rest = new Rest(duration);
-            if (inrepeat) {
-                repeat.push(rest);
-            } else {
-                stack.push(rest);
-            }
-            
+            repeat.push(rest);
         }
         else {
             String basenote = ctx.noteorrest().pitch().basenote().BASENOTE().getText();
@@ -387,8 +361,6 @@ public class MakeMusic implements AbcListener {
             Note note = new Note(duration, pitch);
             if (inrepeat) {
                 repeat.push(note);
-            } else {
-                stack.push(note);
             }
         }
         // System.err.println("exiting note" + ", stack is " + stack);
@@ -477,69 +449,37 @@ public class MakeMusic implements AbcListener {
     }
 
     public Map<String, Integer> createAccidentalMap() {
-
         Map<String, Integer> accidentalMap = new HashMap<>();
-
         accidentalMap.put("C", 0);
-
         accidentalMap.put("G", 1);
-
         accidentalMap.put("D", 2);
-
         accidentalMap.put("A", 3);
-
         accidentalMap.put("E", 4);
-
         accidentalMap.put("B", 5);
-
         accidentalMap.put("F#", 6);
-
         accidentalMap.put("C#", 7);
-
         accidentalMap.put("Am", 0);
-
         accidentalMap.put("Em", 1);
-
         accidentalMap.put("Bm", 2);
-
         accidentalMap.put("F#m", 3);
-
         accidentalMap.put("C#m", 4);
-
         accidentalMap.put("G#m", 5);
-
         accidentalMap.put("D#m", 6);
-
         accidentalMap.put("A#m", 7);
-
         accidentalMap.put("F", -1);
-
         accidentalMap.put("Bb", -2);
-
         accidentalMap.put("Eb", -3);
-
         accidentalMap.put("Ab", -4);
-
         accidentalMap.put("Db", -5);
-
         accidentalMap.put("Gb", -6);
-
         accidentalMap.put("Cb", -7);
-
         accidentalMap.put("Dm", -1);
-
         accidentalMap.put("Gm", -2);
-
         accidentalMap.put("Cm", -3);
-
         accidentalMap.put("Fm", -4);
-
         accidentalMap.put("Bbm", -5);
-
         accidentalMap.put("Ebm", -6);
-
         accidentalMap.put("Abm", -7);
-
         return accidentalMap;
 
     }
@@ -549,130 +489,69 @@ public class MakeMusic implements AbcListener {
     public void enterNoteorrest(NoteorrestContext ctx) {
 
     }
-
     @Override
-
     public void exitNoteorrest(NoteorrestContext ctx) {
-
         // Handled in exitNote
-
     }
-
     @Override
-
     public void enterPitch(PitchContext ctx) {
-
     }
-
     @Override
-
     public void exitPitch(PitchContext ctx) {
-
         // Handled in exitNote
-
     }
-
     @Override
-
     public void enterOctave(OctaveContext ctx) {
-
     }
-
     @Override
-
     public void exitOctave(OctaveContext ctx) {
-
         // Handled in exitNote
-
     }
-
     @Override
-
     public void enterNotelength(NotelengthContext ctx) {
-
     }
-
     @Override
-
     public void exitNotelength(NotelengthContext ctx) {
-
         // Handled in exitNote
-
     }
-
     @Override
-
     public void enterAccidental(AccidentalContext ctx) {
-
     }
-
     @Override
-
     public void exitAccidental(AccidentalContext ctx) {
-
         // Handled in exitNote
-
     }
-
     @Override
-
     public void enterBasenote(BasenoteContext ctx) {
-
     }
-
     @Override
-
     public void exitBasenote(BasenoteContext ctx) {
-
         // Handled in exitNote
-
     }
-
     @Override
-
     public void enterRest(RestContext ctx) {
-
     }
-
     @Override
-
     public void exitRest(RestContext ctx) {
-
         // Handled in exitNote
-
     }
-
     @Override
-
     public void enterTupletelem(TupletelemContext ctx) {
-
         // TODO Auto-generated method stub
-
         // System.err.println("entering tupletelem" + ", stack is " + stack);
-
     }
-    /**
-     * Exits the tuplet element and handles duplets: 2 notes in the time of 3 notes
-     * Triplets: 3 notes in the time of 2 notes
-     * Quadruplets: 4 notes in the time of 3 notes
-     * If the # of notes in the tuplet is more than the number of notes specified by nplet,
-     * the extra notes are ignored
-     * Requires that the number of notes in the tuplet is at least as large as the constraints above
-     */
     @Override
+
     public void exitTupletelem(TupletelemContext ctx) {
         double nplet = Double.valueOf(ctx.tupletspec().TUPLETSPEC().getText().substring(1));
         List<NoteelemContext> noteelems = ctx.noteelem();
         List<Music> tuplets = new ArrayList<>();
         int counter = (int) nplet;
-        for (NoteelemContext noteelem: noteelems) {
+        // Only need to include as many notes in the tuplet that are given by
+        // the nplet
+        while (counter > 0) {
             // System.err.println(noteelem.getText() + " " + + nplet);
-            Music item;
-            if (inrepeat) {
-                item = repeat.pop();
-            } else {
-                item = stack.pop();
-            }
+            Music item = repeat.pop();
             if (item.isNote()) {
                 Note note = (Note) item;
                 Note tupletnote;
@@ -680,29 +559,20 @@ public class MakeMusic implements AbcListener {
                     tupletnote = new Note(note.duration() * 2 / nplet, note.pitch());
                 } else if (nplet == 2) {
                     tupletnote = new Note(note.duration() * 3 / nplet, note.pitch());
-                  // should equal 4 - SPEC
+                    // should equal 4 - SPEC
                 } else {
                     tupletnote = new Note(note.duration() * 3 / nplet, note.pitch());
                 }
                 tuplets.add(tupletnote);
             }
+            counter -= 1;
             // reverse the order because stacks are last in first out
-            
         }
-        // Only need to include as many notes in the tuplet that are given by
-        // the nplet
-        for (int i = tuplets.size() - 1; i >= tuplets.size()-counter; i--) {
-            if (inrepeat) {
-                repeat.push(tuplets.get(i));
-            } else {
-                stack.push(tuplets.get(i));
-            }
-            
+        for (int i = tuplets.size() - 1; i >= 0; i--) {
+            repeat.push(tuplets.get(i));
         }
-
         // System.err.println("exiting tupletelem" + ", stack is " + stack);
     }
-
     @Override
 
     public void enterTupletspec(TupletspecContext ctx) {
@@ -729,47 +599,29 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void exitMultinote(MultinoteContext ctx) {
-
         List<NoteContext> chordNotes = ctx.note();
-
         //System.err.println(chordNotes);
-
         //System.err.println(stack);
-
         List<Note> chord = new ArrayList<>();
-
         for (NoteContext notectx : chordNotes) {
-            Note note;
-            if (inrepeat) {
-                note = (Note) repeat.pop();
-            } else {
-                note = (Note) stack.pop();
-            }     
+            Note note = (Note) repeat.pop();
             chord.add(note);
         }
-        List<Note> revchord = new ArrayList<>();
-        for (int i = chord.size() - 1; i >= 0; i--) {
-            revchord.add(chord.get(i));
+        List<Note> revChord = new ArrayList<>();
+        for (int i= chord.size() -1; i>=0; i--) {
+            revChord.add(chord.get(i));
         }
-        Chord newchord = new Chord(revchord);
-        if (inrepeat) {
-            repeat.push(newchord);
-        } else {
-            stack.push(newchord);
-        }
-
+        
+        Chord newchord = new Chord(revChord);
+        repeat.push(newchord);
         // System.err.println("exiting multinote" + ", stack is" + stack);
 
     }
-
     @Override
-
     public void enterBarline(BarlineContext ctx) {
-
     }
-
+    
     @Override
-
     public void exitBarline(BarlineContext ctx) {
         if(ctx != null){
             measureAccidentals.clear();
@@ -777,56 +629,58 @@ public class MakeMusic implements AbcListener {
         if (ctx.getText().equals("|:") || ctx.getText().equals("[|") || ctx.getText().equals("||")
         || ctx.getText().equals("|]")) {
             System.out.println("at beginning of repeat");
+            System.out.println("Voices map: " + voiceMusic);
+            if (!(voiceMusic.isEmpty())) {
+                for (int j = 0; j <= repeat.size() - 1; j++) {
+                    stack.push(repeat.get(j));
+                }
+                Stack<Music> currentVoiceStack = voiceMusic.get(currentVoice);
+                for (int j = 0; j <= stack.size() - 1; j++) {
+                    currentVoiceStack.push(stack.get(j));
+                }
+                voiceMusic.put(currentVoice, currentVoiceStack);
+                stack = new Stack<>();
+                System.out.println("Tried to update current voice in map: " + voiceMusic);
+            } else { // there are no voices in the voice map
             for (int j = 0; j <= repeat.size() - 1; j++) {
                 stack.push(repeat.get(j));
-                System.out.println("stack: " + stack);
-                System.out.println("before1st: " + before1st);
-                System.out.println("repeat: " + repeat);
+                //System.out.println("stack: " + stack);
+                //System.out.println("before1st: " + before1st);
+                //System.out.println("repeat: " + repeat);
+            }
             }
             inrepeat = true;
             repeat = new Stack<>();
-            System.out.println("leaving barline");
-            System.out.println("voices map: " + voiceMusic);
-            Stack<Music> currentVoiceStack = voiceMusic.get(currentVoice);
             
-            for (int j = 0; j <= stack.size() - 1; j++) {
-                currentVoiceStack.push(stack.get(j));
-            }
-            voiceMusic.put(currentVoice, currentVoiceStack);
-            System.out.println("stack: " + stack);
-            System.out.println("before1st: " + before1st);
-            System.out.println("repeat: " + repeat);
         }
         else if (ctx.getText().equals(":|")) {
             if (repeat.size() > 0 && !(altEnding)) {
-                System.out.println("at end of repeat");
+                //System.out.println("at end of repeat");
                 for (int i = 0; i < 2; i++) {
                     for (int j = 0; j <= repeat.size() - 1; j++) {
                         stack.push(repeat.get(j));
-                        System.out.println("voices map " + voiceMusic );
-                        System.out.println("stack: " + stack);
-                        System.out.println("before1st: " + before1st);
-                        System.out.println("repeat: " + repeat);
+                       // System.out.println("stack: " + stack);
+
+                       // System.out.println("before1st: " + before1st);
+
+                       // System.out.println("repeat: " + repeat);
                     }
                 }
                 repeat = new Stack<>();
             }
-            if (repeat.size() == 0 && !(altEnding)) {
-                System.out.println("at end of second alternate ending");
-            }
             if (altEnding) {
-                System.out.println("at end of first alternate ending");
+                //System.out.println("at end of first alternate ending");
                 for (int j = 0; j <= repeat.size() - 1; j++) {
                     stack.push(repeat.get(j));
-                    System.out.println("stack: " + stack);
-                    System.out.println("before1st: " + before1st);
-                    System.out.println("repeat: " + repeat);
+                    //System.out.println("stack: " + stack);
+                    //System.out.println("before1st: " + before1st);
+                    //System.out.println("repeat: " + repeat);
                 }
                 for (int k = 0; k <= before1st.size() - 1; k++) {
                     stack.push(before1st.get(k));
-                    System.out.println("stack: " + stack);
-                    System.out.println("before1st: " + before1st);
-                    System.out.println("repeat: " + repeat);
+                    //System.out.println("stack: " + stack);
+                    //System.out.println("before1st: " + before1st);
+                    //System.out.println("repeat: " + repeat);
                 }
                 repeat = new Stack<>();
                 before1st = new Stack<>();
@@ -834,17 +688,11 @@ public class MakeMusic implements AbcListener {
             }
         }
     }
-
     @Override
-
     public void enterNthrepeat(NthrepeatContext ctx) {
-
         // TODO Auto-generated method stub
-
     }
-
     @Override
-
     public void exitNthrepeat(NthrepeatContext ctx) {
         if (ctx.getText().equals("[1")) {
             //System.out.println("Found beginning of first alternate ending");
@@ -857,12 +705,11 @@ public class MakeMusic implements AbcListener {
             }
         }
         else if (ctx.getText().equals("[2")) {
-            System.out.println("Beginning of second alt ending");
+            //System.out.println("Beginning of second alt ending");
             altEnding = false;
-            inrepeat = false;
-            System.out.println("repeat: " + repeat);
-            System.out.println("before1st: " + before1st);
-            System.out.println("stack: " + stack);
+            //System.out.println("repeat: " + repeat);
+            //System.out.println("before1st: " + before1st);
+            //System.out.println("stack: " + stack);
         }
     }
     @Override
@@ -876,43 +723,34 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void exitBodyvoice(BodyvoiceContext ctx) {
-        if (inrepeat) {
-            System.out.println("Enter exit body voice:" + voiceMusic);
-            System.out.println("current voice: " + currentVoice);
-            System.out.println("Voices map: " + voiceMusic);
-            System.out.println("repeat " + repeat);
-            if (currentVoice != null && repeat.size() > 0) {
+        System.out.println("Enter exit body voice:" + voiceMusic);
+        System.out.println("current voice: " + currentVoice);
+        System.out.println("Voices map: " + voiceMusic);
+        System.out.println("repeat " + repeat);
+        currentVoice = ctx.BODYVOICE().getText();
+        if (!(voiceMusic.containsKey(currentVoice))) {
+            if (repeat.size() > 0) {
+                System.out.println("Adding new current voice to voices map Voices map: " + voiceMusic);
                 voiceMusic.put(currentVoice, repeat);
-                System.out.println("new voice added" + voiceMusic);
-            }
-            currentVoice = ctx.BODYVOICE().getText();
-            if (currentVoice != null) {
-                if (voiceMusic.containsKey(currentVoice)) {
-                    repeat = voiceMusic.get(currentVoice);
-                    System.out.println("update voice's repeat?" + voiceMusic);
-                }
-                else {
-                    repeat = new Stack<Music>();
-                }
-            }
-            System.out.println("done with exiting body voice, current voice: " + currentVoice); 
+                System.out.println("Added: " + voiceMusic);
             } else {
-            if (currentVoice != null && stack.size() > 0) {
-                voiceMusic.put(currentVoice, stack);
+                voiceMusic.put(currentVoice, new Stack<Music>());
             }
-            currentVoice = ctx.BODYVOICE().getText();
-            if (currentVoice != null) {
-                if (voiceMusic.containsKey(currentVoice)) {
-                    stack = voiceMusic.get(currentVoice);
-                }
-                else {
-                    stack = new Stack<Music>();
-                }
-            }
+        } else {
+        // voiceMusic has the voice
+        System.out.println(currentVoice);
+        System.out.println("voice maps has the voice:" + currentVoice+ voiceMusic);
+        Stack<Music> currentVoiceStack = voiceMusic.get(currentVoice);
+        for (int j = 0; j <= repeat.size() - 1; j++) {
+            currentVoiceStack.push(repeat.get(j));
         }
+        voiceMusic.put(currentVoice, currentVoiceStack);
+        }
+        repeat = new Stack<Music>();
+        stack = new Stack<Music>();
+        System.out.println("updated current voice: " + voiceMusic);
         
     }
-
     @Override
 
     public void enterEndofline(EndoflineContext ctx) {
@@ -924,8 +762,19 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void exitEndofline(EndoflineContext ctx) {
-
-        // TODO Auto-generated method stub
+        if (!(voiceMusic.isEmpty())) {
+            for (int j = 0; j <= repeat.size() - 1; j++) {
+                stack.push(repeat.get(j));
+            }
+            Stack<Music> currentVoiceStack = voiceMusic.get(currentVoice);
+            for (int j = 0; j <= stack.size() - 1; j++) {
+                currentVoiceStack.push(stack.get(j));
+            }
+            voiceMusic.put(currentVoice, currentVoiceStack);
+            repeat = new Stack<Music>();
+            stack = new Stack<Music>();
+            System.out.println("Tried to update current voice in map: " + voiceMusic);
+        }
 
     }
 

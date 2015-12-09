@@ -40,6 +40,14 @@ public class Chord implements Music {
         assert notes.size() > 0;
     }
     /**
+     * Get the list of notes in this chord
+     * @return List of Note objects in this chord
+     */
+    public List<Note> getNotes() {
+        List<Note> copyNotes = new ArrayList<Note>(notes);
+        return copyNotes;
+    }
+    /**
      * Based on the definition on the duration of a chord given by the 6.005 Project guidelines, the parser
      * will designate the length of the chord as the length of the first note.
      * So if it sees [A/2B], the length of the chord will be the length of A/2.
@@ -84,7 +92,8 @@ public class Chord implements Music {
         int noteTicksDuration = (int) (duration() * ticksPerBeat);
         checkRep();
         for (Note note : notes) {
-            player.addNote(note.pitch().toMidiNote(), (int) atBeat, noteTicksDuration);
+            int thisNoteDuration = (int) (note.duration() * ticksPerBeat);
+            player.addNote(note.pitch().toMidiNote(), (int) atBeat, thisNoteDuration);
         }
 
     }

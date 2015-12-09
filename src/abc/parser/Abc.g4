@@ -7,7 +7,7 @@ grammar Abc;
 import Configuration;
 
 root: (line)+ EOF;
-line: (element)+ NEWLINE | bodyvoice | COMMENT;
+line: (element)+ endofline | bodyvoice | COMMENT;
 element: noteelem | tupletelem | barline | nthrepeat | WHITESPACE;
 
 noteelem: note | multinote;
@@ -37,7 +37,7 @@ NOTELENGTH: ([0-9]+)? ('/' ([0-9]+)?)?;
 BODYVOICE: ('V: '|'V:') ([A-Za-z.0-9])+ ('\n' | '\r'('\n')?);
 COMMENT: '%' ([A-Za-z.])* ('\n' | '\r'('\n')?);
 
-endofline: COMMENT | NEWLINE;
+endofline: NEWLINE;
 
 ACCIDENTAL:  '^'|'^^'|'_'|'__'|'=';
 BASENOTE: ('C'|'D'|'E'|'F'|'G'|'A'|'B'|'c'|'d'|'e'|'f'|'g'|'a'|'b');
