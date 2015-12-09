@@ -1,6 +1,5 @@
 package abc.sound;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +14,6 @@ import abc.parser.AbcListener;
 import abc.parser.AbcParser.AccidentalContext;
 import abc.parser.AbcParser.BarlineContext;
 import abc.parser.AbcParser.BasenoteContext;
-
 import abc.parser.AbcParser.BodyvoiceContext;
 import abc.parser.AbcParser.ElementContext;
 import abc.parser.AbcParser.EndoflineContext;
@@ -36,12 +34,16 @@ import abc.parser.AbcParser.TupletspecContext;
 public class MakeMusic implements AbcListener {
     private Stack<Music> stack = new Stack<>();
     private Stack<Music> repeat = new Stack<>();
-    private boolean inrepeat = false;
+    private Stack<Music> before1st = new Stack<>();
+    // start off thinking we are inside a repeat
+    private boolean inrepeat = true;
+    private boolean altEnding = false;
+
     private Music fullPiece;
     private Map<String, String> headerInfo;
     private Map<String, Stack<Music>> voiceMusic = new HashMap<>();
     private Map<String, Music> finalVoiceMusic = new HashMap<>();
-    private String currentVoice;
+    private String currentVoice = "defaultvoice";
     
 //    public Music getMusic() {
 //        return stack.get(0);
@@ -100,6 +102,7 @@ public class MakeMusic implements AbcListener {
     @Override
     public void exitRoot(RootContext ctx) {
         if(headerInfo.containsKey("voices")){
+            voiceMusic.put(currentVoice, stack);
             for(String key: voiceMusic.keySet()){
                 Stack<Music> thisstack = voiceMusic.get(key);
                 List<Music> reversestack = new ArrayList<>(thisstack);
@@ -502,12 +505,27 @@ public class MakeMusic implements AbcListener {
             inrepeat = true;
         }
         else if (ctx.getText().equals(":|")){
-            if(repeat.size() > 0){
+            if(repeat.size() > 0 && !(altEnding)){
+                System.out.println("at end of repeat");
                 for (int i = 0; i < 2; i ++){
                     for (int j = repeat.size() - 1; j >= 0; j--){
                         stack.push(repeat.get(j));
                     }
                 }
+                repeat = new Stack<>();
+            }
+            if (altEnding) {
+                System.out.println("at end of first alternate ending");
+                for (int j = 0; j <= repeat.size() - 1; j++){
+                    System.out.println("stack: " + stack);
+                    System.out.println("repeat: " + repeat);
+                    stack.push(repeat.get(j));
+                }
+                for (int k = 0; k <= before1st.size() - 1; k++) {
+                    stack.push(before1st.get(k));
+                }
+                repeat = new Stack<>();
+                before1st = new Stack<>();
             }
         }
         else if (ctx.getText().equals("||")){
@@ -530,7 +548,18 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitNthrepeat(NthrepeatContext ctx) {
-        // TODO Auto-generated method stub
+        if (ctx.getText().equals("[1")) {
+            for (int j = 0; j <= repeat.size() - 1; j++){
+                System.out.println("repeat: " + repeat);
+                System.out.println("before1st: " + before1st);
+                System.out.println("stack: " + stack);
+                before1st.push(repeat.get(j));
+                altEnding = true;
+            }
+        }
+        else if (ctx.getText().equals("[2")) {
+            altEnding = false;
+        }
 
     }
 
@@ -542,9 +571,10 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitBodyvoice(BodyvoiceContext ctx) {
-        if(currentVoice != null){
+        if(currentVoice != null  && stack.size() > 0){
             voiceMusic.put(currentVoice, stack);
         }
+        
         currentVoice = ctx.BODYVOICE().getText();
         if (currentVoice != null){
             System.err.println(currentVoice);
@@ -555,6 +585,7 @@ public class MakeMusic implements AbcListener {
                 stack = new Stack<Music>();
             }
         }
+    
     }
 
     @Override
