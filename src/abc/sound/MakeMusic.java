@@ -38,6 +38,7 @@ public class MakeMusic implements AbcListener {
     // start off thinking we are inside a repeat
     private boolean inrepeat = true;
     private boolean altEnding = false;
+
     private Music fullPiece;
     private Map<String, String> headerInfo;
     private Map<String, Stack<Music>> voiceMusic = new HashMap<>();
@@ -421,20 +422,27 @@ public class MakeMusic implements AbcListener {
     public void exitTupletelem(TupletelemContext ctx) {
         double nplet = Double.valueOf(ctx.tupletspec().TUPLETSPEC().getText().substring(1));
         List<NoteelemContext> noteelems = ctx.noteelem();
-        List<Note> tuplets = new ArrayList<>();
-        for(NoteelemContext noteelem: noteelems){
+        List<Music> tuplets = new ArrayList<>();
+        int counter = (int) nplet;
+        // Only need to include as many notes in the tuplet that are given by the nplet
+        while (counter > 0) {
             //System.err.println(noteelem.getText() + " " + + nplet);
-            Note note = (Note) stack.pop();
-            Note tupletnote;
-            if (nplet == 3) {
-                tupletnote = new Note(note.duration()*2/nplet, note.pitch());
-            } else if (nplet == 2) {
-                tupletnote = new Note(note.duration()*3/nplet, note.pitch());
-              // should equal 4 - SPEC
-            } else {
-                tupletnote = new Note(note.duration()*3/nplet, note.pitch());
+            Music item = stack.pop();
+            if (item.isNote()) {
+                Note note = (Note) item;
+                Note tupletnote;
+                if (nplet == 3) {
+                    tupletnote = new Note(note.duration()*2/nplet, note.pitch());
+                } else if (nplet == 2) {
+                    tupletnote = new Note(note.duration()*3/nplet, note.pitch());
+                  // should equal 4 - SPEC
+                } else {
+                    tupletnote = new Note(note.duration()*3/nplet, note.pitch());
+                }
+                
+                tuplets.add(tupletnote);
             }
-            tuplets.add(tupletnote);
+            counter -= 1;
           // reverse the order because stacks are last in first out
         } for (int i = tuplets.size()-1; i >= 0; i--) {
             if (inrepeat){
@@ -492,23 +500,14 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitBarline(BarlineContext ctx) {
-        if (ctx.getText().equals("|:") || ctx.getText().equals("||") || ctx.getText().equals("|]")){
-            System.out.println("at beginning of repeat");
-            for (int j = 0; j <= repeat.size() - 1; j++){
-                System.out.println("stack: " + stack);
-                System.out.println("repeat: " + repeat);
-                stack.push(repeat.get(j));
-            }
-            repeat = new Stack<>();
+        if (ctx.getText().equals("|:")){
             inrepeat = true;
         }
         else if (ctx.getText().equals(":|")){
             if(repeat.size() > 0 && !(altEnding)){
                 System.out.println("at end of repeat");
                 for (int i = 0; i < 2; i ++){
-                    for (int j = 0; j <= repeat.size() - 1; j++){
-                        System.out.println("stack: " + stack);
-                        System.out.println("repeat: " + repeat);
+                    for (int j = repeat.size() - 1; j >= 0; j--){
                         stack.push(repeat.get(j));
                     }
                 }

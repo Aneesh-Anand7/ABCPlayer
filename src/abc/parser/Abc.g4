@@ -28,10 +28,11 @@ tupletspec: TUPLETSPEC;
 multinote: '[' note+ ']';
 /* barlines */
 barline: '|'|'||'|'[|'|'|]'|':|'|'|:';
-nthrepeat: '[1'|'[2';
+nthrepeat: NTHREPEAT;
 bodyvoice: BODYVOICE;
 
 TUPLETSPEC: '(' [0-9];
+NTHREPEAT: '[1'|'[2';
 NOTELENGTH: ([0-9]+)? ('/' ([0-9]+)?)?;
 BODYVOICE: ('V: '|'V:') ([A-Za-z.0-9])+ ('\n' | '\r'('\n')?);
 COMMENT: '%' ([A-Za-z.])* ('\n' | '\r'('\n')?);

@@ -21,8 +21,8 @@ public class AbcParser extends Parser {
     new PredictionContextCache();
   public static final int
     T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-    T__9=10, T__10=11, TUPLETSPEC=12, NOTELENGTH=13, BODYVOICE=14, COMMENT=15, 
-    ACCIDENTAL=16, BASENOTE=17, OCTAVE=18, DIGIT=19, NEWLINE=20, WHITESPACE=21;
+    TUPLETSPEC=10, NTHREPEAT=11, NOTELENGTH=12, BODYVOICE=13, COMMENT=14, 
+    ACCIDENTAL=15, BASENOTE=16, OCTAVE=17, DIGIT=18, NEWLINE=19, WHITESPACE=20;
   public static final int
     RULE_root = 0, RULE_line = 1, RULE_element = 2, RULE_noteelem = 3, RULE_note = 4, 
     RULE_noteorrest = 5, RULE_pitch = 6, RULE_octave = 7, RULE_notelength = 8, 
@@ -36,12 +36,11 @@ public class AbcParser extends Parser {
   };
 
   private static final String[] _LITERAL_NAMES = {
-    null, "'z'", "'['", "']'", "'|'", "'||'", "'[|'", "'|]'", "':|'", "'|:'", 
-    "'[1'", "'[2'"
+    null, "'z'", "'['", "']'", "'|'", "'||'", "'[|'", "'|]'", "':|'", "'|:'"
   };
   private static final String[] _SYMBOLIC_NAMES = {
-    null, null, null, null, null, null, null, null, null, null, null, null, 
-    "TUPLETSPEC", "NOTELENGTH", "BODYVOICE", "COMMENT", "ACCIDENTAL", "BASENOTE", 
+    null, null, null, null, null, null, null, null, null, null, "TUPLETSPEC", 
+    "NTHREPEAT", "NOTELENGTH", "BODYVOICE", "COMMENT", "ACCIDENTAL", "BASENOTE", 
     "OCTAVE", "DIGIT", "NEWLINE", "WHITESPACE"
   };
   public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
@@ -152,7 +151,7 @@ public class AbcParser extends Parser {
         setState(41); 
         _errHandler.sync(this);
         _la = _input.LA(1);
-      } while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << TUPLETSPEC) | (1L << BODYVOICE) | (1L << COMMENT) | (1L << ACCIDENTAL) | (1L << BASENOTE) | (1L << WHITESPACE))) != 0) );
+      } while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << TUPLETSPEC) | (1L << NTHREPEAT) | (1L << BODYVOICE) | (1L << COMMENT) | (1L << ACCIDENTAL) | (1L << BASENOTE) | (1L << WHITESPACE))) != 0) );
       setState(43);
       match(EOF);
       }
@@ -209,9 +208,8 @@ public class AbcParser extends Parser {
       case T__6:
       case T__7:
       case T__8:
-      case T__9:
-      case T__10:
       case TUPLETSPEC:
+      case NTHREPEAT:
       case ACCIDENTAL:
       case BASENOTE:
       case WHITESPACE:
@@ -230,7 +228,7 @@ public class AbcParser extends Parser {
           setState(48); 
           _errHandler.sync(this);
           _la = _input.LA(1);
-        } while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << TUPLETSPEC) | (1L << ACCIDENTAL) | (1L << BASENOTE) | (1L << WHITESPACE))) != 0) );
+        } while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << TUPLETSPEC) | (1L << NTHREPEAT) | (1L << ACCIDENTAL) | (1L << BASENOTE) | (1L << WHITESPACE))) != 0) );
         setState(50);
         match(NEWLINE);
         }
@@ -327,8 +325,7 @@ public class AbcParser extends Parser {
         barline();
         }
         break;
-      case T__9:
-      case T__10:
+      case NTHREPEAT:
         enterOuterAlt(_localctx, 4);
         {
         setState(59);
@@ -977,6 +974,7 @@ public class AbcParser extends Parser {
   }
 
   public static class NthrepeatContext extends ParserRuleContext {
+    public TerminalNode NTHREPEAT() { return getToken(AbcParser.NTHREPEAT, 0); }
     public NthrepeatContext(ParserRuleContext parent, int invokingState) {
       super(parent, invokingState);
     }
@@ -994,17 +992,11 @@ public class AbcParser extends Parser {
   public final NthrepeatContext nthrepeat() throws RecognitionException {
     NthrepeatContext _localctx = new NthrepeatContext(_ctx, getState());
     enterRule(_localctx, 32, RULE_nthrepeat);
-    int _la;
     try {
       enterOuterAlt(_localctx, 1);
       {
       setState(110);
-      _la = _input.LA(1);
-      if ( !(_la==T__9 || _la==T__10) ) {
-      _errHandler.recoverInline(this);
-      } else {
-        consume();
-      }
+      match(NTHREPEAT);
       }
     }
     catch (RecognitionException re) {
@@ -1100,7 +1092,7 @@ public class AbcParser extends Parser {
   }
 
   public static final String _serializedATN =
-    "\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\27w\4\2\t\2\4\3"+
+    "\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\26w\4\2\t\2\4\3"+
       "\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
       "\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22"+
       "\t\22\4\23\t\23\4\24\t\24\3\2\6\2*\n\2\r\2\16\2+\3\2\3\2\3\3\6\3\61"+
@@ -1109,27 +1101,27 @@ public class AbcParser extends Parser {
       "\n\b\3\b\3\b\5\bS\n\b\3\t\3\t\3\n\3\n\3\13\3\13\3\f\3\f\3\r\3\r\3"+
       "\16\3\16\6\16a\n\16\r\16\16\16b\3\17\3\17\3\20\3\20\6\20i\n\20\r\20"+
       "\16\20j\3\20\3\20\3\21\3\21\3\22\3\22\3\23\3\23\3\24\3\24\3\24\2\2"+
-      "\25\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&\2\5\3\2\6\13\3\2\f"+
-      "\r\4\2\21\21\26\26r\2)\3\2\2\2\48\3\2\2\2\6?\3\2\2\2\bC\3\2\2\2\n"+
-      "E\3\2\2\2\fK\3\2\2\2\16N\3\2\2\2\20T\3\2\2\2\22V\3\2\2\2\24X\3\2\2"+
-      "\2\26Z\3\2\2\2\30\\\3\2\2\2\32^\3\2\2\2\34d\3\2\2\2\36f\3\2\2\2 n"+
-      "\3\2\2\2\"p\3\2\2\2$r\3\2\2\2&t\3\2\2\2(*\5\4\3\2)(\3\2\2\2*+\3\2"+
-      "\2\2+)\3\2\2\2+,\3\2\2\2,-\3\2\2\2-.\7\2\2\3.\3\3\2\2\2/\61\5\6\4"+
-      "\2\60/\3\2\2\2\61\62\3\2\2\2\62\60\3\2\2\2\62\63\3\2\2\2\63\64\3\2"+
-      "\2\2\64\65\7\26\2\2\659\3\2\2\2\669\5$\23\2\679\7\21\2\28\60\3\2\2"+
-      "\28\66\3\2\2\28\67\3\2\2\29\5\3\2\2\2:@\5\b\5\2;@\5\32\16\2<@\5 \21"+
-      "\2=@\5\"\22\2>@\7\27\2\2?:\3\2\2\2?;\3\2\2\2?<\3\2\2\2?=\3\2\2\2?"+
-      ">\3\2\2\2@\7\3\2\2\2AD\5\n\6\2BD\5\36\20\2CA\3\2\2\2CB\3\2\2\2D\t"+
-      "\3\2\2\2EG\5\f\7\2FH\5\22\n\2GF\3\2\2\2GH\3\2\2\2H\13\3\2\2\2IL\5"+
-      "\16\b\2JL\5\30\r\2KI\3\2\2\2KJ\3\2\2\2L\r\3\2\2\2MO\5\24\13\2NM\3"+
-      "\2\2\2NO\3\2\2\2OP\3\2\2\2PR\5\26\f\2QS\5\20\t\2RQ\3\2\2\2RS\3\2\2"+
-      "\2S\17\3\2\2\2TU\7\24\2\2U\21\3\2\2\2VW\7\17\2\2W\23\3\2\2\2XY\7\22"+
-      "\2\2Y\25\3\2\2\2Z[\7\23\2\2[\27\3\2\2\2\\]\7\3\2\2]\31\3\2\2\2^`\5"+
-      "\34\17\2_a\5\b\5\2`_\3\2\2\2ab\3\2\2\2b`\3\2\2\2bc\3\2\2\2c\33\3\2"+
-      "\2\2de\7\16\2\2e\35\3\2\2\2fh\7\4\2\2gi\5\n\6\2hg\3\2\2\2ij\3\2\2"+
-      "\2jh\3\2\2\2jk\3\2\2\2kl\3\2\2\2lm\7\5\2\2m\37\3\2\2\2no\t\2\2\2o"+
-      "!\3\2\2\2pq\t\3\2\2q#\3\2\2\2rs\7\20\2\2s%\3\2\2\2tu\t\4\2\2u\'\3"+
-      "\2\2\2\r+\628?CGKNRbj";
+      "\25\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&\2\4\3\2\6\13\4\2\20"+
+      "\20\25\25r\2)\3\2\2\2\48\3\2\2\2\6?\3\2\2\2\bC\3\2\2\2\nE\3\2\2\2"+
+      "\fK\3\2\2\2\16N\3\2\2\2\20T\3\2\2\2\22V\3\2\2\2\24X\3\2\2\2\26Z\3"+
+      "\2\2\2\30\\\3\2\2\2\32^\3\2\2\2\34d\3\2\2\2\36f\3\2\2\2 n\3\2\2\2"+
+      "\"p\3\2\2\2$r\3\2\2\2&t\3\2\2\2(*\5\4\3\2)(\3\2\2\2*+\3\2\2\2+)\3"+
+      "\2\2\2+,\3\2\2\2,-\3\2\2\2-.\7\2\2\3.\3\3\2\2\2/\61\5\6\4\2\60/\3"+
+      "\2\2\2\61\62\3\2\2\2\62\60\3\2\2\2\62\63\3\2\2\2\63\64\3\2\2\2\64"+
+      "\65\7\25\2\2\659\3\2\2\2\669\5$\23\2\679\7\20\2\28\60\3\2\2\28\66"+
+      "\3\2\2\28\67\3\2\2\29\5\3\2\2\2:@\5\b\5\2;@\5\32\16\2<@\5 \21\2=@"+
+      "\5\"\22\2>@\7\26\2\2?:\3\2\2\2?;\3\2\2\2?<\3\2\2\2?=\3\2\2\2?>\3\2"+
+      "\2\2@\7\3\2\2\2AD\5\n\6\2BD\5\36\20\2CA\3\2\2\2CB\3\2\2\2D\t\3\2\2"+
+      "\2EG\5\f\7\2FH\5\22\n\2GF\3\2\2\2GH\3\2\2\2H\13\3\2\2\2IL\5\16\b\2"+
+      "JL\5\30\r\2KI\3\2\2\2KJ\3\2\2\2L\r\3\2\2\2MO\5\24\13\2NM\3\2\2\2N"+
+      "O\3\2\2\2OP\3\2\2\2PR\5\26\f\2QS\5\20\t\2RQ\3\2\2\2RS\3\2\2\2S\17"+
+      "\3\2\2\2TU\7\23\2\2U\21\3\2\2\2VW\7\16\2\2W\23\3\2\2\2XY\7\21\2\2"+
+      "Y\25\3\2\2\2Z[\7\22\2\2[\27\3\2\2\2\\]\7\3\2\2]\31\3\2\2\2^`\5\34"+
+      "\17\2_a\5\b\5\2`_\3\2\2\2ab\3\2\2\2b`\3\2\2\2bc\3\2\2\2c\33\3\2\2"+
+      "\2de\7\f\2\2e\35\3\2\2\2fh\7\4\2\2gi\5\n\6\2hg\3\2\2\2ij\3\2\2\2j"+
+      "h\3\2\2\2jk\3\2\2\2kl\3\2\2\2lm\7\5\2\2m\37\3\2\2\2no\t\2\2\2o!\3"+
+      "\2\2\2pq\7\r\2\2q#\3\2\2\2rs\7\17\2\2s%\3\2\2\2tu\t\3\2\2u\'\3\2\2"+
+      "\2\r+\628?CGKNRbj";
   public static final ATN _ATN =
     new ATNDeserializer().deserialize(_serializedATN.toCharArray());
   static {
