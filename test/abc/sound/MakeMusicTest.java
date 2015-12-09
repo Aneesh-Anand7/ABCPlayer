@@ -18,7 +18,7 @@ public class MakeMusicTest {
     public void testMakeMusicInvention() throws IOException, MidiUnavailableException, InvalidMidiDataException {
         File file = new File("sample_abc/invention.abc");
         Music music = Music.parseBodyFromFile(file);
-        SequencePlayer player = new SequencePlayer(120);
+        SequencePlayer player = new SequencePlayer(file);
         music.play(player, 0);
     }
     

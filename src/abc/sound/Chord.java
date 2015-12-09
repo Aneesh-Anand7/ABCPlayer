@@ -68,7 +68,7 @@ public class Chord implements Music {
      *
      */
     public void play(SequencePlayer player, double atBeat) {
-        int ticksPerBeat = player.getTicks();
+        int ticksPerBeat = player.getTicksDefaultNote();
         // get atBeat value in tick format
         //int atBeatRationalized = (int) (atBeat * ticksPerBeat);
         int noteTicksDuration = (int) (duration() * ticksPerBeat);

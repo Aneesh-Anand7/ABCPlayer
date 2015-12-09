@@ -88,7 +88,6 @@ public class MakeHeaderV2 implements ABCgrammarListener {
         if (!(map.containsKey("tempo"))) {
             String tempo = "";
             tempo+=map.get("length") + "=100";
-            System.out.println("tempo: " + tempo);
             map.put("tempo", tempo);
         }
     }

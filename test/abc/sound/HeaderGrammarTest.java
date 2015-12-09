@@ -107,5 +107,14 @@ public class HeaderGrammarTest {
         Music.parseHeaderFromFile(file);
     }
     
+    // BODY TESTS
+    
+    @Test
+    public void testTakeOnMe() throws IOException {
+        File file = new File("sample_abc/TakeOnMeSimple.abc");
+        System.out.println(SplitHeader.splitHeader(file).get(1));
+        Music.parseBodyFromFile(file);
+    }
+    
     
 }
