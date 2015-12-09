@@ -420,20 +420,37 @@ public class MakeMusic implements AbcListener {
     public void exitTupletelem(TupletelemContext ctx) {
         double nplet = Double.valueOf(ctx.tupletspec().TUPLETSPEC().getText().substring(1));
         List<NoteelemContext> noteelems = ctx.noteelem();
-        List<Note> tuplets = new ArrayList<>();
-        for(NoteelemContext noteelem: noteelems){
+        List<Music> tuplets = new ArrayList<>();
+        int counter = (int) nplet;
+        // Only need to include as many notes in the tuplet that are given by the nplet
+        while (counter > 0) {
             //System.err.println(noteelem.getText() + " " + + nplet);
-            Note note = (Note) stack.pop();
-            Note tupletnote;
-            if (nplet == 3) {
-                tupletnote = new Note(note.duration()*2/nplet, note.pitch());
-            } else if (nplet == 2) {
-                tupletnote = new Note(note.duration()*3/nplet, note.pitch());
-              // should equal 4 - SPEC
-            } else {
-                tupletnote = new Note(note.duration()*3/nplet, note.pitch());
-            }
-            tuplets.add(tupletnote);
+            Music item = stack.pop();
+            if (item.isNote()) {
+                Note note = (Note) item;
+                Note tupletnote;
+                if (nplet == 3) {
+                    tupletnote = new Note(note.duration()*2/nplet, note.pitch());
+                } else if (nplet == 2) {
+                    tupletnote = new Note(note.duration()*3/nplet, note.pitch());
+                  // should equal 4 - SPEC
+                } else {
+                    tupletnote = new Note(note.duration()*3/nplet, note.pitch());
+                }
+                tuplets.add(tupletnote);
+            } else if (item.isChord()) {
+                Chord chord = (Chord) item;
+                Chord tupletchord;
+//                if (nplet == 3) {
+//                    tupletchord = new Chord(chord.duration()*2/nplet, note.pitch());
+//                } else if (nplet == 2) {
+//                    //tupletchord = new Note(note.duration()*3/nplet, note.pitch());
+//                  // should equal 4 - SPEC
+//                } else {
+//                    tupletchord = new Note(note.duration()*3/nplet, note.pitch());
+//                }
+            } counter -= 1;
+            
           // reverse the order because stacks are last in first out
         } for (int i = tuplets.size()-1; i >= 0; i--) {
             if (inrepeat){
@@ -467,10 +484,13 @@ public class MakeMusic implements AbcListener {
     @Override
     public void exitMultinote(MultinoteContext ctx) {
         List<NoteContext> chordNotes = ctx.note();
-        System.err.println(chordNotes);
+        for(NoteContext notectx: chordNotes){
+            System.err.println(notectx.getText());
+        }
         System.err.println(stack);
         List<Note> chord = new ArrayList<>();
         for(NoteContext notectx: chordNotes){
+            System.err.println(notectx.getText());
             Note note = (Note) stack.pop();
             chord.add(note);
         }

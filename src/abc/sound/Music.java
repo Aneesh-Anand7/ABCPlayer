@@ -141,9 +141,19 @@ public interface Music {
      */
     void play(SequencePlayer player, double atBeat);
     
+    
+    /**
+     * @return whether or not the Music is of type Chord
+     */
+    public boolean isChord();
+    
+    /**
+     * @return whether or not the Music is of type Note
+     */
+    public boolean isNote();
 
     public static void main(String[] args) throws IOException, MidiUnavailableException, InvalidMidiDataException {
-        File file = new File("sample_abc/invention.abc");
+        File file = new File("sample_abc/fur_elise_snippet.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
         System.out.println(headbody.get(1));
         Map<String, String> header = parseHeader(headbody.get(0));

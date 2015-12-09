@@ -95,4 +95,14 @@ public class Note implements Music {
     public String toString() {
         return pitch.toString() + duration;
     }
+
+    @Override
+    public boolean isChord() {
+        return false;
+    }
+
+    @Override
+    public boolean isNote() {
+        return true;
+    }
 }
