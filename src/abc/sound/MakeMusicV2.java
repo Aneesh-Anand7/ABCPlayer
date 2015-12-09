@@ -727,10 +727,18 @@ public class MakeMusicV2 implements AbcListener {
         System.out.println("current voice: " + currentVoice);
         System.out.println("Voices map: " + voiceMusic);
         System.out.println("repeat " + repeat);
+        if(currentVoice.equals("defaultvoice")){
+            if (repeat.size() > 0) {
+                System.out.println("Adding new current voice to voices map Voices map: " +currentVoice +  voiceMusic);
+                voiceMusic.put(currentVoice, repeat);
+                repeat = new Stack<Music>();
+                System.out.println("Added: " + voiceMusic);
+            }
+        }
         currentVoice = ctx.BODYVOICE().getText();
         if (!(voiceMusic.containsKey(currentVoice))) {
             if (repeat.size() > 0) {
-                System.out.println("Adding new current voice to voices map Voices map: " + voiceMusic);
+                System.out.println("Adding new current voice to voices map Voices map: " +currentVoice +  voiceMusic);
                 voiceMusic.put(currentVoice, repeat);
                 System.out.println("Added: " + voiceMusic);
             } else {

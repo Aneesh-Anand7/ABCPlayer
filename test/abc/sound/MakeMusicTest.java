@@ -151,7 +151,9 @@ public class MakeMusicTest {
         File file = new File("sample_abc/musicBeforeVoiceTest.abc");
         Map<String, Music> music = Music.parseBodyFromFile(file);
         System.err.println(music);
-        assertEquals(music.toString(), "{V:1=D1.0 D1.0 D1.0 C1.0 C1.0 C1.0 C1.0 C'1.0, V:2=C1.0 C1.0 C1.0 C'1.0 D1.0 D1.0 D1.0 C1.0, defaultvoice=C1.0 D1.0 E1.0 F1.0 G1.0 A1.0 B1.0 C'1.0}");
+        assertEquals("{V:1\n"+
+                "=C'1.0 B1.0 A1.0 G1.0 F1.0 E1.0 D1.0 C1.0, V:2\n"+
+                "=C1.0 B,1.0 A,1.0 G,1.0 F,1.0 E,1.0 D,1.0 C,1.0, defaultvoice=C1.0 D1.0 E1.0 F1.0 G1.0 A1.0 B1.0 C'1.0}", music.toString());
     }
 
     //tests the behavior of accidentals such as persisting through a whole measure, only applying to one
