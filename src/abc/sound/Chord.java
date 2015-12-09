@@ -114,5 +114,31 @@ public class Chord implements Music {
     public boolean isNote() {
         return false;
     }
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        return prime * this.getNotes().size();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        // THIS IS OTHER
+        final Chord other = (Chord) obj;
+        
+        if (this.getNotes().size() != other.getNotes().size()) {
+            return false;
+        } else {
+        for (int i = 0; i < this.getNotes().size(); i++) {
+            if (!(this.getNotes().get(i).equals(other.getNotes().get(i)))) {
+               return false;
+            }
+        }
+        return true;
+        }
+    }
 
 }

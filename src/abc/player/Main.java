@@ -32,11 +32,11 @@ public class Main {
     public static void play(String file) throws IOException, MidiUnavailableException, InvalidMidiDataException {
         File abcFile = new File(file);
         List<String> headbody = SplitHeader.splitHeader(abcFile);
-        System.out.println(headbody.get(1));
         Map<String, String> header = Music.parseHeader(headbody.get(0));
-        System.out.println(header);
+        System.out.println("Index: " +header.get("index"));
+        System.out.println("Title: " + header.get("title"));
+        System.out.println("Key: " + header.get("key"));
         Map<String, Music> music = Music.parseBody(headbody.get(1),header);
-        System.out.println(music);
         SequencePlayer player = new SequencePlayer(abcFile);
         double voicedelay = 0;
         if(music.keySet().contains("defaultvoice")){
@@ -44,11 +44,8 @@ public class Main {
             defaultvoice.play(player, 0);
             voicedelay = defaultvoice.duration();
         }
-        System.out.println(music);
-        System.err.println(voicedelay);
         for(String key: music.keySet()){
             if(!key.equals("defaultvoice")){
-                System.err.println(music.get(key));
                 music.get(key).play(player, voicedelay);
             }
         }
@@ -56,6 +53,6 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException, MidiUnavailableException, InvalidMidiDataException {
-        play("sample_abc/waxies_dargle.abc");
+        play(args[0]);
     }
 }

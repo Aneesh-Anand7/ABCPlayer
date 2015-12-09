@@ -8,7 +8,10 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 
 import org.junit.Test;
-
+/*
+ * Tests the playing of notes
+ * @category no_didit
+ */
 public class SequencePlayerTest {
 
     

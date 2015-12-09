@@ -76,6 +76,8 @@ public interface Music {
      * @param head A String in abc music file header format, according to 6.005 guidelines
      *      Every fractional value in the header, such as those found for default note length, has a nominator
      *      and a denominator
+     *      Tempo must be in the format num/denom=BPM
+     *      Voices must be listed in header in order to be dealt with properly in the body
      * @return A map containing the parsed values of the abc music file's declared or default meter, 
      *          note length, tempo, and key signature
      */
@@ -98,6 +100,21 @@ public interface Music {
     /**
      * Parse the body content of an abc music file
      * @param body A String in abc music file body format, according to 6.005 guidelines
+     *        Accidentals: 
+     *             User can have double sharp or double flat, but not any combination including 
+     *             a natural, (eg. #= or =b)
+     *        Tuplets: handles duplets, triplets, and quadruplets
+     *          -If the # of notes in the tuplet is more than the number of notes specified by nplet,
+     *          the extra notes are ignored
+     *          -Requires that the number of notes in the tuplet is at least as large as the constraints above
+     *        Voices:
+     *          - Voices must be specified in header to be parsed properly
+     *          - There can be text before a voice is listed- that text is parsed as playing before the first voice starts
+     *        Repeats:
+     *          - No nested repeats allowed
+     *        Errors/mistakes:
+     *          - The user is responsible for making sure that the music follows the rules of music- if the time signature is
+     *          not followed or if the voices have different lengths, there are no guarantees about the correctness of the music
      * @param headerInfo information parsed from the header of the same abc file
      * @return A map containing mappings from Strings to Music Objects
      *          If there are not multiple voices in the file, the map solely contains one collective Music object
@@ -161,7 +178,7 @@ public interface Music {
     public boolean isNote();
 
     public static void main(String[] args) throws IOException, MidiUnavailableException, InvalidMidiDataException {
-        File file = new File("sample_abc/chords.abc");
+        File file = new File("sample_abc/fur_elise_snippet.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
         System.out.println(headbody.get(1));
         Map<String, String> header = parseHeader(headbody.get(0));
@@ -177,7 +194,7 @@ public interface Music {
         }
         for(String key: music.keySet()){
             if(!key.equals("defaultvoice")){
-                music.get(key).play(player, voicedelay);
+                music.get(key).play(player, 0);
             }
         }
         player.play();
