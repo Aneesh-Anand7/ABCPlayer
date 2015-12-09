@@ -420,6 +420,8 @@ public class MakeMusic implements AbcListener {
     @Override
     public void exitMultinote(MultinoteContext ctx) {
         List<NoteContext> chordNotes = ctx.note();
+        System.err.println(chordNotes);
+        System.err.println(stack);
         List<Note> chord = new ArrayList<>();
         for(NoteContext notectx: chordNotes){
             Note note = (Note) stack.pop();
@@ -448,7 +450,7 @@ public class MakeMusic implements AbcListener {
         else if (ctx.getText().equals(":|")){
             if(repeat.size() > 0){
                 for (int i = 0; i < 2; i ++){
-                    for (int j = repeat.size() - 1; i >= 0; i--){
+                    for (int j = repeat.size() - 1; j >= 0; j--){
                         stack.push(repeat.get(j));
                     }
                 }
