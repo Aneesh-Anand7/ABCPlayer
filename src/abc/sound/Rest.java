@@ -36,12 +36,13 @@ public class Rest implements Music {
      */
     public Music transpose(int semitonesUp) {
         Rest restCopy = new Rest(this.duration);
+        checkRep();
         return restCopy;
     }
 
     /**
      * Play this rest
-     * Do nothing since a rest is silence for the declared duration
+     * Do nothing since a rest = silence for the declared duration
      */
     public void play(SequencePlayer player, double atBeat) {
         return;

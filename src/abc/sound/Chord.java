@@ -8,7 +8,8 @@ import java.util.List;
  */
 public class Chord implements Music {
     private final List<Note> notes;
-    
+    private final double duration;
+
     // Abstraction function
     //      Chord is a recursive data type that takes in a list of Note objects that represent a musical chord
     //           consisting of the notes represented by these Note objects (multiple notes played at the same time)
@@ -30,6 +31,13 @@ public class Chord implements Music {
         for(Note note: notelist){
             notes.add(note);
         }
+        duration = notes.get(0).duration();
+        checkRep();
+    }
+
+    private void checkRep() {
+        assert duration > 0;
+        assert notes.size() > 0;
     }
     /**
      * Based on the definition on the duration of a chord given by the 6.005 Project guidelines, the parser
@@ -39,7 +47,8 @@ public class Chord implements Music {
      * @return duration of this chord
      */
     public double duration() {
-        return notes.get(0).duration();
+        checkRep();
+        return duration;
     }
 
     /**
@@ -52,11 +61,12 @@ public class Chord implements Music {
         for (Note note : notesCopy) {
             note = note.transpose(semitonesUp);
         }
+        checkRep();
         return new Chord(notesCopy);
     }
 
 
-    
+
     /**
      * Play this chord
      * @param player the Sequence Player that will play this chord. The Sequence Player's number of ticks per beat 
@@ -72,6 +82,7 @@ public class Chord implements Music {
         // get atBeat value in tick format
         //int atBeatRationalized = (int) (atBeat * ticksPerBeat);
         int noteTicksDuration = (int) (duration() * ticksPerBeat);
+        checkRep();
         for (Note note : notes) {
             player.addNote(note.pitch().toMidiNote(), (int) atBeat, noteTicksDuration);
         }
