@@ -57,70 +57,35 @@ import abc.parser.AbcParser.TupletelemContext;
 import abc.parser.AbcParser.TupletspecContext;
 
 public class MakeMusic implements AbcListener {
-
     private Stack<Music> stack = new Stack<>();
-
     private Stack<Music> repeat = new Stack<>();
-
     private Stack<Music> before1st = new Stack<>();
-
     // start off thinking we are inside a repeat
-
     private boolean inrepeat = true;
-
     private boolean altEnding = false;
-
     private Music fullPiece;
-
     private Map<String, String> headerInfo;
-
     private Map<String, Stack<Music>> voiceMusic = new HashMap<>();
-
     private Map<String, Music> finalVoiceMusic = new HashMap<>();
-
     private String currentVoice = "defaultvoice";
 
-    // public Music getMusic() {
-
-    // return stack.get(0);
-
-    // }
-
-    // public Music getFullPiece(){
-
-    // return fullPiece;
-
-    // }
-
     public Map<String, Music> getFullPiece() {
-
         Map<String, Music> returnMap = new HashMap<>();
-
         returnMap.put("music", fullPiece);
-
         return returnMap;
-
     }
 
     public void setHeaderInfo(Map<String, String> info) {
-
         headerInfo = info;
-
     }
-
     public Map<String, Music> getPieceMap() {
-
         return finalVoiceMusic;
-
     }
 
     @Override
-
     public void enterEveryRule(ParserRuleContext arg0) {
-
         // System.err.println("entering " + arg0.getText() + ", stack is " +
         // stack);
-
     }
 
     @Override
@@ -315,142 +280,73 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void exitNote(NoteContext ctx) {
-
         System.out.println("leaving the note" + ctx.getText());
-
         double duration;
-
         if (ctx.notelength() != null) {
-
             String text = ctx.notelength().getText();
-
             // fraction
-
             if (text.contains("/")) {
-
                 String[] numbers = text.split("/");
-
                 // no numerator or denominator
-
                 if (numbers.length == 0) {
-
                     duration = 1.0;
-
                     // denominator only
-
                 } else if (numbers[0].length() == 0) {
-
                     duration = 1.0 / Double.valueOf(numbers[1]);
-
                     // numerator only
-
                 } else if (numbers.length == 1) {
-
                     duration = Double.valueOf(numbers[0]) / 2.0;
-
                 } else {
-
                     duration = Double.valueOf(numbers[0]) / Double.valueOf(numbers[1]);
-
                 }
-
                 // no fraction
-
             } else {
-
                 duration = Double.valueOf(text);
-
             }
-
         } else {
-
             duration = 1.0;
-
         }
-
         if (ctx.noteorrest().rest() != null) {
-
             Rest rest = new Rest(duration);
-
             repeat.push(rest);
-
         }
-
         else {
-
             String basenote = ctx.noteorrest().pitch().basenote().BASENOTE().getText();
-
             char basenotechar = basenote.charAt(0);
-
             Pitch pitch;
-
             if (Character.isLowerCase(basenotechar)) {
-
                 basenotechar = basenote.toUpperCase().charAt(0);
-
                 pitch = new Pitch(basenotechar);
-
                 // (uppercase) C' (C apostrophe) should have the same meaning as
                 // (lowercase) c
-
                 pitch = pitch.transpose(12);
-
             }
-
             else {
-
                 pitch = new Pitch(basenotechar);
-
             }
-
             String octave = null;
-
             if (ctx.noteorrest().pitch().octave() != null) {
-
                 octave = ctx.noteorrest().pitch().octave().getText();
-
                 int downoctaves = countOccurrences(octave, ',');
-
                 int upoctaves = countOccurrences(octave, "'".charAt(0));
-
                 int change = upoctaves - downoctaves; // + means net change up,
-                                                      // - mean net change down
-
                 pitch = pitch.transpose(change * 12);
-
             }
-
             pitch = pitch.transpose(keyChange(basenote));
-
             String accidental = null;
-
             if (ctx.noteorrest().pitch().accidental() != null) {
-
                 accidental = ctx.noteorrest().pitch().accidental().getText();
-
                 int numflats = countOccurrences(accidental, '_');
-
                 int numsharps = countOccurrences(accidental, '^');
-
                 // TODO natural accidental implementation
-
                 int netaccidental = numsharps - numflats;
-
                 pitch = pitch.transpose(netaccidental);
-
             }
-
             Note note = new Note(duration, pitch);
-
             if (inrepeat) {
-
                 repeat.push(note);
-
             }
-
-
         }
-
         // System.err.println("exiting note" + ", stack is " + stack);
 
     }

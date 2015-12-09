@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 
-import org.antlr.v4.gui.Trees;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -21,29 +20,35 @@ import abc.parser.ABCgrammarLexer;
 import abc.parser.ABCgrammarParser;
 import abc.parser.AbcLexer;
 import abc.parser.AbcParser;
-
 import abc.parser.SplitHeader;
 
-// Datatype definition:
-// Music = Note(duration:double, pitch:Pitch)
-// + Rest(duration:double)
-// + Concat(m1:Music, m2:Music)
-// + Chord(n1:Note, c2: Chord)
-//
 /**
- * Abstraction Function: Music is an interface the represents a piece of music played by some instrument
- * 
- * Rep Invariant: Music has a non-negative duration
- * 
- * Safety from Rep Exposure: Music is an interface, and all classes that implement it are immutable
- *
+ * An immutable data type representing a MIDI playable piece of music consisting of notes and rests
  */
+
+
 public interface Music {
+    // Datatype definition:
+    // Music = Note(duration:double, pitch:Pitch)
+    // + Rest(duration:double)
+    // + Concat(m1:Music, m2:Music)
+    // + Chord(n1:Note, c2: Chord)
+    //
     
     /**
+     * Abstraction Function: Music represents a piece of music played by some instrument
      * 
-     * @param file
-     * @return
+     * Rep Invariant: Music has a non-negative duration
+     * 
+     * Safety from Rep Exposure: Music is an interface, and all classes that implement it are immutable
+     *
+     */
+
+    /**
+     * Parse the header content of an abc music file
+     * @param file the abc music file from which to parse the content of the header
+     * @return A map containing the parsed values of the abc music file's declared or default meter, 
+     *          note length, tempo, and key signature
      * @throws IOException
      */
     public static Map<String, String> parseHeaderFromFile(File file) throws IOException {
@@ -51,10 +56,10 @@ public interface Music {
         String header = headAndBody.get(0);
         return parseHeader(new String(header));
     }
-    
+
     /**
-     * 
-     * @param file
+     * Parse the body content of an abc music file
+     * @param file the abc music file from which to parse the content of the body
      * @return
      * @throws IOException
      */
@@ -63,11 +68,14 @@ public interface Music {
         String body = headAndBody.get(1);
         return parseBody(new String(body), new HashMap<String, String>());
     }
-    
+
     /**
-     * 
-     * @param head
-     * @return
+     * Parse the header content from a string in abc music file header format
+     * @param head A String in abc music file header format, according to 6.005 guidelines
+     *      Every fractional value in the header, such as those found for default note length, has a nominator
+     *      and a denominator
+     * @return A map containing the parsed values of the abc music file's declared or default meter, 
+     *          note length, tempo, and key signature
      */
     public static Map<String, String> parseHeader(String head) {
         // take in string of abc language and convert to stream, then to tokens, then parse
@@ -75,24 +83,19 @@ public interface Music {
         ABCgrammarLexer lexer = new ABCgrammarLexer(headstream);
         // handle errors found by lexer
         lexer.reportErrorsAsExceptions();
-        
         TokenStream tokens = new CommonTokenStream(lexer);
         ABCgrammarParser parser = new ABCgrammarParser(tokens);
         // handle errors found by parser
         parser.reportErrorsAsExceptions();
-        
         ParseTree tree = parser.root();
-        // see what's happening
-        
-        // 
         MakeHeaderV2 headerMaker = new MakeHeaderV2();
         new ParseTreeWalker().walk(headerMaker, tree);
         return headerMaker.getHeader();
     }
-    
+
     /**
-     * 
-     * @param body
+     * Parse the body content of an abc music file
+     * @param body A String in abc music file body format, according to 6.005 guidelines
      * @param headerInfo
      * @return
      */
@@ -111,19 +114,19 @@ public interface Music {
         if(headerInfo.containsKey("voices")){
             return musicMaker.getPieceMap();
         }
-        
+
         else{
             return musicMaker.getFullPiece();
         }
     }
 
-    
+
     /**
      * @return total duration of this piece in beats
      */
     public double duration();
-    
-    
+
+
     /**
      * Transpose all notes upward or downward in pitch.
      * @param semitonesUp semitones by which to transpose
@@ -134,27 +137,27 @@ public interface Music {
      */
 
     public Music transpose(int semitonesUp);
-    
+
     /**
      * Play this piece.
      * @param player player to play on
      * @param atBeat when to play
      */
     void play(SequencePlayer player, double atBeat);
-    
-    
+
+
     /**
      * @return whether or not the Music is of type Chord
      */
     public boolean isChord();
-    
+
     /**
      * @return whether or not the Music is of type Note
      */
     public boolean isNote();
 
     public static void main(String[] args) throws IOException, MidiUnavailableException, InvalidMidiDataException {
-        File file = new File("sample_abc/Invention.abc");
+        File file = new File("sample_abc/tchdan.abc");
 
         List<String> headbody = SplitHeader.splitHeader(file);
         System.out.println(headbody.get(1));

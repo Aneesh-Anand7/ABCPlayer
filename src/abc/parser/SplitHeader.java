@@ -9,6 +9,12 @@ import java.util.List;
 
 public class SplitHeader {
 
+    /**
+     * Takes in an abc music file and divides it into the header and body
+     * @param file the abc music file to be divided
+     * @return a list of Strings of size 2 containing the header and the body of file as Strings
+     * @throws IOException
+     */
     public static List<String> splitHeader(File file) throws IOException {
         Path path = file.toPath();
         List<String> lines = Files.readAllLines(path);
@@ -26,15 +32,7 @@ public class SplitHeader {
             } else {
                 body += line + "\n";
             }
-            
         }
         return Arrays.asList(header,body);
-    }
-    
-    public static void main(String[] args) throws IOException {
-        File file = new File("sample_abc/fur_elise.abc");
-        List<String> headbody = splitHeader(file);
-        System.out.println(headbody.get(0));
-        System.out.println(headbody.get(1));
     }
 }
