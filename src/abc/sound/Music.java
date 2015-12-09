@@ -145,7 +145,7 @@ public interface Music {
         System.out.println(header);
         Music music = parseBody(headbody.get(1),header);
         System.out.println(music);
-        SequencePlayer player = new SequencePlayer(file);
+        SequencePlayer player = new SequencePlayer(300);
         music.play(player, 0);
         player.play();
     }
