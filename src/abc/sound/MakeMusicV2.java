@@ -346,14 +346,20 @@ public class MakeMusicV2 implements AbcListener {
                 // TODO natural accidental implementation
 
                 int netaccidental = numsharps - numflats + numnaturals * naturalchange;
-                
-                
+                System.err.println(numsharps);
+                System.err.println(numflats);
+                System.err.println(numnaturals);
+                System.err.println(netaccidental);
+                if(measureAccidentals.containsKey(basenote) && (numflats != 0 || numsharps != 0)){
+                    pitch = pitch.transpose(-1 * measureAccidentals.get(basenote));
+                }
                 
                 if(numnaturals > 0){
                     measureAccidentals.put(basenoteWithOctave, 0);
                 }
                 else{
                     measureAccidentals.put(basenoteWithOctave, netaccidental);
+                    System.err.println(measureAccidentals);
                 }
 
                 pitch = pitch.transpose(netaccidental);
