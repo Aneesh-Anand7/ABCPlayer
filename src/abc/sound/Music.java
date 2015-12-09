@@ -180,7 +180,7 @@ public interface Music {
     public boolean isNote();
 
     public static void main(String[] args) throws IOException, MidiUnavailableException, InvalidMidiDataException {
-        File file = new File("sample_abc/chords_accidental.abc");
+        File file = new File("sample_abc/invention.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
         System.out.println(headbody.get(1));
         Map<String, String> header = parseHeader(headbody.get(0));
