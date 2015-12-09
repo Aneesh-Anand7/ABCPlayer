@@ -196,8 +196,7 @@ public class MakeHeaderV2 implements ABCgrammarListener {
 
     @Override
     public void exitVoice(VoiceContext ctx) {
-        // TODO Auto-generated method stub
-
+        map.put("voices", "true");
     }
 
     @Override
