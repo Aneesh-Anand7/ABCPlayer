@@ -43,7 +43,7 @@ public class MakeMusic implements AbcListener {
     private Map<String, String> headerInfo;
     private Map<String, Stack<Music>> voiceMusic = new HashMap<>();
     private Map<String, Music> finalVoiceMusic = new HashMap<>();
-    private String currentVoice;
+    private String currentVoice = "defaultvoice";
     
 //    public Music getMusic() {
 //        return stack.get(0);
@@ -102,6 +102,7 @@ public class MakeMusic implements AbcListener {
     @Override
     public void exitRoot(RootContext ctx) {
         if(headerInfo.containsKey("voices")){
+            voiceMusic.put(currentVoice, stack);
             for(String key: voiceMusic.keySet()){
                 Stack<Music> thisstack = voiceMusic.get(key);
                 List<Music> reversestack = new ArrayList<>(thisstack);
@@ -588,9 +589,10 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitBodyvoice(BodyvoiceContext ctx) {
-        if(currentVoice != null){
+        if(currentVoice != null  && stack.size() > 0){
             voiceMusic.put(currentVoice, stack);
         }
+        
         currentVoice = ctx.BODYVOICE().getText();
         if (currentVoice != null){
             System.err.println(currentVoice);
@@ -601,6 +603,7 @@ public class MakeMusic implements AbcListener {
                 stack = new Stack<Music>();
             }
         }
+    
     }
 
     @Override
