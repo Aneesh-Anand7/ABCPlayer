@@ -36,7 +36,8 @@ import abc.parser.AbcParser.TupletspecContext;
 public class MakeMusic implements AbcListener {
     private Stack<Music> stack = new Stack<>();
     private Stack<Music> repeat = new Stack<>();
-    private boolean inrepeat = false;
+    // start off thinking we are inside a repeat
+    private boolean inrepeat = true;
     private Music fullPiece;
     private Map<String, String> headerInfo;
     private Map<String, Stack<Music>> voiceMusic = new HashMap<>();
@@ -511,13 +512,23 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitBarline(BarlineContext ctx) {
-        if (ctx.getText().equals("|:")){
+        if (ctx.getText().equals("|:") || ctx.getText().equals("||") || ctx.getText().equals("|]")){
+            System.out.println("at beginning of repeat");
+            for (int j = 0; j <= repeat.size() - 1; j++){
+                System.out.println("stack: " + stack);
+                System.out.println("repeat: " + repeat);
+                stack.push(repeat.get(j));
+            }
+            repeat = new Stack<>();
             inrepeat = true;
         }
         else if (ctx.getText().equals(":|")){
+            System.out.println("at end of repeat");
             if(repeat.size() > 0){
                 for (int i = 0; i < 2; i ++){
-                    for (int j = repeat.size() - 1; j >= 0; j--){
+                    for (int j = 0; j <= repeat.size() - 1; j++){
+                        System.out.println("stack: " + stack);
+                        System.out.println("repeat: " + repeat);
                         stack.push(repeat.get(j));
                     }
                 }
