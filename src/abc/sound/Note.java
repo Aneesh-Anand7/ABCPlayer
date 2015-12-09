@@ -16,12 +16,10 @@ public class Note implements Music {
     
     private final double duration;
     private final Pitch pitch;
-    private final Instrument instrument = Instrument.PIANO;
 
     private void checkRep() {
         assert duration >= 0;
         assert pitch != null;
-        assert instrument != null;
     }
     
     /**
@@ -37,6 +35,7 @@ public class Note implements Music {
     }
     
     /**
+     * Get this note's pitch
      * @return pitch of this note
      */
     public Pitch pitch() {
@@ -44,7 +43,8 @@ public class Note implements Music {
     }
     
     /**
-     * @return duration of this note
+     * Get this note's duration
+     * @return duration of this note as double
      */
     public double duration() {
         return this.duration;
@@ -62,18 +62,16 @@ public class Note implements Music {
 
     /**
      * Play this note
-     *TODO find out solution to double to int issue
+     * @param atBeat: the beat to start at (in ticks) with respect to the beginning of the player
+     * @param player the Sequence Player to play this note
      * @throws MidiUnavailableException 
-     * @param atBeat: the beat to start at (in ticks)
      */
     public void play(SequencePlayer player, double atBeat) {
         int ticksPerBeat = player.getTicksDefaultNote();
-        int newAtBeat = (int) atBeat;
         int newDuration = (int) (this.duration * ticksPerBeat);
         player.addNote(this.pitch.toMidiNote(), (int) atBeat, newDuration);
     }
     
-
     @Override
     public int hashCode() {
         long durationBits = Double.doubleToLongBits(duration);

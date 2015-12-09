@@ -2,7 +2,6 @@ package abc.sound;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,13 +59,16 @@ public interface Music {
     /**
      * Parse the body content of an abc music file
      * @param file the abc music file from which to parse the content of the body
-     * @return
+     * @return A map containing mappings from Strings to Music Objects
+     *          If there are not multiple voices in the file, the map solely contains one collective Music object
+     *          If there are multiple voices, the map maps voice names to their respective Music objects
      * @throws IOException
      */
     public static Map<String, Music> parseBodyFromFile(File file) throws IOException {
         List<String> headAndBody = SplitHeader.splitHeader(file);
+        String header = headAndBody.get(0);
         String body = headAndBody.get(1);
-        return parseBody(new String(body), new HashMap<String, String>());
+        return parseBody(new String(body), parseHeader(new String(header)));
     }
 
     /**
@@ -96,8 +98,10 @@ public interface Music {
     /**
      * Parse the body content of an abc music file
      * @param body A String in abc music file body format, according to 6.005 guidelines
-     * @param headerInfo
-     * @return
+     * @param headerInfo information parsed from the header of the same abc file
+     * @return A map containing mappings from Strings to Music Objects
+     *          If there are not multiple voices in the file, the map solely contains one collective Music object
+     *          If there are multiple voices, the map maps voice names to their respective Music objects
      */
     public static Map<String, Music> parseBody(String body, Map<String, String> headerInfo) {
         CharStream bodystream = new ANTLRInputStream(body);
@@ -122,6 +126,7 @@ public interface Music {
 
 
     /**
+     * Get the duration of this piece of music
      * @return total duration of this piece in beats
      */
     public double duration();
@@ -135,13 +140,12 @@ public interface Music {
      *         n'.pitch() == n.pitch().transpose(semitonesUp), and m' is
      *         otherwise identical to m
      */
-
     public Music transpose(int semitonesUp);
 
     /**
      * Play this piece.
-     * @param player player to play on
-     * @param atBeat when to play
+     * @param player Sequence player to play on
+     * @param atBeat when to play this piece with respect to the beginning
      */
     void play(SequencePlayer player, double atBeat);
 
