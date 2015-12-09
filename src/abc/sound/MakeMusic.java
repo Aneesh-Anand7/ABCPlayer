@@ -102,7 +102,7 @@ public class MakeMusic implements AbcListener {
     @Override
     public void exitRoot(RootContext ctx) {
         if(headerInfo.containsKey("voices")){
-            voiceMusic.put(currentVoice, stack);
+            voiceMusic.put(currentVoice, repeat);
             for(String key: voiceMusic.keySet()){
                 Stack<Music> thisstack = voiceMusic.get(key);
                 List<Music> reversestack = new ArrayList<>(thisstack);
@@ -120,19 +120,23 @@ public class MakeMusic implements AbcListener {
             }
         }
         else{
-        //we want to reverse order of stack
-        List<Music> reversestack = new ArrayList<>(stack);
-        if (reversestack.size()>=2) {
-            Concat concat = new Concat(reversestack.get(0), reversestack.get(1));
-            for (int i = 2; i < reversestack.size(); i ++){
-                concat = new Concat(concat, reversestack.get(i));
+            // place what ever is left in repeat into stack
+            for (int j = 0 ; j <= repeat.size() - 1; j++){
+                stack.push(repeat.get(j));
             }
-            fullPiece = concat;
-        // only one thing in the stack, just return it
-        } else {
-            fullPiece = reversestack.get(0);
-        }
-        //System.err.println(fullPiece);
+          //we want to reverse order of stack
+            List<Music> reversestack = new ArrayList<>(stack);
+            if (reversestack.size()>=2) {
+                Concat concat = new Concat(reversestack.get(0), reversestack.get(1));
+                for (int i = 2; i < reversestack.size(); i ++){
+                    concat = new Concat(concat, reversestack.get(i));
+                }
+                fullPiece = concat;
+                // only one thing in the stack, just return it
+            } else {
+                fullPiece = reversestack.get(0);
+            }
+            //System.err.println(fullPiece);
         //System.err.println("exiting root" + ", stack is " + stack);
         }
     }
@@ -195,6 +199,7 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitNote(NoteContext ctx) {
+        System.out.println("leaving the note" + ctx.getText());
         double duration;
         if (ctx.notelength() != null) {
             String text = ctx.notelength().getText();
@@ -256,6 +261,7 @@ public class MakeMusic implements AbcListener {
                 pitch = pitch.transpose(netaccidental);
             }
            Note note = new Note(duration, pitch);
+           
            if(inrepeat){
                repeat.push(note);
            }
@@ -481,7 +487,7 @@ public class MakeMusic implements AbcListener {
         System.err.println(stack);
         List<Note> chord = new ArrayList<>();
         for(NoteContext notectx: chordNotes){
-            Note note = (Note) stack.pop();
+            Note note = (Note) repeat.pop();
             chord.add(note);
         }
         Chord newchord = new Chord(chord);
@@ -576,7 +582,11 @@ public class MakeMusic implements AbcListener {
             }
         }
         else if (ctx.getText().equals("[2")) {
+            System.out.println("Beginning of second alt ending");
             altEnding = false;
+            System.out.println("repeat: " + repeat);
+            System.out.println("before1st: " + before1st);
+            System.out.println("stack: " + stack);
         }
 
     }
@@ -589,18 +599,18 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitBodyvoice(BodyvoiceContext ctx) {
-        if(currentVoice != null  && stack.size() > 0){
-            voiceMusic.put(currentVoice, stack);
+        if(currentVoice != null  && repeat.size() > 0){
+            voiceMusic.put(currentVoice, repeat);
         }
         
         currentVoice = ctx.BODYVOICE().getText();
         if (currentVoice != null){
             System.err.println(currentVoice);
             if(voiceMusic.containsKey(currentVoice)){
-                stack = voiceMusic.get(currentVoice);
+                repeat = voiceMusic.get(currentVoice);
             }
             else{
-                stack = new Stack<Music>();
+                repeat = new Stack<Music>();
             }
         }
     

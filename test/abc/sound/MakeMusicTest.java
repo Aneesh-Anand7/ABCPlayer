@@ -182,11 +182,75 @@ public class MakeMusicTest {
         player.play();
         // |: C D E F |[1 G A B c | G A B B :|[2 F E D C |
         // Should be played as C D E F G A B c G A B B C D E F F E D C
-//        assertEquals(music.toString(), "Concat(Concat(Concat(Concat(Concat(Concat(Concat(Concat(Concat(Concat(Concat"
-//                + "(Concat(Concat(Concat(Concat(Concat(Concat(Concat(Concat(Concat(Concat(Concat(Concat"
-//                + "(C1.0 D1.0) E1.0) F1.0) G1.0) A1.0) B1.0) C'1.0) G1.0) A1.0) B1.0) B1.0) C1.0) D"
-//                + "1.0) E1.0) F1.0) F1.0) E1.0) D1.0) C1.0)");
+        assertEquals(music.toString(), "C1.0 D1.0 E1.0 F1.0 G1.0 A1.0 B1.0 C'1.0 G1.0 A1.0 B1.0 B1.0 C1.0 D1.0 E1.0 F1.0 "
+                + "F1.0 E1.0 D1.0 C1.0");
         System.in.read();
         
+    }
+    
+    // No double bars or repeats
+    @Test
+    public void testMakeMusicSample1() throws IOException, MidiUnavailableException, InvalidMidiDataException {
+        File file = new File("sample_abc/sample1.abc");
+        List<String> headbody = SplitHeader.splitHeader(file);
+        System.out.println(headbody.get(1));
+        Map<String, String> header = Music.parseHeader(headbody.get(0));
+        System.out.println(header);
+        Music music = Music.parseBody(headbody.get(1),header).get("music");
+        System.out.println(music);
+        SequencePlayer player = new SequencePlayer(file);
+        music.play(player, 0);
+        player.play();
+
+        System.in.read();
+    }
+    
+ // No double bars or repeats, just a single chord
+    @Test
+    public void testMakeMusicSample2() throws IOException, MidiUnavailableException, InvalidMidiDataException {
+        File file = new File("sample_abc/sample2.abc");
+        List<String> headbody = SplitHeader.splitHeader(file);
+        System.out.println(headbody.get(1));
+        Map<String, String> header = Music.parseHeader(headbody.get(0));
+        System.out.println(header);
+        Music music = Music.parseBody(headbody.get(1),header).get("music");
+        System.out.println(music);
+        SequencePlayer player = new SequencePlayer(file);
+        music.play(player, 0);
+        player.play();
+
+        System.in.read();
+    }
+    
+ // No double bars or repeats
+    @Test
+    public void testMakeMusicSample3() throws IOException, MidiUnavailableException, InvalidMidiDataException {
+        File file = new File("sample_abc/sample3.abc");
+        List<String> headbody = SplitHeader.splitHeader(file);
+        System.out.println(headbody.get(1));
+        Map<String, String> header = Music.parseHeader(headbody.get(0));
+        System.out.println(header);
+        Music music = Music.parseBody(headbody.get(1),header).get("music");
+        System.out.println(music);
+        SequencePlayer player = new SequencePlayer(file);
+        music.play(player, 0);
+        player.play();
+
+        System.in.read();
+    }
+    
+    @Test
+    public void testMakeMusicFurElise() throws IOException, MidiUnavailableException, InvalidMidiDataException {
+        File file = new File("sample_abc/fur_elise.abc");
+        List<String> headbody = SplitHeader.splitHeader(file);
+        System.out.println(headbody.get(1));
+        Map<String, String> header = Music.parseHeader(headbody.get(0));
+        System.out.println(header);
+        Music music = Music.parseBody(headbody.get(1),header).get("music");
+        System.out.println(music);
+        SequencePlayer player = new SequencePlayer(file);
+        music.play(player, 0);
+        player.play();
+        System.in.read();
     }
 }
