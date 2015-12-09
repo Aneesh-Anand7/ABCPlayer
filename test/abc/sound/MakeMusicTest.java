@@ -169,6 +169,13 @@ public class MakeMusicTest {
     }
     
     @Test
+    public void testMakeMusicAccidentals() throws IOException, MidiUnavailableException, InvalidMidiDataException {
+        File file = new File("sample_abc/accidentalTest.abc");
+        Map<String, Music> music = Music.parseBodyFromFile(file);
+        assertEquals(music.toString(), "{music=B'1.0 B'1.0 B1.0 C'1.0 C'1.0 C'1.0 B'1.0 B'1.0 B'1.0 B'1.0 C'1.0 C'1.0 C'1.0 C'1.0 B,1.0 B,1.0 C1.0 C1.0}");
+    }
+    
+    @Test
     public void testMakeMusicRepeat4() throws IOException, MidiUnavailableException, InvalidMidiDataException {
         File file = new File("sample_abc/repeat4.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
