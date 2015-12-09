@@ -114,8 +114,8 @@ public class SequencePlayer {
         // create a sequence object with with tempo-based timing, where
         // the resolution of the time step is based on ticks per beat
         Sequence sequence = new Sequence(Sequence.PPQ, ticksPerBeat);
-        // the beats per minute is taken from the declared tempo in the header of the abc music file
         Map<String, String> title = Music.parseHeaderFromFile(file);
+        // the beats per minute is taken from the declared tempo in the header of the abc music file
         String[] tempoParts= title.get("tempo").split("=");
         String[] lengthParts = title.get("length").split("/");
         String[] tempoBeats = tempoParts[0].split("/");

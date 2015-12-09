@@ -100,8 +100,8 @@ public class MakeHeaderV2 implements ABCgrammarListener {
 
     @Override
     public void exitIndex(IndexContext ctx) {
-        // TODO Auto-generated method stub
-
+        String s = ctx.getText();
+        map.put("index", s.substring(2));
     }
 
     @Override
@@ -112,6 +112,8 @@ public class MakeHeaderV2 implements ABCgrammarListener {
 
     @Override
     public void exitTitle(TitleContext ctx) {
+        String s = ctx.getText();
+        map.put("title", s.substring(2));
     }
 
     @Override

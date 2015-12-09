@@ -56,20 +56,10 @@ public class Concat implements Music {
         return first.duration() + second.duration();
     }
     
-//    /**
-//     * Play this concatenation.
-//     * @
-//     */
-//    public void play(SequencePlayer player, double atBeat) {
-//        int ticksPerBeat = player.getTicks();
-//        // get atBeat value in tick format
-//        int atBeatRationalized = (int) (atBeat * ticksPerBeat);
-//        this.playWithTicks(player, atBeatRationalized);
-//        
-//    }
     /**
      * Play this concatenation.
-     * @
+     * @param player the Sequence Player to play this Concat
+     * @param atBeat the beat at which to play this concat with respect to the beginning of the player
      */
     public void play(SequencePlayer player, double atBeat) {
         first.play(player, atBeat);
