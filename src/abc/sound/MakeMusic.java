@@ -167,7 +167,7 @@ public class MakeMusic implements AbcListener {
             if (text.contains("/")) {
                 String[] numbers = text.split("/");
                 // no numerator or denominator
-                if ((numbers[0].length() == 0)&&(numbers[1].length() == 0)) {
+                if (numbers.length==0) {
                   duration = 1.0;
                   // denominator only
                 } else if (numbers[0].length() == 0){

@@ -36,6 +36,7 @@ public class SequencePlayer {
     private final Track track;
     private final int beatsPerMinute;
     private final int ticksPerBeat;
+    private final int ticksPerDefaultNote;
     private final int defaultTicksPerBeat = 128;
 
     /*
@@ -62,7 +63,7 @@ public class SequencePlayer {
             throws MidiUnavailableException, InvalidMidiDataException {
         this.sequencer = MidiSystem.getSequencer();
         this.ticksPerBeat = ticksPerBeat;
-
+        this.ticksPerDefaultNote = ticksPerBeat;
         // create a sequence object with with tempo-based timing, where
         // the resolution of the time step is based on ticks per beat
         Sequence sequence = new Sequence(Sequence.PPQ, ticksPerBeat);
@@ -88,6 +89,7 @@ public class SequencePlayer {
             throws MidiUnavailableException, InvalidMidiDataException {
         this.sequencer = MidiSystem.getSequencer();
         this.ticksPerBeat = defaultTicksPerBeat;
+        this.ticksPerDefaultNote = ticksPerBeat;
         // create a sequence object with with tempo-based timing, where
         // the resolution of the time step is based on ticks per beat
         Sequence sequence = new Sequence(Sequence.PPQ, ticksPerBeat);
@@ -108,13 +110,16 @@ public class SequencePlayer {
      */
     public SequencePlayer(File file) throws MidiUnavailableException, InvalidMidiDataException, IOException {
         this.sequencer = MidiSystem.getSequencer();
-        this.ticksPerBeat = defaultTicksPerBeat;
+        ticksPerBeat = defaultTicksPerBeat;
         // create a sequence object with with tempo-based timing, where
         // the resolution of the time step is based on ticks per beat
         Sequence sequence = new Sequence(Sequence.PPQ, ticksPerBeat);
         // the beats per minute is taken from the declared tempo in the header of the abc music file
         Map<String, String> title = Music.parseHeaderFromFile(file);
         String[] tempoParts= title.get("tempo").split("=");
+        String[] lengthParts = title.get("length").split("/");
+        double ratio = (Double.valueOf(lengthParts[0])/Double.valueOf(lengthParts[1]))/.25;
+        this.ticksPerDefaultNote = (int)(defaultTicksPerBeat*ratio);
         this.beatsPerMinute = Integer.parseInt(tempoParts[1]);
         // create an empty track; notes will be added to this track
         this.track = sequence.createTrack();
@@ -129,6 +134,14 @@ public class SequencePlayer {
         return ticksPerBeat;
     }
     
+    /**
+     * Get the number of ticks per default note declared for this Sequence Player
+     * @return int number of ticks per default note
+     */
+    public int getTicksDefaultNote() {
+        return ticksPerDefaultNote;
+    }
+
     /**
      * Schedule a note to be played starting at startTick for the duration of numTicks.
      *

@@ -70,7 +70,7 @@ public class Concat implements Music {
 
     public void playWithTicks(SequencePlayer player, int atBeat) {
         first.play(player, atBeat);
-        int secondBeat = (int) (atBeat + first.duration() * player.getTicks());
+        int secondBeat = (int) (atBeat + first.duration() * player.getTicksDefaultNote());
         second.play(player, secondBeat);
     }
     
