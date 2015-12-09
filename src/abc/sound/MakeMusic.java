@@ -657,6 +657,7 @@ public class MakeMusic implements AbcListener {
      * Quadruplets: 4 notes in the time of 3 notes
      * If the # of notes in the tuplet is more than the number of notes specified by nplet,
      * the extra notes are ignored
+     * Requires that the number of notes in the tuplet is at least as large as the constraints above
      */
     @Override
     public void exitTupletelem(TupletelemContext ctx) {
@@ -664,8 +665,6 @@ public class MakeMusic implements AbcListener {
         List<NoteelemContext> noteelems = ctx.noteelem();
         List<Music> tuplets = new ArrayList<>();
         int counter = (int) nplet;
-        // Only need to include as many notes in the tuplet that are given by
-        // the nplet
         for (NoteelemContext noteelem: noteelems) {
             // System.err.println(noteelem.getText() + " " + + nplet);
             Music item;
@@ -687,11 +686,11 @@ public class MakeMusic implements AbcListener {
                 }
                 tuplets.add(tupletnote);
             }
-
-
             // reverse the order because stacks are last in first out
-
+            
         }
+        // Only need to include as many notes in the tuplet that are given by
+        // the nplet
         for (int i = tuplets.size() - 1; i >= tuplets.size()-counter; i--) {
             if (inrepeat) {
                 repeat.push(tuplets.get(i));
@@ -745,14 +744,14 @@ public class MakeMusic implements AbcListener {
                 note = (Note) repeat.pop();
             } else {
                 note = (Note) stack.pop();
-            }
-            
-            
+            }     
             chord.add(note);
-
         }
-
-        Chord newchord = new Chord(chord);
+        List<Note> revchord = new ArrayList<>();
+        for (int i = chord.size() - 1; i >= 0; i--) {
+            revchord.add(chord.get(i));
+        }
+        Chord newchord = new Chord(revchord);
         if (inrepeat) {
             repeat.push(newchord);
         } else {

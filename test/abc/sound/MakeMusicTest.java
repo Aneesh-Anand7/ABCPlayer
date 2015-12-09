@@ -53,13 +53,58 @@ public class MakeMusicTest {
 //        Chord chord = new Chord(chordnotes);
 //        assertEquals(chord, music);
 //    }
+    //Testing strategy:
+    // Notes:
+    //  - Multiple octaves
+    //  - Multiple key signatures
+    //  - Different lengths (num/num), /num, /, num/, num
+    // Rests:
+    //  - Different lengths (num/num), /num, /, num/, num
+    // Barlines:
+    //  - Combinations of |, [|, ||, or |]
+    // Accidentals
+    // TODO
+    //  - Sharps, flats, naturals, combinations of them
+    //  - Doubled accidentals
+    //  - Overriding accidentals
+    // Chords
+    // TODO
+    // - Different #'s of notes
+    // - Accidentals
+    // - Different lengths
+    // Tuplets
+    // - Quadruplets, triplets, duplets
+    // - Larger number of notes in tuplet than specified
+    // TODO
+    // - Chords in tuplet
+    // - Different lengths
+    // Repeats
+    // - Contains |:, doesn't contains :|
+    // - Major section repeat or beginning repeat
+    // - Multiple repeats
+    // - Alternate endings
+    // Voices
+    // - 1, 2, 3 voices
+    // TODO
+    // - Voices from start of piece, voices in middle of piece
+    // - Interleaved vs. entirety
+    // - Voices and repeats
+    
 
     @Test
     public void testMakeMusicInvention() throws IOException, MidiUnavailableException, InvalidMidiDataException {
+        //TODO
         File file = new File("sample_abc/invention.abc");
         Map<String, Music> music = Music.parseBodyFromFile(file);
     }
 
+    @Test
+    public void testLengths() throws IOException, MidiUnavailableException, InvalidMidiDataException {
+        File file = new File("sample_abc/lengths.abc");
+        Map<String, Music> music = Music.parseBodyFromFile(file);
+        Music toPlay = music.get("music");
+        assertEquals(music.toString(),"{music=A0.25 A0.25 A0.5 A1.0 A2.0 A3.0 A4.0 A6.0 A8.0 A,0.25 A,0.25 A,0.5 A,1.0 A,2.0 A,3.0 A,4.0 A,6.0 A,8.0}");
+    }
     // covers repeat with opening and closing |: ... :|
     @Test
     public void testMakeMusicRepeat1() throws IOException, MidiUnavailableException, InvalidMidiDataException {
@@ -94,7 +139,6 @@ public class MakeMusicTest {
         chordnotes.add(secondnote);
         chordnotes.add(thirdnote);
         chordnotes.add(fourthnote);
-        
         Chord chord = new Chord(chordnotes);
         assertEquals(music.toString(), "{music=[D,1.0C''1.0B'1.0A1.0]}");
     }
@@ -118,10 +162,11 @@ public class MakeMusicTest {
     public void testMakeMusicTuplet() throws IOException, MidiUnavailableException, InvalidMidiDataException {
         File file = new File("sample_abc/tupletTest.abc");
         Map<String, Music> music = Music.parseBodyFromFile(file);
-        assertEquals(music.toString(), "{music=B0.6666666666666666B0.6666666666666666B0.6666666666666666}");
+        assertEquals(music.toString(), "{music=G0.6666666666666666 E'0.6666666666666666 G'0.6666666666666666 A'1.0 F'0.5 G'0.5 .0.5 E'1.0 C'0.5 D'0.5 B0.75 .0.75 B0.75 C'0.75 D'0.75 E'0.75 F'1.0 F'1.0 F'1.0 B1.5 C'1.5 D'1.0 D'1.0 D'1.0}");
     }
     @Test
     public void testMakeMusicTupletInsideChord() throws IOException, MidiUnavailableException, InvalidMidiDataException {
+        //TODO
         File file = new File("sample_abc/tupletInsideChordTest.abc");
         Map<String, Music> music = Music.parseBodyFromFile(file);
         System.err.println(music);
@@ -259,5 +304,17 @@ public class MakeMusicTest {
         music.play(player, 0);
         player.play();
         System.in.read();
+    }
+    @Test
+    public void testMakeMusicOctaves() throws IOException, MidiUnavailableException, InvalidMidiDataException {
+        File file = new File("sample_abc/octaves.abc");
+        Map<String, Music> music = Music.parseBodyFromFile(file);
+        assertEquals(music.toString(), "{music=C,1.0 D,1.0 E,1.0 F,1.0 G,1.0 A,1.0 B,1.0 C1.0 D1.0 E1.0 F1.0 G1.0 A1.0 B1.0 C'1.0 D'1.0 E'1.0 F'1.0 G'1.0 A'1.0 B'1.0 C''1.0 D''1.0 E''1.0 F''1.0 G''1.0 A''1.0 B''1.0}");
+    }
+    @Test
+    public void testMakeMusicScale() throws IOException, MidiUnavailableException, InvalidMidiDataException {
+        File file = new File("sample_abc/scale.abc");
+        Map<String, Music> music = Music.parseBodyFromFile(file);
+        assertEquals(music.toString(), "{music=C1.0 D1.0 E1.0 F1.0 G1.0 A1.0 B1.0 C'1.0 C'1.0 B1.0 A1.0 G1.0 F1.0 E1.0 D1.0 C1.0}");
     }
 }
