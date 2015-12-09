@@ -424,8 +424,15 @@ public class MakeMusic implements AbcListener {
                 pitch = pitch.transpose(change * 12);
 
             }
+            
+            String basenoteWithOctave = basenote;
+            String octaveInfo = "";
+            if(ctx.noteorrest().pitch().octave() != null){
+                octaveInfo = ctx.noteorrest().pitch().octave().getText();
+                basenoteWithOctave += octaveInfo;
+            }
 
-            pitch = pitch.transpose(keyChange(basenote));
+            pitch = pitch.transpose(keyChange(basenote, octaveInfo));
 
             String accidental = null;
 
@@ -449,11 +456,13 @@ public class MakeMusic implements AbcListener {
 
                 int netaccidental = numsharps - numflats + numnaturals * naturalchange;
                 
+                
+                
                 if(numnaturals > 0){
-                    measureAccidentals.put(basenote, 0);
+                    measureAccidentals.put(basenoteWithOctave, 0);
                 }
                 else{
-                    measureAccidentals.put(basenote, netaccidental);
+                    measureAccidentals.put(basenoteWithOctave, netaccidental);
                 }
 
                 pitch = pitch.transpose(netaccidental);
@@ -488,7 +497,11 @@ public class MakeMusic implements AbcListener {
      * 
      */
 
-    public int keyChange(String basenote) {
+    public int keyChange(String basenote, String octaveInfo) {
+        String basenoteWithOctave = basenote;
+        if(!octaveInfo.equals("")){
+            basenoteWithOctave += octaveInfo;
+        }
 
         Map<String, Integer> accidentalMap = createAccidentalMap();
 
@@ -504,8 +517,8 @@ public class MakeMusic implements AbcListener {
         
         Integer measureEffect = 0;
         
-        if(measureAccidentals.containsKey(basenote)){
-            measureEffect = measureAccidentals.get(basenote);
+        if(measureAccidentals.containsKey(basenoteWithOctave)){
+            measureEffect = measureAccidentals.get(basenoteWithOctave);
         }
 
         if (numAccidentals != null) {
