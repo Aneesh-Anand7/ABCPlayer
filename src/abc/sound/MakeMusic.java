@@ -36,7 +36,11 @@ import abc.parser.AbcParser.TupletspecContext;
 public class MakeMusic implements AbcListener {
     private Stack<Music> stack = new Stack<>();
     private Stack<Music> repeat = new Stack<>();
-    private boolean inrepeat = false;
+    private Stack<Music> before1st = new Stack<>();
+    
+    private boolean inrepeat = true;
+    private boolean altEnding = false;
+    
     private Music fullPiece;
     private Map<String, String> headerInfo;
     private Map<String, Stack<Music>> voiceMusic = new HashMap<>();
@@ -499,16 +503,48 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitBarline(BarlineContext ctx) {
-        if (ctx.getText().equals("|:")){
+        if (ctx.getText().equals("|:") || ctx.getText().equals("[|") || ctx.getText().equals("||") 
+                || ctx.getText().equals("|]")){
+            System.out.println("at beginning of repeat");
+            for (int j = 0 ; j <= repeat.size() - 1; j++){
+                stack.push(repeat.get(j));
+                System.out.println("stack: " + stack);
+                System.out.println("before1st: " + before1st);
+                System.out.println("repeat: " + repeat);
+            }
             inrepeat = true;
+            repeat = new Stack<>();
         }
         else if (ctx.getText().equals(":|")){
-            if(repeat.size() > 0){
+            if(repeat.size() > 0 && !(altEnding)){
                 for (int i = 0; i < 2; i ++){
-                    for (int j = repeat.size() - 1; j >= 0; j--){
+                    for (int j = 0 ; j <= repeat.size() - 1; j++){
                         stack.push(repeat.get(j));
+                        System.out.println("stack: " + stack);
+                        System.out.println("before1st: " + before1st);
+                        System.out.println("repeat: " + repeat);
                     }
                 }
+
+                repeat = new Stack<>();
+            }
+            if (altEnding) {
+                System.out.println("at end of first alternate ending");
+                for (int j = 0; j <= repeat.size() - 1; j++){
+                    stack.push(repeat.get(j));
+                    System.out.println("stack: " + stack);
+                    System.out.println("before1st: " + before1st);
+                    System.out.println("repeat: " + repeat);
+                }
+                for (int k = 0; k <= before1st.size() - 1; k++) {
+                    stack.push(before1st.get(k));
+                    System.out.println("stack: " + stack);
+                    System.out.println("before1st: " + before1st);
+                    System.out.println("repeat: " + repeat);
+                }
+                repeat = new Stack<>();
+                before1st = new Stack<>();
+                altEnding = false;
             }
         }
         else if (ctx.getText().equals("||")){
@@ -531,8 +567,19 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitNthrepeat(NthrepeatContext ctx) {
-        // TODO Auto-generated method stub
-
+        if (ctx.getText().equals("[1")) {
+            System.out.println("Found beginning of first alternate ending");
+            for (int j = 0; j <= repeat.size() - 1; j++){
+                before1st.push(repeat.get(j));
+                System.out.println("repeat: " + repeat);
+                System.out.println("before1st: " + before1st);
+                System.out.println("stack: " + stack);
+                altEnding = true;
+            }
+        }
+        else if (ctx.getText().equals("[2")) {
+            altEnding = false;
+        }
     }
 
     @Override
