@@ -49,7 +49,7 @@ public class Chord implements Music {
      */
     public Chord transpose(int semitonesUp) {
         List<Note> notesCopy = new ArrayList<Note>(notes);
-        for (Music note : notesCopy) {
+        for (Note note : notesCopy) {
             note = note.transpose(semitonesUp);
         }
         return new Chord(notesCopy);

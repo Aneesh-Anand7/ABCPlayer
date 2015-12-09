@@ -58,7 +58,7 @@ public interface Music {
      * @return
      * @throws IOException
      */
-    public static Music parseBodyFromFile(File file) throws IOException {
+    public static Map<String, Music> parseBodyFromFile(File file) throws IOException {
         List<String> headAndBody = SplitHeader.splitHeader(file);
         String body = headAndBody.get(1);
         return parseBody(new String(body), new HashMap<String, String>());
@@ -96,7 +96,7 @@ public interface Music {
      * @param headerInfo
      * @return
      */
-    public static Music parseBody(String body, Map<String, String> headerInfo) {
+    public static Map<String, Music> parseBody(String body, Map<String, String> headerInfo) {
         CharStream bodystream = new ANTLRInputStream(body);
         AbcLexer bodylexer = new AbcLexer(bodystream);
         bodylexer.reportErrorsAsExceptions();
@@ -108,7 +108,12 @@ public interface Music {
         MakeMusic musicMaker = new MakeMusic();
         musicMaker.setHeaderInfo(headerInfo);
         new ParseTreeWalker().walk(musicMaker, tree);
-        return musicMaker.getFullPiece();
+        if(headerInfo.containsKey("voices")){
+            return musicMaker.getPieceMap();
+        }
+        else{
+            return musicMaker.getFullPiece();
+        }
     }
 
     
@@ -143,10 +148,13 @@ public interface Music {
         System.out.println(headbody.get(1));
         Map<String, String> header = parseHeader(headbody.get(0));
         System.out.println(header);
-        Music music = parseBody(headbody.get(1),header);
+        Map<String, Music> music = parseBody(headbody.get(1),header);
         System.out.println(music);
         SequencePlayer player = new SequencePlayer(file);
-        music.play(player, 0);
+        for(String key: music.keySet()){
+            System.err.println(key);
+            music.get(key).play(player, 0);
+        }
         player.play();
     }
 }
