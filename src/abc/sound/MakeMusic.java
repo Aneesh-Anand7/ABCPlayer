@@ -295,7 +295,7 @@ public class MakeMusic implements AbcListener {
                 String[] numbers = text.split("/");
                 // no numerator or denominator
                 if (numbers.length == 0) {
-                    duration = 1.0;
+                    duration = 0.5;
                     // denominator only
                 } else if (numbers[0].length() == 0) {
                     duration = 1.0 / Double.valueOf(numbers[1]);

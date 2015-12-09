@@ -164,7 +164,7 @@ public interface Music {
         System.out.println(header);
         Map<String, Music> music = parseBody(headbody.get(1),header);
         System.out.println(music);
-        SequencePlayer player = new SequencePlayer(420);
+        SequencePlayer player = new SequencePlayer(file);
         double voicedelay = 0;
         if(music.keySet().contains("defaultvoice")){
             Music defaultvoice = music.get("defaultvoice");
