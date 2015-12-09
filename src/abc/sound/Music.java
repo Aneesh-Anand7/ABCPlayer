@@ -138,14 +138,14 @@ public interface Music {
     
 
     public static void main(String[] args) throws IOException, MidiUnavailableException, InvalidMidiDataException {
-        File file = new File("sample_abc/piece1.abc");
+        File file = new File("sample_abc/TakeOnMeSimple.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
         System.out.println(headbody.get(1));
         Map<String, String> header = parseHeader(headbody.get(0));
         System.out.println(header);
         Music music = parseBody(headbody.get(1),header);
         System.out.println(music);
-        SequencePlayer player = new SequencePlayer(file);
+        SequencePlayer player = new SequencePlayer(300);
         music.play(player, 0);
         player.play();
     }
