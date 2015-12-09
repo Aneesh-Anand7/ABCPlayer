@@ -120,6 +120,23 @@ public class MakeMusicTestV2 {
         
     }
     
+    // Accidentals
+    @Test
+    public void testMakeMusicAccidental() throws IOException, MidiUnavailableException, InvalidMidiDataException {
+        File file = new File("sample_abc/accidentalTest.abc");
+        List<String> headbody = SplitHeader.splitHeader(file);
+        System.out.println(headbody.get(1));
+        Map<String, String> header = Music.parseHeader(headbody.get(0));
+        System.out.println(header);
+        Music music = Music.parseBody(headbody.get(1),header).get("music");
+        System.out.println(music);
+        SequencePlayer player = new SequencePlayer(file);
+        music.play(player, 0);
+        player.play();
+
+        System.in.read();
+    }
+    
     // No double bars or repeats
     @Test
     public void testMakeMusicSample1() throws IOException, MidiUnavailableException, InvalidMidiDataException {
