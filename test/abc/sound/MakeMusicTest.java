@@ -168,6 +168,8 @@ public class MakeMusicTest {
         assertEquals(music.toString(), "{V:1=D1.0 D1.0 D1.0 C1.0 C1.0 C1.0 C1.0 C'1.0, V:2=C1.0 C1.0 C1.0 C'1.0 D1.0 D1.0 D1.0 C1.0, defaultvoice=C1.0 D1.0 E1.0 F1.0 G1.0 A1.0 B1.0 C'1.0}");
     }
     
+    //tests the behavior of accidentals such as persisting through a whole measure, only applying to one
+    //octave, and being overridden by future accidentals, also handling naturals
     @Test
     public void testMakeMusicAccidentals() throws IOException, MidiUnavailableException, InvalidMidiDataException {
         File file = new File("sample_abc/accidentalTest.abc");
