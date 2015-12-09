@@ -86,5 +86,13 @@ public class Chord implements Music {
         s += "]";
         return s;
     }
+    @Override
+    public boolean isChord() {
+        return true;
+    }
+    @Override
+    public boolean isNote() {
+        return false;
+    }
 
 }

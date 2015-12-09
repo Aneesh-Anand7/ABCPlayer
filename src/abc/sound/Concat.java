@@ -92,13 +92,23 @@ public class Concat implements Music {
 
     @Override
     public String toString() {
-        return first.toString() + second.toString();
+        return first.toString() + " " + second.toString();
     }
 
     @Override
     public abc.sound.Music transpose(int semitonesUp) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public boolean isChord() {
+        return false;
+    }
+
+    @Override
+    public boolean isNote() {
+        return false;
     }
 
 }
