@@ -56,24 +56,27 @@ public class Concat implements Music {
         return first.duration() + second.duration();
     }
     
+//    /**
+//     * Play this concatenation.
+//     * @
+//     */
+//    public void play(SequencePlayer player, double atBeat) {
+//        int ticksPerBeat = player.getTicks();
+//        // get atBeat value in tick format
+//        int atBeatRationalized = (int) (atBeat * ticksPerBeat);
+//        this.playWithTicks(player, atBeatRationalized);
+//        
+//    }
     /**
      * Play this concatenation.
      * @
      */
     public void play(SequencePlayer player, double atBeat) {
-        int ticksPerBeat = player.getTicks();
-        // get atBeat value in tick format
-        int atBeatRationalized = (int) (atBeat * ticksPerBeat);
-        this.playWithTicks(player, atBeatRationalized);
-        
-    }
-
-    public void playWithTicks(SequencePlayer player, int atBeat) {
         first.play(player, atBeat);
         int secondBeat = (int) (atBeat + first.duration() * player.getTicksDefaultNote());
         second.play(player, secondBeat);
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;
