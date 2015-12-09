@@ -31,7 +31,6 @@ public class Main {
      */
     public static void play(String file) throws IOException, MidiUnavailableException, InvalidMidiDataException {
         File abcFile = new File(file);
-
         List<String> headbody = SplitHeader.splitHeader(abcFile);
         System.out.println(headbody.get(1));
         Map<String, String> header = Music.parseHeader(headbody.get(0));

@@ -135,7 +135,7 @@ public class MakeMusic implements AbcListener {
             }else {
                 voiceMusic.put(currentVoice, stack);
             }
-            
+            System.out.println(voiceMusic);
             for (String key : voiceMusic.keySet()) {
                 Stack<Music> thisstack = voiceMusic.get(key);
                 List<Music> reversestack = new ArrayList<>(thisstack);
@@ -651,24 +651,22 @@ public class MakeMusic implements AbcListener {
         // System.err.println("entering tupletelem" + ", stack is " + stack);
 
     }
-
+    /**
+     * Exits the tuplet element and handles duplets: 2 notes in the time of 3 notes
+     * Triplets: 3 notes in the time of 2 notes
+     * Quadruplets: 4 notes in the time of 3 notes
+     * If the # of notes in the tuplet is more than the number of notes specified by nplet,
+     * the extra notes are ignored
+     */
     @Override
-
     public void exitTupletelem(TupletelemContext ctx) {
-
         double nplet = Double.valueOf(ctx.tupletspec().TUPLETSPEC().getText().substring(1));
-
         List<NoteelemContext> noteelems = ctx.noteelem();
-
         List<Music> tuplets = new ArrayList<>();
-
         int counter = (int) nplet;
-
         // Only need to include as many notes in the tuplet that are given by
         // the nplet
-
-        while (counter > 0) {
-
+        for (NoteelemContext noteelem: noteelems) {
             // System.err.println(noteelem.getText() + " " + + nplet);
             Music item;
             if (inrepeat) {
@@ -676,39 +674,25 @@ public class MakeMusic implements AbcListener {
             } else {
                 item = stack.pop();
             }
-
             if (item.isNote()) {
-
                 Note note = (Note) item;
-
                 Note tupletnote;
-
                 if (nplet == 3) {
-
                     tupletnote = new Note(note.duration() * 2 / nplet, note.pitch());
-
                 } else if (nplet == 2) {
-
                     tupletnote = new Note(note.duration() * 3 / nplet, note.pitch());
-
-                    // should equal 4 - SPEC
-
+                  // should equal 4 - SPEC
                 } else {
-
                     tupletnote = new Note(note.duration() * 3 / nplet, note.pitch());
-
                 }
-
                 tuplets.add(tupletnote);
-
             }
 
-            counter -= 1;
 
             // reverse the order because stacks are last in first out
 
         }
-        for (int i = tuplets.size() - 1; i >= 0; i--) {
+        for (int i = tuplets.size() - 1; i >= tuplets.size()-counter; i--) {
             if (inrepeat) {
                 repeat.push(tuplets.get(i));
             } else {
@@ -944,18 +928,34 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void exitBodyvoice(BodyvoiceContext ctx) {
-        if (currentVoice != null && repeat.size() > 0) {
-            voiceMusic.put(currentVoice, repeat);
-        }
-        currentVoice = ctx.BODYVOICE().getText();
-        if (currentVoice != null) {
-            if (voiceMusic.containsKey(currentVoice)) {
-                repeat = voiceMusic.get(currentVoice);
+        if (inrepeat) {
+            if (currentVoice != null && repeat.size() > 0) {
+                voiceMusic.put(currentVoice, repeat);
             }
-            else {
-                repeat = new Stack<Music>();
+            currentVoice = ctx.BODYVOICE().getText();
+            if (currentVoice != null) {
+                if (voiceMusic.containsKey(currentVoice)) {
+                    repeat = voiceMusic.get(currentVoice);
+                }
+                else {
+                    repeat = new Stack<Music>();
+                }
+            }
+        } else {
+            if (currentVoice != null && stack.size() > 0) {
+                voiceMusic.put(currentVoice, stack);
+            }
+            currentVoice = ctx.BODYVOICE().getText();
+            if (currentVoice != null) {
+                if (voiceMusic.containsKey(currentVoice)) {
+                    stack = voiceMusic.get(currentVoice);
+                }
+                else {
+                    stack = new Stack<Music>();
+                }
             }
         }
+        
     }
 
     @Override
