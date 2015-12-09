@@ -106,7 +106,8 @@ public class MakeMusicTest {
         chordnotes.add(thirdnote);
         chordnotes.add(fourthnote);
         Chord chord = new Chord(chordnotes);
-        assertEquals(music.toString(), "{music=[D,1.0C''1.0B'1.0A1.0]}");
+        System.err.println(music);
+        assertEquals(music.toString(), "{music=[A1.0B'1.0C''1.0D,1.0]}");
     }
 
     @Test
@@ -135,12 +136,12 @@ public class MakeMusicTest {
                 , music.toString());
     }
     @Test
-    public void testMakeMusicTupletInsideChord() throws IOException, MidiUnavailableException, InvalidMidiDataException {
+    public void testMakeMusicChordInsideTuplet() throws IOException, MidiUnavailableException, InvalidMidiDataException {
         //TODO
-        File file = new File("sample_abc/tupletInsideChordTest.abc");
+        File file = new File("sample_abc/chordInsideTupletTest.abc");
         Map<String, Music> music = Music.parseBodyFromFile(file);
         System.err.println(music);
-        assertEquals(music.toString(), "a");
+        assertEquals(music.toString(), "{music=D0.6666666666666666}");
     }
     
 
@@ -149,6 +150,7 @@ public class MakeMusicTest {
     public void testMakeMusicMusicBeforeVoices() throws IOException, MidiUnavailableException, InvalidMidiDataException {
         File file = new File("sample_abc/musicBeforeVoiceTest.abc");
         Map<String, Music> music = Music.parseBodyFromFile(file);
+        System.err.println(music);
         assertEquals(music.toString(), "{V:1=D1.0 D1.0 D1.0 C1.0 C1.0 C1.0 C1.0 C'1.0, V:2=C1.0 C1.0 C1.0 C'1.0 D1.0 D1.0 D1.0 C1.0, defaultvoice=C1.0 D1.0 E1.0 F1.0 G1.0 A1.0 B1.0 C'1.0}");
     }
 
