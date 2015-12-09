@@ -39,17 +39,30 @@ public class MakeMusic implements AbcListener {
     private boolean inrepeat = false;
     private Music fullPiece;
     private Map<String, String> headerInfo;
+    private Map<String, Stack<Music>> voiceMusic = new HashMap<>();
+    private Map<String, Music> finalVoiceMusic = new HashMap<>();
+    private String currentVoice;
     
 //    public Music getMusic() {
 //        return stack.get(0);
 //    }
     
-    public Music getFullPiece(){
-        return fullPiece;
+//    public Music getFullPiece(){
+//        return fullPiece;
+//    }
+    
+    public Map<String, Music> getFullPiece(){
+        Map<String, Music> returnMap = new HashMap<>();
+        returnMap.put("music",  fullPiece);
+        return returnMap;
     }
     
     public void setHeaderInfo(Map<String, String> info){
         headerInfo = info;
+    }
+    
+    public Map<String, Music> getPieceMap(){
+        return finalVoiceMusic;
     }
     
     
@@ -86,6 +99,24 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitRoot(RootContext ctx) {
+        if(headerInfo.containsKey("voices")){
+            for(String key: voiceMusic.keySet()){
+                Stack<Music> thisstack = voiceMusic.get(key);
+                List<Music> reversestack = new ArrayList<>(thisstack);
+                if (reversestack.size()>=2) {
+                    Concat concat = new Concat(reversestack.get(0), reversestack.get(1));
+                    for (int i = 2; i < reversestack.size(); i ++){
+                        concat = new Concat(concat, reversestack.get(i));
+                    }
+                    finalVoiceMusic.put(key, concat);
+                // only one thing in the stack, just put it in the final map as is
+                }
+                else{
+                    finalVoiceMusic.put(key, voiceMusic.get(key).pop());
+                }
+            }
+        }
+        else{
         //we want to reverse order of stack
         List<Music> reversestack = new ArrayList<>(stack);
         if (reversestack.size()>=2) {
@@ -100,6 +131,7 @@ public class MakeMusic implements AbcListener {
         }
         //System.err.println(fullPiece);
         //System.err.println("exiting root" + ", stack is " + stack);
+        }
     }
 
     @Override
@@ -244,6 +276,7 @@ public class MakeMusic implements AbcListener {
         String uppercasebasenote = basenote.toUpperCase();
         String key = headerInfo.get("key");
         Integer numAccidentals = accidentalMap.get(key);
+        if(numAccidentals != null){
         if(numAccidentals == 0){
             return 0;
         }
@@ -261,8 +294,9 @@ public class MakeMusic implements AbcListener {
                     return -1;
                 }
             }
-        }
+        }}
         return 0;
+        
     }
     
     public Map<String, Integer> createAccidentalMap(){
@@ -499,8 +533,19 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitBodyvoice(BodyvoiceContext ctx) {
-        // TODO Auto-generated method stub
-
+        if(currentVoice != null){
+            voiceMusic.put(currentVoice, stack);
+        }
+        currentVoice = ctx.BODYVOICE().getText();
+        if (currentVoice != null){
+            System.err.println(currentVoice);
+            if(voiceMusic.containsKey(currentVoice)){
+                stack = voiceMusic.get(currentVoice);
+            }
+            else{
+                stack = new Stack<Music>();
+            }
+        }
     }
 
     @Override
