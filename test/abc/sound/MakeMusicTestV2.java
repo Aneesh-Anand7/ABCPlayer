@@ -231,4 +231,33 @@ public class MakeMusicTestV2 {
         player.play();
         System.in.read();
     }
+    
+    @Test
+    public void testMusicBeforeVoices() throws IOException, MidiUnavailableException, InvalidMidiDataException {
+        File file = new File("sample_abc/musicBeforeVoiceTest.abc");
+        List<String> headbody = SplitHeader.splitHeader(file);
+        System.out.println(headbody.get(1));
+        Map<String, String> header = Music.parseHeader(headbody.get(0));
+        System.out.println(header);
+        Map<String,Music> music = Music.parseBody(headbody.get(1),header);
+        
+        SequencePlayer player = new SequencePlayer(file);
+        double voicedelay = 0;
+        if(music.keySet().contains("defaultvoice")){
+            Music defaultvoice = music.get("defaultvoice");
+            defaultvoice.play(player, 0);
+            voicedelay = defaultvoice.duration()*player.getTicksDefaultNote();
+        }
+        
+        for(String key: music.keySet()){
+            if(!key.equals("defaultvoice")){
+                System.out.println("key: " + key);
+                music.get(key).play(player, 0);
+            }
+        }
+        System.out.println("The music Map: " + music);
+        System.out.println("Voice delay: " + voicedelay);
+        player.play();
+        System.in.read();
+    }
 }

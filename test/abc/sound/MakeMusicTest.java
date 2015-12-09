@@ -77,7 +77,8 @@ public class MakeMusicTest {
     public void testMakeMusicInvention() throws IOException, MidiUnavailableException, InvalidMidiDataException {
         File file = new File("sample_abc/invention.abc");
         Map<String, Music> music = Music.parseBodyFromFile(file);
-        System.out.println(music);
+        assertEquals("{V:1\n"+"=.0.5 C0.5 D0.5 E0.5 F0.5 D0.5 E0.5 C0.5 G1.0 C'1.0 B1.0 C'1.0 D'0.5 G0.5 A0.5 B0.5 C'0.5 A0.5 B0.5 G0.5 D'1.0 G'1.0 F'1.0 G'1.0 E'0.5 A'0.5 G'0.5 F'0.5 E'0.5 G'0.5 F'0.5 A'0.5 G'0.5 F'0.5 E'0.5 D'0.5 C'0.5 E'0.5 D'0.5 F'0.5 E'0.5 D'0.5 C'0.5 B0.5 A0.5 C'0.5 B0.5 D'0.5 C'0.5 B0.5 A0.5 G0.5 ^F0.5 A0.5 G0.5 B0.5 A1.0 D1.0 C'1.5 D'0.5 B0.5 A0.5 G0.5 ^F0.5 E0.5 G0.5 ^F0.5 A0.5 G0.5 B0.5 A0.5 C'0.5 B0.5 D'0.5 C'0.5 E'0.5 D'0.5 B0.25 C'0.25 D'0.5 G'0.5 B1.0 A0.5 G0.5 G1.0 .1.0 .2.0 .0.5 G0.5 A0.5 B0.5 C'0.5 A0.5 B0.5 G0.5 ^F1.0 .3.0 .0.5 A0.5 B0.5 C'0.5 D'0.5 B0.5 C'0.5 A0.5 B1.0 .1.0 .2.0 .0.5 D'0.5 C'0.5 B0.5 A0.5 C'0.5 B0.5 D'0.5 C'1.0 .1.0 .2.0 .0.5 E'0.5 D'0.5 C'0.5 B0.5 D'0.5 ^C'0.5 D'0.5 D'1.0 ^C'1.0 D'1.0 E'1.0 F'1.0 A1.0 B1.0 ^C'1.0 D'1.0 ^F1.0 ^G1.0 A1.0 B1.0 C'1.0 D'2.0 D'0.5 E0.5 ^F0.5 ^G0.5 A0.5 ^F0.5 ^G0.5 E0.5 E'0.5 D'0.5 C'0.5 E'0.5 D'0.5 C'0.5 B0.5 D'0.5 C'0.5 A'0.5 ^G'0.5 B'0.5 A'0.5 E'0.5 F'0.5 D'0.5 ^G0.5 F'0.5 E'0.5 D'0.5 C'1.0 B0.5 A0.5 A0.5 A'0.5 G'0.5 F'0.5 E'0.5 G'0.5 F'0.5 A'0.5 G'4.0 G'0.5 E'0.5 F'0.5 G'0.5 A'0.5 F'0.5 G'0.5 E'0.5 F'4.0 F'0.5 G'0.5 F'0.5 E'0.5 D'0.5 F'0.5 E'0.5 G'0.5 F'4.0 F'0.5 D'0.5 E'0.5 F'0.5 G'0.5 E'0.5 F'0.5 D'0.5 E'4.0 E'0.5 C'0.5 D'0.5 E'0.5 F'0.5 D'0.5 E'0.5 C'0.5 D'0.5 E'0.5 F'0.5 G'0.5 A'0.5 F'0.5 G'0.5 E'0.5 F'0.5 G'0.5 A'0.5 B'0.5 C''0.5 A'0.5 B'0.5 G'0.5 C''1.0 G'1.0 E'1.0 D'0.5 C'0.5 C'0.5 ^A0.5 A0.5 G0.5 F0.5 A0.5 G0.5 A0.5 A0.5 B0.5 C'0.5 E0.5 D0.5 C'0.5 F0.5 B0.5 [C'8.0G8.0E8.0], V:2\n"+
+"=.4.0 .0.5 C,0.5 D,0.5 E,0.5 F,0.5 D,0.5 E,0.5 C,0.5 G,1.0 G,,1.0 .2.0 .0.5 G,0.5 A,0.5 B,0.5 C0.5 A,0.5 B,0.5 G,0.5 C1.0 B,1.0 C1.0 D1.0 E1.0 G,1.0 A,1.0 B,1.0 C1.0 E,1.0 ^F,1.0 G,1.0 A,1.0 B,1.0 C2.0 C0.5 D,0.5 E,0.5 ^F,0.5 G,0.5 E,0.5 ^F,0.5 D,0.5 G,1.0 B,,1.0 C,1.0 D,1.0 E,1.0 ^F,1.0 G,1.0 E,1.0 B,,1.0 C,1.0 D,1.0 D,,1.0 .0.5 G,,0.5 A,,0.5 B,,0.5 C,0.5 A,,0.5 B,,0.5 G,,0.5 D,1.0 G,1.0 ^F,1.0 G,1.0 A,0.5 D,0.5 E,0.5 ^F,0.5 G,0.5 E,0.5 ^F,0.5 D,0.5 A,1.0 D1.0 C1.0 D1.0 G,0.5 G0.5 F0.5 E0.5 D0.5 F0.5 E0.5 G0.5 F1.0 E1.0 F1.0 D1.0 E0.5 A0.5 G0.5 F0.5 E0.5 G0.5 F0.5 A0.5 G1.0 F1.0 G1.0 E1.0 F0.5 ^A0.5 A0.5 G0.5 F0.5 A0.5 G0.5 ^A0.5 A0.5 G0.5 F0.5 E0.5 D0.5 F0.5 E0.5 G0.5 F0.5 E0.5 D0.5 C0.5 B,0.5 D0.5 C0.5 E0.5 D0.5 C0.5 B,0.5 A,0.5 ^G,0.5 B,0.5 A,0.5 C0.5 B,1.0 E,1.0 D1.5 E0.5 C0.5 B,0.5 A,0.5 G,0.5 ^F,0.5 A,0.5 ^G,0.5 B,0.5 A,0.5 C0.5 B,0.5 D0.5 C0.5 E0.5 D0.5 F0.5 E1.0 A,1.0 E1.0 E,1.0 A,1.0 A,,1.0 .2.0 .0.5 E0.5 D0.5 C0.5 B,0.5 D0.5 ^C0.5 E0.5 D4.0 D0.5 A,0.5 B,0.5 C0.5 D0.5 B,0.5 C0.5 A,0.5 B,4.0 B,0.5 D0.5 C0.5 B,0.5 A,0.5 C0.5 B,0.5 D0.5 C4.0 C0.5 G,0.5 A,0.5 ^A,0.5 C0.5 A,0.5 ^A,0.5 G,0.5 A,1.0 ^A,1.0 A,1.0 G,1.0 F,1.0 D1.0 C1.0 ^A,1.0 A,1.0 F1.0 E1.0 D1.0 E0.5 D,0.5 E,0.5 F,0.5 G,0.5 E,0.5 F,0.5 D,0.5 E,1.0 C,1.0 D,1.0 E,1.0 F,0.5 D,0.5 E,0.5 F,0.5 G,1.0 G,,1.0 [C,8.0C,,8.0]}",music.toString());
     }
 
     @Test
@@ -143,7 +144,10 @@ public class MakeMusicTest {
     public void testMakeMusicMusicBeforeVoices() throws IOException, MidiUnavailableException, InvalidMidiDataException {
         File file = new File("sample_abc/musicBeforeVoiceTest.abc");
         Map<String, Music> music = Music.parseBodyFromFile(file);
-        assertEquals("{V:1=D1.0 D1.0 D1.0 C1.0 C1.0 C1.0 C1.0 C'1.0, V:2=C1.0 C1.0 C1.0 C'1.0 D1.0 D1.0 D1.0 C1.0, defaultvoice=C1.0 D1.0 E1.0 F1.0 G1.0 A1.0 B1.0 C'1.0}",music.toString());
+        System.err.println(music);
+        assertEquals("{V:1\n"+
+                "=C'1.0 B1.0 A1.0 G1.0 F1.0 E1.0 D1.0 C1.0, V:2\n"+
+                "=C1.0 B,1.0 A,1.0 G,1.0 F,1.0 E,1.0 D,1.0 C,1.0, defaultvoice=C1.0 D1.0 E1.0 F1.0 G1.0 A1.0 B1.0 C'1.0}", music.toString());
     }
 
     //tests the behavior of accidentals such as persisting through a whole measure, only applying to one
@@ -158,7 +162,6 @@ public class MakeMusicTest {
     public void testMakeMusicDoubleAccidentals() throws IOException, MidiUnavailableException, InvalidMidiDataException {
         File file = new File("sample_abc/accidentalTest2.abc");
         Map<String, Music> music = Music.parseBodyFromFile(file);
-        System.out.println(music);
         assertEquals("{music=B'1.0 B'1.0 B1.0 B1.0 ^C'1.0 ^C'1.0 B'1.0 B'1.0 D'1.0 C'1.0 C'1.0 C'1.0 ^A,1.0 ^A,1.0 C1.0 C1.0}",music.toString());
     }
 

@@ -637,6 +637,12 @@ public class MakeMusicV2 implements AbcListener {
     @Override
 
     public void exitBodyvoice(BodyvoiceContext ctx) {
+        if(currentVoice.equals("defaultvoice")){
+            if (repeat.size() > 0) {
+                voiceMusic.put(currentVoice, repeat);
+                repeat = new Stack<Music>();
+            }
+        }
         currentVoice = ctx.BODYVOICE().getText();
         if (!(voiceMusic.containsKey(currentVoice))) {
             if (repeat.size() > 0) {
