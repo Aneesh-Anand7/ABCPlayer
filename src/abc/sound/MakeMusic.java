@@ -79,6 +79,8 @@ public class MakeMusic implements AbcListener {
     private Map<String, Music> finalVoiceMusic = new HashMap<>();
 
     private String currentVoice = "defaultvoice";
+    
+    private Map<String, Integer> measureAccidentals = new HashMap<>();
 
     // public Music getMusic() {
 
@@ -176,13 +178,11 @@ public class MakeMusic implements AbcListener {
                     finalVoiceMusic.put(key, concat);
                     // only one thing in the stack, just put it in the final map
                     // as is
-                }
-                else {
+                } else {
                     finalVoiceMusic.put(key, voiceMusic.get(key).pop());
                 }
             }
-        }
-        else {
+        } else {
             // place what ever is left in repeat into stack
             for (int j = 0; j <= repeat.size() - 1; j++) {
                 stack.push(repeat.get(j));
@@ -280,6 +280,11 @@ public class MakeMusic implements AbcListener {
 
     }
 
+    
+    /**
+     * TODO put in spec - user can have double sharp or double flat, but not any combination including 
+     * a natural, (eg. #= or =b)
+     */
     /**
      * 
      * Counts occurrences of a desired char in a String
@@ -416,8 +421,15 @@ public class MakeMusic implements AbcListener {
                 pitch = pitch.transpose(change * 12);
 
             }
+            
+            String basenoteWithOctave = basenote;
+            String octaveInfo = "";
+            if(ctx.noteorrest().pitch().octave() != null){
+                octaveInfo = ctx.noteorrest().pitch().octave().getText();
+                basenoteWithOctave += octaveInfo;
+            }
 
-            pitch = pitch.transpose(keyChange(basenote));
+            pitch = pitch.transpose(keyChange(basenote, octaveInfo));
 
             String accidental = null;
 
@@ -428,10 +440,27 @@ public class MakeMusic implements AbcListener {
                 int numflats = countOccurrences(accidental, '_');
 
                 int numsharps = countOccurrences(accidental, '^');
+                
+                int numnaturals = countOccurrences(accidental, '=');
+                
+                int naturalchange = 0;
+                
+                if(measureAccidentals.containsKey(basenote)){
+                    naturalchange = -1 * measureAccidentals.get(basenote);
+                }
 
                 // TODO natural accidental implementation
 
-                int netaccidental = numsharps - numflats;
+                int netaccidental = numsharps - numflats + numnaturals * naturalchange;
+                
+                
+                
+                if(numnaturals > 0){
+                    measureAccidentals.put(basenoteWithOctave, 0);
+                }
+                else{
+                    measureAccidentals.put(basenoteWithOctave, netaccidental);
+                }
 
                 pitch = pitch.transpose(netaccidental);
 
@@ -444,7 +473,6 @@ public class MakeMusic implements AbcListener {
                 repeat.push(note);
 
             }
-
 
         }
 
@@ -466,7 +494,11 @@ public class MakeMusic implements AbcListener {
      * 
      */
 
-    public int keyChange(String basenote) {
+    public int keyChange(String basenote, String octaveInfo) {
+        String basenoteWithOctave = basenote;
+        if(!octaveInfo.equals("")){
+            basenoteWithOctave += octaveInfo;
+        }
 
         Map<String, Integer> accidentalMap = createAccidentalMap();
 
@@ -479,12 +511,18 @@ public class MakeMusic implements AbcListener {
         String key = headerInfo.get("key");
 
         Integer numAccidentals = accidentalMap.get(key);
+        
+        Integer measureEffect = 0;
+        
+        if(measureAccidentals.containsKey(basenoteWithOctave)){
+            measureEffect = measureAccidentals.get(basenoteWithOctave);
+        }
 
         if (numAccidentals != null) {
 
             if (numAccidentals == 0) {
 
-                return 0;
+                return 0 + measureEffect;
 
             }
 
@@ -494,7 +532,7 @@ public class MakeMusic implements AbcListener {
 
                     if (sharporder[i].equals(uppercasebasenote)) {
 
-                        return 1;
+                        return 1 + measureEffect;
 
                     }
 
@@ -510,7 +548,7 @@ public class MakeMusic implements AbcListener {
 
                     if (flatorder[i].equals(uppercasebasenote)) {
 
-                        return -1;
+                        return -1 + measureEffect;
 
                     }
 
@@ -519,7 +557,7 @@ public class MakeMusic implements AbcListener {
             }
         }
 
-        return 0;
+        return 0 + measureEffect;
 
     }
 
@@ -819,6 +857,9 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void exitBarline(BarlineContext ctx) {
+        if(ctx != null){
+            measureAccidentals.clear();
+        }
 
         if (ctx.getText().equals("|:") || ctx.getText().equals("[|") || ctx.getText().equals("||")
 
@@ -907,7 +948,6 @@ public class MakeMusic implements AbcListener {
             }
 
         }
-
 
     }
 
