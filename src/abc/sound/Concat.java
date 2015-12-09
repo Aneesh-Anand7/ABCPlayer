@@ -70,8 +70,8 @@ public class Concat implements Music {
 
     public void playWithTicks(SequencePlayer player, int atBeat) {
         first.play(player, atBeat);
-        second.play(player, atBeat + first.duration() * player.getTicks());
-
+        int secondBeat = (int) (atBeat + first.duration() * player.getTicks());
+        second.play(player, secondBeat);
     }
     
     @Override
@@ -92,7 +92,7 @@ public class Concat implements Music {
 
     @Override
     public String toString() {
-        return "Concat (" + first + " ," + second + ")";
+        return "Concat(" + first.toString() + " " + second.toString() + ")";
     }
 
     @Override

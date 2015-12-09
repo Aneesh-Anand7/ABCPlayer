@@ -70,13 +70,21 @@ public class Chord implements Music {
     public void play(SequencePlayer player, double atBeat) {
         int ticksPerBeat = player.getTicks();
         // get atBeat value in tick format
-        int atBeatRationalized = (int) (atBeat * ticksPerBeat);
-        // 
+        //int atBeatRationalized = (int) (atBeat * ticksPerBeat);
+        int noteTicksDuration = (int) (duration() * ticksPerBeat);
         for (Note note : notes) {
-            int noteTicksDuration = (int) (note.duration() * ticksPerBeat);
-            player.addNote(note.pitch().toMidiNote(), atBeatRationalized, noteTicksDuration);
+            player.addNote(note.pitch().toMidiNote(), (int) atBeat, noteTicksDuration);
         }
 
+    }
+    @Override
+    public String toString() {
+        String s = "[";
+        for (Note note: notes) {
+            s += note.toString();
+        }
+        s += "]";
+        return s;
     }
 
 }

@@ -80,7 +80,7 @@ public class MakeMusic implements AbcListener {
     @Override
     public void enterRoot(RootContext ctx) {
         // TODO Auto-generated method stub
-        System.err.println("entering root" + ", stack is " + stack);
+        //System.err.println("entering root" + ", stack is " + stack);
 
     }
 
@@ -98,20 +98,20 @@ public class MakeMusic implements AbcListener {
         } else {
             fullPiece = reversestack.get(0);
         }
-        System.err.println(fullPiece);
-        System.err.println("exiting root" + ", stack is " + stack);
+        //System.err.println(fullPiece);
+        //System.err.println("exiting root" + ", stack is " + stack);
     }
 
     @Override
     public void enterLine(LineContext ctx) {
         // TODO Auto-generated method stub
-        System.err.println("entering line" + ", stack is " + stack);
+        //System.err.println("entering line" + ", stack is " + stack);
     }
 
     @Override
     public void exitLine(LineContext ctx) {
         // TODO Auto-generated method stub
-        System.err.println("exiting line" + ", stack is " + stack);
+        //System.err.println("exiting line" + ", stack is " + stack);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void enterNote(NoteContext ctx) {
-        System.err.println("entering note" + ", stack is " + stack);
+        //System.err.println("entering note" + ", stack is " + stack);
     }
     
     /**
@@ -166,7 +166,6 @@ public class MakeMusic implements AbcListener {
             // fraction
             if (text.contains("/")) {
                 String[] numbers = text.split("/");
-                System.err.println(numbers[0]);
                 // no numerator or denominator
                 if ((numbers[0].length() == 0)&&(numbers[1].length() == 0)) {
                   duration = 1.0;
@@ -229,7 +228,7 @@ public class MakeMusic implements AbcListener {
                stack.push(note);
            }
         }
-        System.err.println("exiting note" + ", stack is " + stack);
+        //System.err.println("exiting note" + ", stack is " + stack);
     }
     
     /**
@@ -245,7 +244,6 @@ public class MakeMusic implements AbcListener {
         String uppercasebasenote = basenote.toUpperCase();
         String key = headerInfo.get("key");
         Integer numAccidentals = accidentalMap.get(key);
-        System.err.println(accidentalMap.get(key));
         if(numAccidentals == 0){
             return 0;
         }
@@ -379,24 +377,37 @@ public class MakeMusic implements AbcListener {
     @Override
     public void enterTupletelem(TupletelemContext ctx) {
         // TODO Auto-generated method stub
-        System.err.println("entering tupletelem" + ", stack is " + stack);
+        //System.err.println("entering tupletelem" + ", stack is " + stack);
     }
 
     @Override
     public void exitTupletelem(TupletelemContext ctx) {
         double nplet = Double.valueOf(ctx.tupletspec().TUPLETSPEC().getText().substring(1));
         List<NoteelemContext> noteelems = ctx.noteelem();
+        List<Note> tuplets = new ArrayList<>();
         for(NoteelemContext noteelem: noteelems){
+            //System.err.println(noteelem.getText() + " " + + nplet);
             Note note = (Note) stack.pop();
-            Note tupletnote = new Note(note.duration()/nplet, note.pitch());
+            Note tupletnote;
+            if (nplet == 3) {
+                tupletnote = new Note(note.duration()*2/nplet, note.pitch());
+            } else if (nplet == 2) {
+                tupletnote = new Note(note.duration()*3/nplet, note.pitch());
+              // should equal 4 - SPEC
+            } else {
+                tupletnote = new Note(note.duration()*3/nplet, note.pitch());
+            }
+            tuplets.add(tupletnote);
+          // reverse the order because stacks are last in first out
+        } for (int i = tuplets.size()-1; i >= 0; i--) {
             if (inrepeat){
-                repeat.push(tupletnote);
+                repeat.push(tuplets.get(i));
             }
             else{
-                stack.push(tupletnote);
+                stack.push(tuplets.get(i));
             }
         }
-        System.err.println("exiting tupletelem" + ", stack is " + stack);
+        //System.err.println("exiting tupletelem" + ", stack is " + stack);
     }
 
     @Override
@@ -413,7 +424,7 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void enterMultinote(MultinoteContext ctx) {
-        System.err.println("entering multinote" + ", stack is " + stack);
+        //System.err.println("entering multinote" + ", stack is " + stack);
 
     }
 
@@ -434,7 +445,7 @@ public class MakeMusic implements AbcListener {
         else{
             stack.push(newchord);
         }
-        System.err.println("exiting multinote" + ", stack is" + stack);
+        //System.err.println("exiting multinote" + ", stack is" + stack);
     }
 
     @Override
@@ -465,7 +476,7 @@ public class MakeMusic implements AbcListener {
             }
             fullPiece = concat;
         }
-        System.err.println("exiting barline" + ", stack is " + stack);
+        //System.err.println("exiting barline" + ", stack is " + stack);
     }
 
     @Override

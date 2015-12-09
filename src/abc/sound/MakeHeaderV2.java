@@ -35,13 +35,13 @@ public class MakeHeaderV2 implements ABCgrammarListener {
 
     @Override
     public void enterEveryRule(ParserRuleContext arg0) {
-        System.err.println("entering " + arg0.getText() + ", map is " + map);
+        //System.err.println("entering " + arg0.getText() + ", map is " + map);
 
     }
 
     @Override
     public void exitEveryRule(ParserRuleContext arg0) {
-        System.err.println("exiting " + arg0.getText() + ", map is " + map);
+        //System.err.println("exiting " + arg0.getText() + ", map is " + map);
 
     }
 
