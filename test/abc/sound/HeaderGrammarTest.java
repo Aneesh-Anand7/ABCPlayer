@@ -17,10 +17,11 @@ public class HeaderGrammarTest {
     }
     
     @Test
-    public void testAbcSong() throws IOException {
+    public void testAbcSong() throws IOException, InterruptedException {
         File file = new File("sample_abc/abc_song.abc");
         System.out.println(SplitHeader.splitHeader(file).get(0));
         Music.parseHeaderFromFile(file);
+        Thread.sleep(4000);
     }
     
     @Test
