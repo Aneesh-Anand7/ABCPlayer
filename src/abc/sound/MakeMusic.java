@@ -206,7 +206,7 @@ public class MakeMusic implements AbcListener {
                 } else if (numbers[0].length() == 0){
                     duration = 1.0/Double.valueOf(numbers[1]);
                   // numerator only
-                } else if (numbers[1].length() == 0){
+                } else if (numbers.length == 1){
                     duration = Double.valueOf(numbers[0])/2.0;
                 } else {
                     duration = Double.valueOf(numbers[0])/Double.valueOf(numbers[1]);
@@ -310,6 +310,14 @@ public class MakeMusic implements AbcListener {
         accidentalMap.put("B", 5);
         accidentalMap.put("F#", 6);
         accidentalMap.put("C#", 7);
+        accidentalMap.put("Am", 0);
+        accidentalMap.put("Em", 1);
+        accidentalMap.put("Bm", 2);
+        accidentalMap.put("F#m", 3);
+        accidentalMap.put("C#m", 4);
+        accidentalMap.put("G#m", 5);
+        accidentalMap.put("D#m", 6);
+        accidentalMap.put("A#m", 7);
         accidentalMap.put("F", -1);
         accidentalMap.put("Bb", -2);
         accidentalMap.put("Eb", -3);
@@ -317,19 +325,13 @@ public class MakeMusic implements AbcListener {
         accidentalMap.put("Db", -5);
         accidentalMap.put("Gb", -6);
         accidentalMap.put("Cb", -7);
-        accidentalMap.put("D", 2);
-        accidentalMap.put("Dmaj", 2);
-        accidentalMap.put("Dmajor", 2);
         accidentalMap.put("Dm", -1);
-        accidentalMap.put("Dmin", -1);
-        accidentalMap.put("Dminor", -1);
-        accidentalMap.put("Am", 0);
-        accidentalMap.put("DDor", 0);
-        accidentalMap.put("DDorian", 0);
-        accidentalMap.put("ELyd", 0);
-        accidentalMap.put("DMix", 1);
-        accidentalMap.put("DPhr", -2);
-        accidentalMap.put("DLyd", 3);
+        accidentalMap.put("Gm", -2);
+        accidentalMap.put("Cm", -3);
+        accidentalMap.put("Fm", -4);
+        accidentalMap.put("Bbm", -5);
+        accidentalMap.put("Ebm", -6);
+        accidentalMap.put("Abm", -7);
         return accidentalMap;
     }
 
