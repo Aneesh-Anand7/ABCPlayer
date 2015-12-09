@@ -86,43 +86,26 @@ public class MakeMusicV2 implements AbcListener {
 
     @Override
     public void enterEveryRule(ParserRuleContext arg0) {
-        // System.err.println("entering " + arg0.getText() + ", stack is " +
-        // stack);
     }
 
     @Override
 
     public void exitEveryRule(ParserRuleContext arg0) {
-
-        // System.err.println("exiting " + arg0.getText() + ", stack is " +
-        // stack);
-
     }
 
     @Override
 
     public void visitErrorNode(ErrorNode arg0) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void visitTerminal(TerminalNode arg0) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void enterRoot(RootContext ctx) {
-
-        // TODO Auto-generated method stub
-
-        // System.err.println("entering root" + ", stack is " + stack);
-
     }
 
     @Override
@@ -130,9 +113,6 @@ public class MakeMusicV2 implements AbcListener {
     public void exitRoot(RootContext ctx) {
 
         if (headerInfo.containsKey("voices")) {
-
-//            voiceMusic.put(currentVoice, repeat);
-            System.out.println("this piece has voices: " + voiceMusic);
             for (String key : voiceMusic.keySet()) {
                 Stack<Music> currentVoiceStack = voiceMusic.get(key);
                 if (currentVoiceStack.size() >= 2) {
@@ -162,75 +142,44 @@ public class MakeMusicV2 implements AbcListener {
             } else {
                 fullPiece = stack.get(0);
             }
-            // System.err.println(fullPiece);
-            // System.err.println("exiting root" + ", stack is " + stack);
         }
     }
     @Override
 
     public void enterLine(LineContext ctx) {
-
-        // TODO Auto-generated method stub
-
-        // System.err.println("entering line" + ", stack is " + stack);
-
     }
 
     @Override
 
     public void exitLine(LineContext ctx) {
-
-        // TODO Auto-generated method stub
-
-        // System.err.println("exiting line" + ", stack is " + stack);
-
     }
 
     @Override
 
     public void enterElement(ElementContext ctx) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void exitElement(ElementContext ctx) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void enterNoteelem(NoteelemContext ctx) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void exitNoteelem(NoteelemContext ctx) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void enterNote(NoteContext ctx) {
-
-        // System.err.println("entering note" + ", stack is " + stack);
-
     }
 
-    
-    /**
-     * TODO put in spec - user can have double sharp or double flat, but not any combination including 
-     * a natural, (eg. #= or =b)
-     */
+
     /**
      * 
      * Counts occurrences of a desired char in a String
@@ -266,8 +215,6 @@ public class MakeMusicV2 implements AbcListener {
     @Override
 
     public void exitNote(NoteContext ctx) {
-        System.out.println("leaving the note" + ctx.getText());
-
         double duration;
         if (ctx.notelength() != null) {
             String text = ctx.notelength().getText();
@@ -342,9 +289,6 @@ public class MakeMusicV2 implements AbcListener {
                 if(measureAccidentals.containsKey(basenote)){
                     naturalchange = -1 * measureAccidentals.get(basenote);
                 }
-
-                // TODO natural accidental implementation
-
                 int netaccidental = numsharps - numflats + numnaturals * naturalchange;
                 
                 
@@ -363,8 +307,6 @@ public class MakeMusicV2 implements AbcListener {
                 repeat.push(note);
             }
         }
-        // System.err.println("exiting note" + ", stack is " + stack);
-
     }
 
     /**
@@ -537,8 +479,6 @@ public class MakeMusicV2 implements AbcListener {
     }
     @Override
     public void enterTupletelem(TupletelemContext ctx) {
-        // TODO Auto-generated method stub
-        // System.err.println("entering tupletelem" + ", stack is " + stack);
     }
     @Override
 
@@ -549,8 +489,7 @@ public class MakeMusicV2 implements AbcListener {
         int counter = (int) nplet;
         // Only need to include as many notes in the tuplet that are given by
         // the nplet
-        while (counter > 0) {
-            // System.err.println(noteelem.getText() + " " + + nplet);
+        for (NoteelemContext noteelem: noteelems) {
             Music item = repeat.pop();
             if (item.isNote()) {
                 Note note = (Note) item;
@@ -559,49 +498,56 @@ public class MakeMusicV2 implements AbcListener {
                     tupletnote = new Note(note.duration() * 2 / nplet, note.pitch());
                 } else if (nplet == 2) {
                     tupletnote = new Note(note.duration() * 3 / nplet, note.pitch());
-                    // should equal 4 - SPEC
+                    // should equal 4
                 } else {
                     tupletnote = new Note(note.duration() * 3 / nplet, note.pitch());
                 }
                 tuplets.add(tupletnote);
+            } else if (item.isChord()) {
+                Chord chord = (Chord) item;
+                List<Note> chordNotes = new ArrayList<Note>();
+                for (Note note: chord.getNotes()) {
+                    Note tupletnote;
+                    if (nplet == 3) {
+                        tupletnote = new Note(note.duration() * 2 / nplet, note.pitch());
+                    } else if (nplet == 2) {
+                        tupletnote = new Note(note.duration() * 3 / nplet, note.pitch());
+                        // should equal 4
+                    } else {
+                        tupletnote = new Note(note.duration() * 3 / nplet, note.pitch());
+                    }
+                    chordNotes.add(tupletnote);
+                }
+                // new Chord with all the elements tupletized
+                tuplets.add(new Chord(chordNotes));
             }
-            counter -= 1;
             // reverse the order because stacks are last in first out
         }
-        for (int i = tuplets.size() - 1; i >= 0; i--) {
+        // Only need to include as many notes in the tuplet that are given by
+        // the nplet
+        for (int i = tuplets.size() - 1; i >= tuplets.size()-counter; i--) {
             repeat.push(tuplets.get(i));
         }
-        // System.err.println("exiting tupletelem" + ", stack is " + stack);
     }
     @Override
 
     public void enterTupletspec(TupletspecContext ctx) {
-
-        // TODO Auto-generated method stub
     }
 
     @Override
 
     public void exitTupletspec(TupletspecContext ctx) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void enterMultinote(MultinoteContext ctx) {
-
-        // System.err.println("entering multinote" + ", stack is " + stack);
-
     }
 
     @Override
 
     public void exitMultinote(MultinoteContext ctx) {
         List<NoteContext> chordNotes = ctx.note();
-        //System.err.println(chordNotes);
-        //System.err.println(stack);
         List<Note> chord = new ArrayList<>();
         for (NoteContext notectx : chordNotes) {
             Note note = (Note) repeat.pop();
@@ -614,7 +560,6 @@ public class MakeMusicV2 implements AbcListener {
         
         Chord newchord = new Chord(revChord);
         repeat.push(newchord);
-        // System.err.println("exiting multinote" + ", stack is" + stack);
 
     }
     @Override
@@ -628,8 +573,6 @@ public class MakeMusicV2 implements AbcListener {
         }
         if (ctx.getText().equals("|:") || ctx.getText().equals("[|") || ctx.getText().equals("||")
         || ctx.getText().equals("|]")) {
-            System.out.println("at beginning of repeat");
-            System.out.println("Voices map: " + voiceMusic);
             if (!(voiceMusic.isEmpty())) {
                 for (int j = 0; j <= repeat.size() - 1; j++) {
                     stack.push(repeat.get(j));
@@ -640,13 +583,9 @@ public class MakeMusicV2 implements AbcListener {
                 }
                 voiceMusic.put(currentVoice, currentVoiceStack);
                 stack = new Stack<>();
-                System.out.println("Tried to update current voice in map: " + voiceMusic);
             } else { // there are no voices in the voice map
             for (int j = 0; j <= repeat.size() - 1; j++) {
                 stack.push(repeat.get(j));
-                //System.out.println("stack: " + stack);
-                //System.out.println("before1st: " + before1st);
-                //System.out.println("repeat: " + repeat);
             }
             }
             inrepeat = true;
@@ -655,32 +594,19 @@ public class MakeMusicV2 implements AbcListener {
         }
         else if (ctx.getText().equals(":|")) {
             if (repeat.size() > 0 && !(altEnding)) {
-                //System.out.println("at end of repeat");
                 for (int i = 0; i < 2; i++) {
                     for (int j = 0; j <= repeat.size() - 1; j++) {
                         stack.push(repeat.get(j));
-                       // System.out.println("stack: " + stack);
-
-                       // System.out.println("before1st: " + before1st);
-
-                       // System.out.println("repeat: " + repeat);
                     }
                 }
                 repeat = new Stack<>();
             }
             if (altEnding) {
-                //System.out.println("at end of first alternate ending");
                 for (int j = 0; j <= repeat.size() - 1; j++) {
                     stack.push(repeat.get(j));
-                    //System.out.println("stack: " + stack);
-                    //System.out.println("before1st: " + before1st);
-                    //System.out.println("repeat: " + repeat);
                 }
                 for (int k = 0; k <= before1st.size() - 1; k++) {
                     stack.push(before1st.get(k));
-                    //System.out.println("stack: " + stack);
-                    //System.out.println("before1st: " + before1st);
-                    //System.out.println("repeat: " + repeat);
                 }
                 repeat = new Stack<>();
                 before1st = new Stack<>();
@@ -690,56 +616,36 @@ public class MakeMusicV2 implements AbcListener {
     }
     @Override
     public void enterNthrepeat(NthrepeatContext ctx) {
-        // TODO Auto-generated method stub
     }
     @Override
     public void exitNthrepeat(NthrepeatContext ctx) {
         if (ctx.getText().equals("[1")) {
-            //System.out.println("Found beginning of first alternate ending");
             for (int j = 0; j <= repeat.size() - 1; j++) {
                 before1st.push(repeat.get(j));
-                //System.out.println("repeat: " + repeat);
-                //System.out.println("before1st: " + before1st);
-                //System.out.println("stack: " + stack);
                 altEnding = true;
             }
         }
         else if (ctx.getText().equals("[2")) {
-            //System.out.println("Beginning of second alt ending");
             altEnding = false;
-            //System.out.println("repeat: " + repeat);
-            //System.out.println("before1st: " + before1st);
-            //System.out.println("stack: " + stack);
         }
     }
     @Override
 
     public void enterBodyvoice(BodyvoiceContext ctx) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
 
     public void exitBodyvoice(BodyvoiceContext ctx) {
-        System.out.println("Enter exit body voice:" + voiceMusic);
-        System.out.println("current voice: " + currentVoice);
-        System.out.println("Voices map: " + voiceMusic);
-        System.out.println("repeat " + repeat);
         currentVoice = ctx.BODYVOICE().getText();
         if (!(voiceMusic.containsKey(currentVoice))) {
             if (repeat.size() > 0) {
-                System.out.println("Adding new current voice to voices map Voices map: " + voiceMusic);
                 voiceMusic.put(currentVoice, repeat);
-                System.out.println("Added: " + voiceMusic);
             } else {
                 voiceMusic.put(currentVoice, new Stack<Music>());
             }
         } else {
         // voiceMusic has the voice
-        System.out.println(currentVoice);
-        System.out.println("voice maps has the voice:" + currentVoice+ voiceMusic);
         Stack<Music> currentVoiceStack = voiceMusic.get(currentVoice);
         for (int j = 0; j <= repeat.size() - 1; j++) {
             currentVoiceStack.push(repeat.get(j));
@@ -748,15 +654,10 @@ public class MakeMusicV2 implements AbcListener {
         }
         repeat = new Stack<Music>();
         stack = new Stack<Music>();
-        System.out.println("updated current voice: " + voiceMusic);
         
     }
     @Override
-
     public void enterEndofline(EndoflineContext ctx) {
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -773,7 +674,6 @@ public class MakeMusicV2 implements AbcListener {
             voiceMusic.put(currentVoice, currentVoiceStack);
             repeat = new Stack<Music>();
             stack = new Stack<Music>();
-            System.out.println("Tried to update current voice in map: " + voiceMusic);
         }
 
     }
