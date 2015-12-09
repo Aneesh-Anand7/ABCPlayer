@@ -118,7 +118,9 @@ public class SequencePlayer {
         Map<String, String> title = Music.parseHeaderFromFile(file);
         String[] tempoParts= title.get("tempo").split("=");
         String[] lengthParts = title.get("length").split("/");
-        double ratio = (Double.valueOf(lengthParts[0])/Double.valueOf(lengthParts[1]))/.25;
+        String[] tempoBeats = tempoParts[0].split("/");
+        double regularBeat = Double.valueOf(tempoBeats[0])/Double.valueOf(tempoBeats[1]);
+        double ratio = (Double.valueOf(lengthParts[0])/Double.valueOf(lengthParts[1]))/regularBeat;
         this.ticksPerDefaultNote = (int)(defaultTicksPerBeat*ratio);
         this.beatsPerMinute = Integer.parseInt(tempoParts[1]);
         // create an empty track; notes will be added to this track

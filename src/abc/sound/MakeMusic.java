@@ -68,6 +68,8 @@ public class MakeMusic implements AbcListener {
     private Map<String, Stack<Music>> voiceMusic = new HashMap<>();
     private Map<String, Music> finalVoiceMusic = new HashMap<>();
     private String currentVoice = "defaultvoice";
+    
+    private Map<String, Integer> measureAccidentals = new HashMap<>();
 
     public Map<String, Music> getFullPiece() {
         Map<String, Music> returnMap = new HashMap<>();
@@ -141,13 +143,11 @@ public class MakeMusic implements AbcListener {
                     finalVoiceMusic.put(key, concat);
                     // only one thing in the stack, just put it in the final map
                     // as is
-                }
-                else {
+                } else {
                     finalVoiceMusic.put(key, voiceMusic.get(key).pop());
                 }
             }
-        }
-        else {
+        } else {
             // place what ever is left in repeat into stack
             for (int j = 0; j <= repeat.size() - 1; j++) {
                 stack.push(repeat.get(j));
@@ -245,6 +245,11 @@ public class MakeMusic implements AbcListener {
 
     }
 
+    
+    /**
+     * TODO put in spec - user can have double sharp or double flat, but not any combination including 
+     * a natural, (eg. #= or =b)
+     */
     /**
      * 
      * Counts occurrences of a desired char in a String
@@ -281,6 +286,7 @@ public class MakeMusic implements AbcListener {
 
     public void exitNote(NoteContext ctx) {
         System.out.println("leaving the note" + ctx.getText());
+
         double duration;
         if (ctx.notelength() != null) {
             String text = ctx.notelength().getText();
@@ -332,14 +338,43 @@ public class MakeMusic implements AbcListener {
                 int change = upoctaves - downoctaves; // + means net change up,
                 pitch = pitch.transpose(change * 12);
             }
-            pitch = pitch.transpose(keyChange(basenote));
+            
+            String basenoteWithOctave = basenote;
+            String octaveInfo = "";
+            if(ctx.noteorrest().pitch().octave() != null){
+                octaveInfo = ctx.noteorrest().pitch().octave().getText();
+                basenoteWithOctave += octaveInfo;
+            }
+
+            pitch = pitch.transpose(keyChange(basenote, octaveInfo));
+
             String accidental = null;
             if (ctx.noteorrest().pitch().accidental() != null) {
                 accidental = ctx.noteorrest().pitch().accidental().getText();
                 int numflats = countOccurrences(accidental, '_');
                 int numsharps = countOccurrences(accidental, '^');
+                
+                int numnaturals = countOccurrences(accidental, '=');
+                
+                int naturalchange = 0;
+                
+                if(measureAccidentals.containsKey(basenote)){
+                    naturalchange = -1 * measureAccidentals.get(basenote);
+                }
+
                 // TODO natural accidental implementation
-                int netaccidental = numsharps - numflats;
+
+                int netaccidental = numsharps - numflats + numnaturals * naturalchange;
+                
+                
+                
+                if(numnaturals > 0){
+                    measureAccidentals.put(basenoteWithOctave, 0);
+                }
+                else{
+                    measureAccidentals.put(basenoteWithOctave, netaccidental);
+                }
+
                 pitch = pitch.transpose(netaccidental);
             }
             Note note = new Note(duration, pitch);
@@ -365,7 +400,11 @@ public class MakeMusic implements AbcListener {
      * 
      */
 
-    public int keyChange(String basenote) {
+    public int keyChange(String basenote, String octaveInfo) {
+        String basenoteWithOctave = basenote;
+        if(!octaveInfo.equals("")){
+            basenoteWithOctave += octaveInfo;
+        }
 
         Map<String, Integer> accidentalMap = createAccidentalMap();
 
@@ -378,12 +417,18 @@ public class MakeMusic implements AbcListener {
         String key = headerInfo.get("key");
 
         Integer numAccidentals = accidentalMap.get(key);
+        
+        Integer measureEffect = 0;
+        
+        if(measureAccidentals.containsKey(basenoteWithOctave)){
+            measureEffect = measureAccidentals.get(basenoteWithOctave);
+        }
 
         if (numAccidentals != null) {
 
             if (numAccidentals == 0) {
 
-                return 0;
+                return 0 + measureEffect;
 
             }
 
@@ -393,7 +438,7 @@ public class MakeMusic implements AbcListener {
 
                     if (sharporder[i].equals(uppercasebasenote)) {
 
-                        return 1;
+                        return 1 + measureEffect;
 
                     }
 
@@ -409,7 +454,7 @@ public class MakeMusic implements AbcListener {
 
                     if (flatorder[i].equals(uppercasebasenote)) {
 
-                        return -1;
+                        return -1 + measureEffect;
 
                     }
 
@@ -418,7 +463,7 @@ public class MakeMusic implements AbcListener {
             }
         }
 
-        return 0;
+        return 0 + measureEffect;
 
     }
 
@@ -687,9 +732,9 @@ public class MakeMusic implements AbcListener {
 
         List<NoteContext> chordNotes = ctx.note();
 
-        System.err.println(chordNotes);
+        //System.err.println(chordNotes);
 
-        System.err.println(stack);
+        //System.err.println(stack);
 
         List<Note> chord = new ArrayList<>();
 
@@ -718,22 +763,25 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void exitBarline(BarlineContext ctx) {
+        if(ctx != null){
+            measureAccidentals.clear();
+        }
 
         if (ctx.getText().equals("|:") || ctx.getText().equals("[|") || ctx.getText().equals("||")
 
         || ctx.getText().equals("|]")) {
 
-            System.out.println("at beginning of repeat");
+            //System.out.println("at beginning of repeat");
 
             for (int j = 0; j <= repeat.size() - 1; j++) {
 
                 stack.push(repeat.get(j));
 
-                System.out.println("stack: " + stack);
+                //System.out.println("stack: " + stack);
 
-                System.out.println("before1st: " + before1st);
+                //System.out.println("before1st: " + before1st);
 
-                System.out.println("repeat: " + repeat);
+                //System.out.println("repeat: " + repeat);
 
             }
 
@@ -747,7 +795,7 @@ public class MakeMusic implements AbcListener {
 
             if (repeat.size() > 0 && !(altEnding)) {
 
-                System.out.println("at end of repeat");
+                //System.out.println("at end of repeat");
 
                 for (int i = 0; i < 2; i++) {
 
@@ -755,11 +803,11 @@ public class MakeMusic implements AbcListener {
 
                         stack.push(repeat.get(j));
 
-                        System.out.println("stack: " + stack);
+                       // System.out.println("stack: " + stack);
 
-                        System.out.println("before1st: " + before1st);
+                       // System.out.println("before1st: " + before1st);
 
-                        System.out.println("repeat: " + repeat);
+                       // System.out.println("repeat: " + repeat);
 
                     }
 
@@ -771,17 +819,17 @@ public class MakeMusic implements AbcListener {
 
             if (altEnding) {
 
-                System.out.println("at end of first alternate ending");
+                //System.out.println("at end of first alternate ending");
 
                 for (int j = 0; j <= repeat.size() - 1; j++) {
 
                     stack.push(repeat.get(j));
 
-                    System.out.println("stack: " + stack);
+                    //System.out.println("stack: " + stack);
 
-                    System.out.println("before1st: " + before1st);
+                    //System.out.println("before1st: " + before1st);
 
-                    System.out.println("repeat: " + repeat);
+                    //System.out.println("repeat: " + repeat);
 
                 }
 
@@ -789,11 +837,11 @@ public class MakeMusic implements AbcListener {
 
                     stack.push(before1st.get(k));
 
-                    System.out.println("stack: " + stack);
+                    //System.out.println("stack: " + stack);
 
-                    System.out.println("before1st: " + before1st);
+                    //System.out.println("before1st: " + before1st);
 
-                    System.out.println("repeat: " + repeat);
+                    //System.out.println("repeat: " + repeat);
 
                 }
 
@@ -806,7 +854,6 @@ public class MakeMusic implements AbcListener {
             }
 
         }
-
 
     }
 
@@ -824,17 +871,17 @@ public class MakeMusic implements AbcListener {
 
         if (ctx.getText().equals("[1")) {
 
-            System.out.println("Found beginning of first alternate ending");
+            //System.out.println("Found beginning of first alternate ending");
 
             for (int j = 0; j <= repeat.size() - 1; j++) {
 
                 before1st.push(repeat.get(j));
 
-                System.out.println("repeat: " + repeat);
+                //System.out.println("repeat: " + repeat);
 
-                System.out.println("before1st: " + before1st);
+                //System.out.println("before1st: " + before1st);
 
-                System.out.println("stack: " + stack);
+                //System.out.println("stack: " + stack);
 
                 altEnding = true;
 
@@ -844,15 +891,15 @@ public class MakeMusic implements AbcListener {
 
         else if (ctx.getText().equals("[2")) {
 
-            System.out.println("Beginning of second alt ending");
+            //System.out.println("Beginning of second alt ending");
 
             altEnding = false;
 
-            System.out.println("repeat: " + repeat);
+            //System.out.println("repeat: " + repeat);
 
-            System.out.println("before1st: " + before1st);
+            //System.out.println("before1st: " + before1st);
 
-            System.out.println("stack: " + stack);
+            //System.out.println("stack: " + stack);
 
         }
 

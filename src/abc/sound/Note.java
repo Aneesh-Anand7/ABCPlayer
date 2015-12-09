@@ -64,6 +64,7 @@ public class Note implements Music {
      * Play this note
      *TODO find out solution to double to int issue
      * @throws MidiUnavailableException 
+     * @param atBeat: the beat to start at (in ticks)
      */
     public void play(SequencePlayer player, double atBeat) {
         int ticksPerBeat = player.getTicksDefaultNote();

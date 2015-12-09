@@ -63,7 +63,7 @@ public class Chord implements Music {
      *      must be a common multiple of the denominator of every note's fractional duration in the chord. For example,
      *      if the chord contains notes with durations 1/4, 3/8, 1/64, the sequence player's number of ticks per beat
      *      must at least be 64.
-     * @param atBeat the starting beat number for the chord
+     * @param atBeat the starting beat number (in ticks) for the chord
      * Plays this chord.
      *
      */
