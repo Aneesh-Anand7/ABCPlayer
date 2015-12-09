@@ -130,8 +130,12 @@ public class MakeMusic implements AbcListener {
     public void exitRoot(RootContext ctx) {
 
         if (headerInfo.containsKey("voices")) {
-
-            voiceMusic.put(currentVoice, repeat);
+            if (inrepeat) {
+                voiceMusic.put(currentVoice, repeat);
+            }else {
+                voiceMusic.put(currentVoice, stack);
+            }
+            
             for (String key : voiceMusic.keySet()) {
                 Stack<Music> thisstack = voiceMusic.get(key);
                 List<Music> reversestack = new ArrayList<>(thisstack);
@@ -190,7 +194,6 @@ public class MakeMusic implements AbcListener {
     public void enterLine(LineContext ctx) {
 
         // TODO Auto-generated method stub
-
         // System.err.println("entering line" + ", stack is " + stack);
 
     }
@@ -285,8 +288,7 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void exitNote(NoteContext ctx) {
-        System.out.println("leaving the note" + ctx.getText());
-
+        System.out.println("leaving the note " + ctx.getText());
         double duration;
         if (ctx.notelength() != null) {
             String text = ctx.notelength().getText();
@@ -314,7 +316,12 @@ public class MakeMusic implements AbcListener {
         }
         if (ctx.noteorrest().rest() != null) {
             Rest rest = new Rest(duration);
-            repeat.push(rest);
+            if (inrepeat) {
+                repeat.push(rest);
+            } else {
+                stack.push(rest);
+            }
+            
         }
         else {
             String basenote = ctx.noteorrest().pitch().basenote().BASENOTE().getText();
@@ -380,6 +387,8 @@ public class MakeMusic implements AbcListener {
             Note note = new Note(duration, pitch);
             if (inrepeat) {
                 repeat.push(note);
+            } else {
+                stack.push(note);
             }
         }
         // System.err.println("exiting note" + ", stack is " + stack);
@@ -661,8 +670,12 @@ public class MakeMusic implements AbcListener {
         while (counter > 0) {
 
             // System.err.println(noteelem.getText() + " " + + nplet);
-
-            Music item = repeat.pop();
+            Music item;
+            if (inrepeat) {
+                item = repeat.pop();
+            } else {
+                item = stack.pop();
+            }
 
             if (item.isNote()) {
 
@@ -696,8 +709,12 @@ public class MakeMusic implements AbcListener {
 
         }
         for (int i = tuplets.size() - 1; i >= 0; i--) {
-
-            repeat.push(tuplets.get(i));
+            if (inrepeat) {
+                repeat.push(tuplets.get(i));
+            } else {
+                stack.push(tuplets.get(i));
+            }
+            
         }
 
         // System.err.println("exiting tupletelem" + ", stack is " + stack);
@@ -739,16 +756,24 @@ public class MakeMusic implements AbcListener {
         List<Note> chord = new ArrayList<>();
 
         for (NoteContext notectx : chordNotes) {
-
-            Note note = (Note) repeat.pop();
-
+            Note note;
+            if (inrepeat) {
+                note = (Note) repeat.pop();
+            } else {
+                note = (Note) stack.pop();
+            }
+            
+            
             chord.add(note);
 
         }
 
         Chord newchord = new Chord(chord);
-
-        repeat.push(newchord);
+        if (inrepeat) {
+            repeat.push(newchord);
+        } else {
+            stack.push(newchord);
+        }
 
         // System.err.println("exiting multinote" + ", stack is" + stack);
 
@@ -771,17 +796,17 @@ public class MakeMusic implements AbcListener {
 
         || ctx.getText().equals("|]")) {
 
-            //System.out.println("at beginning of repeat");
+            System.out.println("at beginning of repeat");
 
             for (int j = 0; j <= repeat.size() - 1; j++) {
 
                 stack.push(repeat.get(j));
 
-                //System.out.println("stack: " + stack);
+                System.out.println("stack: " + stack);
 
-                //System.out.println("before1st: " + before1st);
+                System.out.println("before1st: " + before1st);
 
-                //System.out.println("repeat: " + repeat);
+                System.out.println("repeat: " + repeat);
 
             }
 
@@ -792,10 +817,10 @@ public class MakeMusic implements AbcListener {
         }
 
         else if (ctx.getText().equals(":|")) {
-
+            
             if (repeat.size() > 0 && !(altEnding)) {
 
-                //System.out.println("at end of repeat");
+                System.out.println("at end of repeat");
 
                 for (int i = 0; i < 2; i++) {
 
@@ -803,11 +828,11 @@ public class MakeMusic implements AbcListener {
 
                         stack.push(repeat.get(j));
 
-                       // System.out.println("stack: " + stack);
+                        System.out.println("stack: " + stack);
 
-                       // System.out.println("before1st: " + before1st);
+                        System.out.println("before1st: " + before1st);
 
-                       // System.out.println("repeat: " + repeat);
+                        System.out.println("repeat: " + repeat);
 
                     }
 
@@ -816,20 +841,24 @@ public class MakeMusic implements AbcListener {
                 repeat = new Stack<>();
 
             }
-
+            
+            if (repeat.size() == 0 && !(altEnding)) {
+                System.out.println("at end of second alternate ending");
+            }
+            
             if (altEnding) {
 
-                //System.out.println("at end of first alternate ending");
+                System.out.println("at end of first alternate ending");
 
                 for (int j = 0; j <= repeat.size() - 1; j++) {
 
                     stack.push(repeat.get(j));
 
-                    //System.out.println("stack: " + stack);
+                    System.out.println("stack: " + stack);
 
-                    //System.out.println("before1st: " + before1st);
+                    System.out.println("before1st: " + before1st);
 
-                    //System.out.println("repeat: " + repeat);
+                    System.out.println("repeat: " + repeat);
 
                 }
 
@@ -837,11 +866,10 @@ public class MakeMusic implements AbcListener {
 
                     stack.push(before1st.get(k));
 
-                    //System.out.println("stack: " + stack);
+                    System.out.println("stack: " + stack);
+                    System.out.println("before1st: " + before1st);
 
-                    //System.out.println("before1st: " + before1st);
-
-                    //System.out.println("repeat: " + repeat);
+                    System.out.println("repeat: " + repeat);
 
                 }
 
@@ -876,7 +904,6 @@ public class MakeMusic implements AbcListener {
             for (int j = 0; j <= repeat.size() - 1; j++) {
 
                 before1st.push(repeat.get(j));
-
                 //System.out.println("repeat: " + repeat);
 
                 //System.out.println("before1st: " + before1st);
@@ -891,15 +918,16 @@ public class MakeMusic implements AbcListener {
 
         else if (ctx.getText().equals("[2")) {
 
-            //System.out.println("Beginning of second alt ending");
+            System.out.println("Beginning of second alt ending");
 
             altEnding = false;
+            inrepeat = false;
 
-            //System.out.println("repeat: " + repeat);
+            System.out.println("repeat: " + repeat);
 
-            //System.out.println("before1st: " + before1st);
+            System.out.println("before1st: " + before1st);
 
-            //System.out.println("stack: " + stack);
+            System.out.println("stack: " + stack);
 
         }
 
@@ -916,33 +944,18 @@ public class MakeMusic implements AbcListener {
     @Override
 
     public void exitBodyvoice(BodyvoiceContext ctx) {
-
         if (currentVoice != null && repeat.size() > 0) {
-
             voiceMusic.put(currentVoice, repeat);
-
         }
-
         currentVoice = ctx.BODYVOICE().getText();
-
         if (currentVoice != null) {
-
-            System.err.println(currentVoice);
-
             if (voiceMusic.containsKey(currentVoice)) {
-
                 repeat = voiceMusic.get(currentVoice);
-
             }
-
             else {
-
                 repeat = new Stack<Music>();
-
             }
-
         }
-
     }
 
     @Override
