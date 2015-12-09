@@ -100,6 +100,7 @@ public class MakeMusic implements AbcListener {
     @Override
     public void exitRoot(RootContext ctx) {
         if(headerInfo.containsKey("voices")){
+            voiceMusic.put(currentVoice, stack);
             for(String key: voiceMusic.keySet()){
                 Stack<Music> thisstack = voiceMusic.get(key);
                 List<Music> reversestack = new ArrayList<>(thisstack);
@@ -542,21 +543,21 @@ public class MakeMusic implements AbcListener {
 
     @Override
     public void exitBodyvoice(BodyvoiceContext ctx) {
-        if(currentVoice != null){
+        if(currentVoice != null  && stack.size() > 0){
             voiceMusic.put(currentVoice, stack);
         }
-        else{
-            currentVoice = ctx.BODYVOICE().getText();
-            if (currentVoice != null){
-                System.err.println(currentVoice);
-                if(voiceMusic.containsKey(currentVoice)){
-                    stack = voiceMusic.get(currentVoice);
-                }
-                else{
-                    stack = new Stack<Music>();
-                }
+        
+        currentVoice = ctx.BODYVOICE().getText();
+        if (currentVoice != null){
+            System.err.println(currentVoice);
+            if(voiceMusic.containsKey(currentVoice)){
+                stack = voiceMusic.get(currentVoice);
             }
-//        }
+            else{
+                stack = new Stack<Music>();
+            }
+        }
+    
     }
 
     @Override

@@ -157,6 +157,12 @@ public class MakeMusicTest {
         music.play(player, 0);
         player.play();
         System.in.read();
-
+    }
+    
+    @Test
+    public void testMakeMusicMusicBeforeVoices() throws IOException, MidiUnavailableException, InvalidMidiDataException {
+        File file = new File("sample_abc/musicBeforeVoiceTest.abc");
+        Map<String, Music> music = Music.parseBodyFromFile(file);
+        assertEquals(music.toString(), "{V:1=D1.0 D1.0 D1.0 C1.0 C1.0 C1.0 C1.0 C'1.0, V:2=C1.0 C1.0 C1.0 C'1.0 D1.0 D1.0 D1.0 C1.0, defaultvoice=C1.0 D1.0 E1.0 F1.0 G1.0 A1.0 B1.0 C'1.0}");
     }
 }

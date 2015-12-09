@@ -154,7 +154,7 @@ public interface Music {
     public boolean isNote();
 
     public static void main(String[] args) throws IOException, MidiUnavailableException, InvalidMidiDataException {
-        File file = new File("sample_abc/piece2.abc");
+        File file = new File("sample_abc/musicBeforeVoiceTest.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
         System.out.println(headbody.get(1));
         Map<String, String> header = parseHeader(headbody.get(0));
@@ -162,15 +162,18 @@ public interface Music {
         Map<String, Music> music = parseBody(headbody.get(1),header);
         System.out.println(music);
         SequencePlayer player = new SequencePlayer(file);
-//        double voicedelay = 0;
-//        if(music.keySet().contains("defaultvoice")){
-//            Music defaultvoice = music.get("defaultvoice");
-//            defaultvoice.play(player, 0);
-//            voicedelay = defaultvoice.duration();
-//        }
+        double voicedelay = 0;
+        if(music.keySet().contains("defaultvoice")){
+            Music defaultvoice = music.get("defaultvoice");
+            defaultvoice.play(player, 0);
+            voicedelay = defaultvoice.duration();
+        }
+        System.err.println(voicedelay);
         for(String key: music.keySet()){
-            System.err.println(key);
-            music.get(key).play(player, 0);
+            if(!key.equals("defaultvoice")){
+                System.err.println(music.get(key));
+                music.get(key).play(player, voicedelay);
+            }
         }
         player.play();
     }
