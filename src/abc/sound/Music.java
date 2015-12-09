@@ -107,11 +107,14 @@ public interface Music {
      *          -If the # of notes in the tuplet is more than the number of notes specified by nplet,
      *          the extra notes are ignored
      *          -Requires that the number of notes in the tuplet is at least as large as the constraints above
+     *          -Chords inside tuplets have each note in the chord dealt with as if each were a note in a tuplet
      *        Voices:
      *          - Voices must be specified in header to be parsed properly
      *          - There can be text before a voice is listed- that text is parsed as playing before the first voice starts
      *        Repeats:
      *          - No nested repeats allowed
+     *        Chords:
+     *          - Accidentals within chords apply only if the accidental appears to the left of the note (usual rules)
      *        Errors/mistakes:
      *          - The user is responsible for making sure that the music follows the rules of music- if the time signature is
      *          not followed or if the voices have different lengths, there are no guarantees about the correctness of the music
@@ -128,7 +131,6 @@ public interface Music {
         AbcParser parser = new AbcParser(bodyTokens);
         parser.reportErrorsAsExceptions();
         ParseTree tree = parser.root();
-        //Trees.inspect(tree, parser);
         MakeMusicV2 musicMaker = new MakeMusicV2();
         musicMaker.setHeaderInfo(headerInfo);
         new ParseTreeWalker().walk(musicMaker, tree);
@@ -178,7 +180,7 @@ public interface Music {
     public boolean isNote();
 
     public static void main(String[] args) throws IOException, MidiUnavailableException, InvalidMidiDataException {
-        File file = new File("sample_abc/fur_elise_snippet.abc");
+        File file = new File("sample_abc/chords_accidental.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
         System.out.println(headbody.get(1));
         Map<String, String> header = parseHeader(headbody.get(0));
