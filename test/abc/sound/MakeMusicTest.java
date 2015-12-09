@@ -6,11 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-<<<<<<< HEAD
-=======
 import java.util.ArrayList;
 
->>>>>>> 45db5ca4db82f07fa0f6ecea647571576458037f
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
@@ -63,7 +60,8 @@ public class MakeMusicTest {
     public void testMakeMusicInvention() throws IOException, MidiUnavailableException, InvalidMidiDataException {
         File file = new File("sample_abc/invention.abc");
         Map<String, Music> music = Music.parseBodyFromFile(file);
-
+    }
+    
     public void testMakeMusicRepeat1() throws IOException, MidiUnavailableException, InvalidMidiDataException {
         File file = new File("sample_abc/repeat1.abc");
         List<String> headbody = SplitHeader.splitHeader(file);
@@ -129,6 +127,7 @@ public class MakeMusicTest {
         Map<String, Music> music = Music.parseBodyFromFile(file);
         System.err.println(music);
         assertEquals(music.toString(), "a");
+    }
 
     public void testMakeMusicRepeat2() throws IOException, MidiUnavailableException, InvalidMidiDataException {
         File file = new File("sample_abc/repeat2.abc");

@@ -42,7 +42,7 @@ public class MakeMusic implements AbcListener {
     private Map<String, String> headerInfo;
     private Map<String, Stack<Music>> voiceMusic = new HashMap<>();
     private Map<String, Music> finalVoiceMusic = new HashMap<>();
-    private String currentVoice;
+    private String currentVoice = "defaultvoice";
     
 //    public Music getMusic() {
 //        return stack.get(0);
@@ -549,16 +549,18 @@ public class MakeMusic implements AbcListener {
         if(currentVoice != null){
             voiceMusic.put(currentVoice, stack);
         }
-        currentVoice = ctx.BODYVOICE().getText();
-        if (currentVoice != null){
-            System.err.println(currentVoice);
-            if(voiceMusic.containsKey(currentVoice)){
-                stack = voiceMusic.get(currentVoice);
+        else{
+            currentVoice = ctx.BODYVOICE().getText();
+            if (currentVoice != null){
+                System.err.println(currentVoice);
+                if(voiceMusic.containsKey(currentVoice)){
+                    stack = voiceMusic.get(currentVoice);
+                }
+                else{
+                    stack = new Stack<Music>();
+                }
             }
-            else{
-                stack = new Stack<Music>();
-            }
-        }
+//        }
     }
 
     @Override
